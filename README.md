@@ -64,4 +64,5 @@ WeMap-Web-SDK
 npm i
 node route.js
 ```
-Open browser address: http://localhost
+- Directions test: Open browser address: http://localhost
+- Pelias tes: Open browser address: http://localhost/pelias
