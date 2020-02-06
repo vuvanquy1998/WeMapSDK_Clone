@@ -1,29 +1,31 @@
 # WeMap-Web-SDK
 WeMap-Web-SDK
 
-## Compile: Mapbox GL JS vs Mapbox GL Directions
-1. Clone https://github.com/mapbox/mapbox-gl-js
+## Compile: Mapbox GL JS vs Mapbox GL Directions and Pelias Mapbox GL JS
+1. Mapbox GL JS Clone https://github.com/mapbox/mapbox-gl-js and checkout to last release
     ```bash
         git clone https://github.com/mapbox/mapbox-gl-js
     ```
-2. Clone https://github.com/mapbox/mapbox-gl-directions into `src` folder with name `directions`
+2. Mapbox GL Directions Clone https://github.com/mapbox/mapbox-gl-directions into `mapbox-gl-js/src` folder and checkout to last release
     ```bash
-        cd mapbox-gl-js
-        cd src
-        git clone https://github.com/mapbox/mapbox-gl-directions directions
+        git clone https://github.com/mapbox/mapbox-gl-directions
     ```
-3. Update `package.json`
-   1. Copy config `browserify`, `peerDependencies`, `dependencies`, `devDependencies`, from `/src/directions/package.json` to `./package.json`
-   2. Make custom build script: `"build-directions": "NODE_ENV=production mkdir -p src/directions/dist && browserify -s MapboxDirections src/directions/src/index.js > src/directions/dist/mapbox-gl-directions.js && cp src/directions/src/mapbox-gl-directions.css src/directions/dist"`
+3. Pelias Mapbox GL JS Clone https://github.com/Joxit/pelias-mapbox-gl-js into `mapbox-gl-js/src` folder and checkout to last release
+    ```bash
+        git clone https://github.com/Joxit/pelias-mapbox-gl-js
+    ```
+4. Update `package.json`
+   1. Copy config `browserify`, `peerDependencies`, `dependencies`, `devDependencies`, from `/src/mapbox-gl-directions/package.json` to `./package.json` keep all dependencies of mapbox-gl-directions and remove existed
+   2. Make custom build script: `"build-directions": "NODE_ENV=production mkdir -p src/mapbox-gl-directions/dist && browserify -s MapboxDirections src/mapbox-gl-directions/src/index.js > src/mapbox-gl-directions/dist/mapbox-gl-directions.js && cp src/mapbox-gl-directions/src/mapbox-gl-directions.css src/directions/dist"`
 
-4. Update code Mapbox GL JS
-   - Open `./src/index.js` add `import MapboxDirections from './directions/dist/mapbox-gl-directions';` abow row `const exported = {`
+5. Update code Mapbox GL JS
+   - Open `./src/index.js` add `import MapboxDirections from './mapbox-gl-directions/dist/mapbox-gl-directions';` abow row `const exported = {`
    - Export `MapboxDirections` add abow row `config,`
-5. Install dependencies and Build
+6. Install dependencies and Build
    1. Install dependencies: `yarn install`
    2. Build Mapbox GL Directions: `yarn run build-directions`
    3. Build Mapbox GL JS: `yarn run build-prod-min`
-6. Sample Code
+7. Sample Code
     ```javascript
         // Old code
         <head>
@@ -54,4 +56,12 @@ WeMap-Web-SDK
             );
         </body>
     ```
-7. ....
+8. ....
+
+
+## Run Example code
+```bash
+npm i
+node route.js
+```
+Open browser address: http://localhost

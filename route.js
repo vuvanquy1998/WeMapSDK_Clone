@@ -26,6 +26,12 @@ app.get('/', (request, response) => {
     response.sendFile(path.join(__dirname + '/index.html'));
 });
 
+
+app.get('/pelias', (request, response) => {
+    // response.json({ info: 'Node.js, Express, and Postgres API' })
+    response.sendFile(path.join(__dirname + '/pelias.html'));
+});
+
 /**
  * Start app in port
  */
