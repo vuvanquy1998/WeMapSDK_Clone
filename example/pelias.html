@@ -14,12 +14,11 @@
     <meta name="twitter:site" content="@Joxit" />
     <meta name="twitter:creator" content="@Jones Magloire" />
 <!--    <script src='/assets/mapbox-gl.js'></script>-->
-    <script src='../dist/mapbox-gl.js'></script>
+    <script src='../dist/js/wemap-gl.js'></script>
 
-    <link href='../dist/mapbox-gl.css' rel='stylesheet' type='text/css'/>
+    <link href='../dist/css/wemap.min.css' rel='stylesheet' type='text/css'/>
     <!-- <script src='../pelias-geocoder.js'></script> -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
-    <link rel='stylesheet' href='../src/pelias-geocoder/pelias-geocoder.css' type='text/css'/>
     <style>
       body {
         margin: 0;
@@ -136,25 +135,10 @@
       © <a href='https://www.openstreetmap.org/copyright' target='_blank'>OpenStreetMap contributors</a> |
       <a href='http://jawg.io' title='Jawg map style' target='_blank'>Jawg</a>
     </div>
-    <script>
-      (function (i, s, o, g, r, a, m) {
-        i['GoogleAnalyticsObject'] = r;
-        i[r] = i[r] || function () {
-          (i[r].q = i[r].q || []).push(arguments)
-        }, i[r].l = 1 * new Date();
-        a = s.createElement(o),
-          m = s.getElementsByTagName(o)[0];
-        a.async = 1;
-        a.src = g;
-        m.parentNode.insertBefore(a, m)
-      })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-      ga('create', 'UA-99119327-1', 'auto');
-      ga('send', 'pageview');
-    </script>
     <script>
-      mapboxgl.accessToken = '*';
-      var map = new mapboxgl.Map({
+        wemapgl.accessToken = '*';
+      var map = new wemapgl.Map({
         container: 'map',
         style: 'https://tile.jawg.io/a39bae71-d86c-4477-b4ba-8e6e24390cc6.json?access-token=P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7',
         hash: true,
@@ -163,15 +147,15 @@
         maxZoom: 22,
         center: [2.3590, 48.8625]
       });
-      map.addControl(new mapboxgl.NavigationControl());
-      map.addControl(new mapboxgl.ScaleControl());
+      map.addControl(new wemapgl.NavigationControl());
+      map.addControl(new wemapgl.ScaleControl());
 
       // Custom marker
       var iconMarkerEl = document.createElement("div");
       iconMarkerEl.innerHTML = "<div class='marker-arrow'></div>" +
         "<div class='marker-pulse'></div>";
 
-		let peliasControl = new mapboxgl.PeliasGeocoder({
+		let peliasControl = new wemapgl.PeliasGeocoder({
         params: {'access-token': 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7'},
         flyTo: 'hybrid',
         wof: true,
@@ -184,12 +168,8 @@
         customAttribution: 'Powered by <a style="color: rgb(0, 148, 255); text-decoration: none;" href="http://jawg.io" title="Attributions" target="_blank" style=""><img style="max-height: 1em;" src="https://www.jawg.io/favicon.png"/><b>Jawg</b>Maps</a>'
       });
 	  
-      let testGeocoder =  new mapboxgl.TestGeocoder({
-        params: {'access-token': 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7'}
-      });
-	  
 	  console.log(peliasControl.getDefaultPosition());
-	  console.log(testGeocoder.getInfo());
+
     </script>
   </body>
 </html>
