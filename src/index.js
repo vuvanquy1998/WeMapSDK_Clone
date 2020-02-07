@@ -29,9 +29,8 @@ import {PerformanceUtils} from './util/performance';
 
 import MapboxDirections from './mapbox-gl-directions/dist/mapbox-gl-directions';
 
-// import WeMapClass from './wemap/src/wemap';
-// import WeMapProperties from './wemap/src/properties';
-import WeMap from './wemap/src/index';
+
+import WeMap from './wemap/index';
 
 import PeliasGeocoder from './pelias-geocoder/pelias-geocoder';
 
@@ -56,7 +55,6 @@ const exported = {
     Evented,
     MapboxDirections,
     PeliasGeocoder,
-    // WeMapClass,
     WeMap,
     config,
 

@@ -6,10 +6,10 @@
   ],
   "paths" : {
     "js": "./js",
-    "css": "./src/wemap/src/css",
+    "css": "./src/wemap/css",
     "img": "./img",
     "imgsrc": "./src/img",
-    "sass": "./src/wemap/src/sass",
+    "sass": "./src/wemap/sass",
     "node": "./node_modules/",
     "bower": "./bower_components/",
     "dev": "./src",
