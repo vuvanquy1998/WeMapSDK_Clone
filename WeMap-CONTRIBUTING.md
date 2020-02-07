@@ -25,7 +25,8 @@ cd src/wemap
 nano functionName.js
 
 # import functionName to index.js
-nano  index.js
+nano  ../index.js
+    
 
 # Style
 cd sass

@@ -30,7 +30,8 @@ import {PerformanceUtils} from './util/performance';
 import MapboxDirections from './mapbox-gl-directions/dist/mapbox-gl-directions';
 
 
-import WeMap from './wemap/index';
+import WeMap from './wemap/map';
+import WeGeocoder from './wemap/geocoder';
 
 import PeliasGeocoder from './pelias-geocoder/pelias-geocoder';
 
@@ -56,6 +57,7 @@ const exported = {
     MapboxDirections,
     PeliasGeocoder,
     WeMap,
+    WeGeocoder,
     config,
 
     /**
