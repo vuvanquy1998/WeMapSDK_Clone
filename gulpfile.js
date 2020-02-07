@@ -8,6 +8,8 @@ var sourcemaps = require( 'gulp-sourcemaps' );
 var cleanCSS = require( 'gulp-clean-css' );
 var autoprefixer = require( 'gulp-autoprefixer' );
 
+var concat = require('gulp-concat');
+
 // Configuration file to keep your code DRY
 var cfg = require( './gulpconfig.json' );
 var paths = cfg.paths;
@@ -57,3 +59,16 @@ gulp.task( 'minifycss', function() {
 
 
 gulp.task( 'styles', gulp.series( 'sass', 'minifycss' ));
+
+
+gulp.task( 'build', gulp.series( 'styles' ));
+
+
+gulp.task( 'wemap-prod', function() {
+    return gulp.src('dist/css/**/*.css')
+        .pipe( sourcemaps.init( { loadMaps: true } ) )
+        .pipe( cleanCSS( { compatibility: '*' } ) )
+        .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9'))
+        .pipe(concat('wemap.min.css'))
+        .pipe(gulp.dest('dist/css'));
+});
