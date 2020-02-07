@@ -1,0 +1,20 @@
+{
+  "browserSyncWatchFiles" : [
+    "./css/*.min.css",
+    "./js/*.min.js",
+    "./**/*.php"
+  ],
+  "paths" : {
+    "js": "./js",
+    "css": "./src/wemap/src/css",
+    "img": "./img",
+    "imgsrc": "./src/img",
+    "sass": "./src/wemap/src/sass",
+    "node": "./node_modules/",
+    "bower": "./bower_components/",
+    "dev": "./src",
+    "dist": "./dist",
+    "distprod": "./dist-product",
+    "vendor": ""
+  }
+}

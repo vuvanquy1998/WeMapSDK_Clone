@@ -1,0 +1,1 @@
+{"version":3,"sources":["_form.scss"],"names":[],"mappings":"AAAA;EACI,iBAAiB;EACjB,iBAAiB;EACjB,eAAe;EACf,eAAe,EAAA","file":"style.css","sourcesContent":["input {\n    padding: 5px 10px;\n    border: solid 1px;\n    background: red;\n    font-size: 12px;\n}\n"]}
