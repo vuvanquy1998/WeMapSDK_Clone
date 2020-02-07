@@ -180,6 +180,8 @@
 
     "wemap-clean": "find dist/css/ -type f ! -name 'wemap.min.css' -delete",
 
+    "wemap-gulp": "gulp build && cp src/wemap/css/style.min.css dist/css/dev.min.css",
+
     "wemap-copy-js": "mkdir -p dist/js && rm -rf dist/js/* && cp dist/mapbox-gl.js dist/js/wemap-gl.js",
 
     "wemap-dev-style": "cp dist/mapbox-gl.css dist/css && cp src/mapbox-gl-directions/src/mapbox-gl-directions.css dist/css && cp src/pelias-geocoder/pelias-geocoder.css dist/css",
