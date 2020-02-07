@@ -169,7 +169,7 @@
       iconMarkerEl.innerHTML = "<div class='marker-arrow'></div>" +
         "<div class='marker-pulse'></div>";
 
-      map.addControl(new mapboxgl.PeliasGeocoder({
+		let peliasControl = new mapboxgl.PeliasGeocoder({
         params: {'access-token': 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7'},
         flyTo: 'hybrid',
         wof: true,
@@ -180,7 +180,14 @@
           multiple: false
         },
         customAttribution: 'Powered by <a style="color: rgb(0, 148, 255); text-decoration: none;" href="http://jawg.io" title="Attributions" target="_blank" style=""><img style="max-height: 1em;" src="https://www.jawg.io/favicon.png"/><b>Jawg</b>Maps</a>'
-      }));
+      });
+	  
+      let testGeocoder =  new mapboxgl.TestGeocoder({
+        params: {'access-token': 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7'}
+      });
+	  
+	  console.log(peliasControl.getDefaultPosition());
+	  console.log(testGeocoder.getInfo());
     </script>
   </body>
 </html>

@@ -50,6 +50,20 @@
             'top-left'
         );
     </script>
+	
+	<script>
+		let wm =  new mapboxgl.WeMap({
+			params: {'access-token': 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7'}
+		  });
+
+	  console.log(wm.showForm());
+	  
+	  let wmc =  new mapboxgl.WeMapClass({
+			params: {'access-token': 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7'}
+		  });
+
+	  console.log(wmc.getOriginWeMap());
+	</script>
 
 </body>
 
