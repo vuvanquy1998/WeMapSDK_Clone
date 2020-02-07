@@ -180,6 +180,7 @@
 
     "wemap-clean": "find dist/css/ -type f ! -name 'wemap.min.css' -delete",
 
+    "wemap-update-config": "sed -i \"s/name: 'mapboxgl'/name: 'wemapgl'/g\" rollup.config.js",
     "wemap-gulp": "gulp build && cp src/wemap/css/style.min.css dist/css/dev.min.css",
 
     "wemap-copy-js": "mkdir -p dist/js && rm -rf dist/js/* && cp dist/mapbox-gl.js dist/js/wemap-gl.js",
