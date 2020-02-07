@@ -3,7 +3,7 @@
  * @returns {String} '@WeMap Form'
  */
 function getWeMapForm() {
-    return '@WeMap Form';
+    return '<form class="wemap-form"> Hello </form>';
 }
 
 if (typeof module !== 'undefined') { module.exports = getWeMapForm; }

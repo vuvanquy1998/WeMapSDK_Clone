@@ -35,7 +35,7 @@ export default [{
     // rollup/mapboxgl.js for details.
     input: 'rollup/mapboxgl.js',
     output: {
-        name: 'mapboxgl',
+        name: 'wemapgl',
         file: outputFile,
         format: 'umd',
         sourcemap: production ? true : 'inline',
