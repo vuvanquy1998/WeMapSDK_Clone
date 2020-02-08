@@ -62,6 +62,8 @@ nano index.html
 
 ```
 
+## Fix Error
+- Ubuntu: Error Yarn install - https://github.com/zodern/meteor-up/issues/683#issuecomment-321956494
 
 ## Quy trình code
 - Bước 1: Chạy test để đảm bảo chương trình đang hoạt động bình thường
