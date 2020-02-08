@@ -19,3 +19,7 @@ yarn run wemap-prod
 yarn run wemap-gulp
 
 ```
+
+
+## Fix Error
+- Ubuntu: Error Yarn install - https://github.com/zodern/meteor-up/issues/683#issuecomment-321956494
