@@ -3,23 +3,17 @@
 ## Run
 
 ```bash
+# Install 
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+
+sudo apt update && sudo apt install yarn
+
 # Install Dependencies
+cd [repo_dev]
 yarn install
 
 # First build
 yarn run wemap-pre-build
 
-# Dev build
-yarn run wemap-dev
-
-# Prod build
-yarn run wemap-prod
-
-# Build CSS once
-yarn run wemap-gulp
-
 ```
-
-
-## Fix Error
-- Ubuntu: Error Yarn install - https://github.com/zodern/meteor-up/issues/683#issuecomment-321956494

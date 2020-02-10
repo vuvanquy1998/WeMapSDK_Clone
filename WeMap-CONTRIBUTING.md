@@ -1,29 +1,16 @@
 ## Bước 1:
-
-Install [git](https://git-scm.com/), [node.js](https://nodejs.org/) (version 6 or greater), [GNU Make](http://www.gnu.org/software/make/), and libglew-dev
+Install [yarn](https://classic.yarnpkg.com/en/docs/install/#debian-stable)
 ```bash
-sudo apt-get update &&
-sudo apt-get install build-essential git nodejs libglew-dev libxi-dev
-```
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 
-Install [yarn](https://yarnpkg.com/en/docs/install#linux-tab)
-```bash
-curl -o- -L https://yarnpkg.com/install.sh | bash
+sudo apt update && sudo apt install yarn
 ```
-(It is also possible to install yarn from Debian/Ubuntu packages. See [yarn's install instructions](https://yarnpkg.com/en/docs/install#linux-tab)).
-
 
 Clone the repository
 ```bash
-git clone git@github.com:mapbox/mapbox-gl-js.git
+git clone https://github.com/WEMAP-Official/WeMap-Web-SDK.git
 ```
-
-```bash
-git clone 
-
-# Install yarn: https://yarnpkg.com/getting-started/install  - Ubuntu
-
-npm install -g yarn@berry
 
 # Dependencies
 yarn install
