@@ -1,4 +1,23 @@
 ## Bước 1:
+
+Install [git](https://git-scm.com/), [node.js](https://nodejs.org/) (version 6 or greater), [GNU Make](http://www.gnu.org/software/make/), and libglew-dev
+```bash
+sudo apt-get update &&
+sudo apt-get install build-essential git nodejs libglew-dev libxi-dev
+```
+
+Install [yarn](https://yarnpkg.com/en/docs/install#linux-tab)
+```bash
+curl -o- -L https://yarnpkg.com/install.sh | bash
+```
+(It is also possible to install yarn from Debian/Ubuntu packages. See [yarn's install instructions](https://yarnpkg.com/en/docs/install#linux-tab)).
+
+
+Clone the repository
+```bash
+git clone git@github.com:mapbox/mapbox-gl-js.git
+```
+
 ```bash
 git clone 
 
