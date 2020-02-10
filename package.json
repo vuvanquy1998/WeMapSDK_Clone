@@ -176,7 +176,7 @@
     "build-directions": "NODE_ENV=production mkdir -p src/mapbox-gl-directions/dist && browserify -s MapboxDirections src/mapbox-gl-directions/src/index.js > src/mapbox-gl-directions/dist/mapbox-gl-directions.js && cp src/mapbox-gl-directions/src/mapbox-gl-directions.css src/mapbox-gl-directions/dist",
     "build-prod-min": "rollup -c --environment BUILD:production,MINIFY:true",
 
-    "wemap-pre-build": "yarn run build-directions && yarn run build-prod-min",
+    "wemap-pre-build": "yarn run build-directions && yarn run build-prod-min && yarn run build-css",
 
     "wemap-clean": "find dist/css/ -type f ! -name 'wemap.min.css' -delete",
 
@@ -186,10 +186,10 @@
     "wemap-copy-js": "mkdir -p dist/js && rm -rf dist/js/* && cp dist/mapbox-gl.js dist/js/wemap-gl.js",
 
     "wemap-dev-style": "cp dist/mapbox-gl.css dist/css && cp src/mapbox-gl-directions/src/mapbox-gl-directions.css dist/css && cp src/pelias-geocoder/pelias-geocoder.css dist/css",
-    "wemap-dev": "yarn run build-prod-min && gulp build && mkdir -p dist/css && rm -rf dist/css/* && yarn run wemap-dev-style && gulp wemap-prod && yarn run wemap-clean && cp src/wemap/css/style.min.css dist/css/dev.min.css && yarn run wemap-copy-js",
+    "wemap-dev": "yarn run build-prod-min && yarn run build-css && gulp build && mkdir -p dist/css && rm -rf dist/css/* && yarn run wemap-dev-style && gulp wemap-prod && yarn run wemap-clean && cp src/wemap/css/style.min.css dist/css/dev.min.css && yarn run wemap-copy-js",
 
     "wemap-prod-style": "cp dist/mapbox-gl.css dist/css && cp src/mapbox-gl-directions/src/mapbox-gl-directions.css dist/css && cp src/pelias-geocoder/pelias-geocoder.css dist/css && cp src/wemap/css/style.min.css dist/css",
-    "wemap-prod": "yarn run build-prod-min && gulp build && mkdir -p dist/css && rm -rf dist/css/* && yarn run wemap-prod-style && gulp wemap-prod && yarn run wemap-clean && yarn run wemap-copy-js",
+    "wemap-prod": "yarn run build-prod-min && yarn run build-css && gulp build && mkdir -p dist/css && rm -rf dist/css/* && yarn run wemap-prod-style && gulp wemap-prod && yarn run wemap-clean && yarn run wemap-copy-js",
 
     "build-csp": "rollup -c rollup.config.csp.js",
     "build-query-suite": "rollup -c test/integration/rollup.config.test.js",

@@ -81,7 +81,6 @@ nano index.html
 
 ```
 
-
 ## Quy trình code
 - Bước 1: Chạy test để đảm bảo chương trình đang hoạt động bình thường
 - Bước 2: Viết test trong folder example tương tự như đã code xong thư viện
