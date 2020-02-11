@@ -10,7 +10,7 @@ export default class Reverse{
             console.log('chay reverse')
             this.map.on('load', (e) => {
                 let point_layers = []
-                
+                 
                 let chosen_point_info = {}
                 axios.get('https://api.mapbox.com/styles/v1/mapbox/streets-v11?access_token=pk.eyJ1IjoidGhhb2d1bSIsImEiOiJjazJwbHI0eDIwNW82M210b2JnaTBneHY5In0.t4RveeJuHKVJt0RIgFOAGQ')
                 .then((data, stt) => {
@@ -102,11 +102,8 @@ export default class Reverse{
                                     chosen_point_info = chosen_info
                                 }
                             }
-                        })
+                         })
                     }
-                })
-                this.map.on('contextmenu', (e) => {
-                    alert('đã đè chuột phải')
                 })
                 document.getElementById('click-detail').addEventListener('click', (e) => {
                     showDetailFeature(chosen_point_info.properties.name, '', chosen_point_info.geometry.coordinates[0], chosen_point_info.geometry.coordinates[1], [chosen_point_info.properties.county, chosen_point_info.properties.region, chosen_point_info.properties.country], chosen_point_info.properties.id.split("/")[1], convert_to_osm_type(chosen_point_info.properties.id.split("/")[0]))

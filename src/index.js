@@ -33,6 +33,7 @@ import MapboxDirections from './mapbox-gl-directions/dist/mapbox-gl-directions';
 import WeMap from './wemap/map';
 import WeGeocoder from './wemap/geocoder';
 import Reverse from './wemap/reverse';
+import RightClick from './wemap/rightclick';
 
 import PeliasGeocoder from './pelias-geocoder/pelias-geocoder';
 
@@ -60,6 +61,7 @@ const exported = {
     WeMap,
     WeGeocoder,
     Reverse,
+    RightClick,
     config,
 
     /**

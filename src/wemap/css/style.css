@@ -135,4 +135,26 @@
 .click-detail a:hover, .click-detail a:focus {
   color: blue; }
 
+#right-click-menu-container {
+  position: absolute;
+  padding: 8px 0px 8px 0px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  background-color: white;
+  -webkit-box-shadow: 0 1px 6px rgba(60, 64, 67, 0.28);
+          box-shadow: 0 1px 6px rgba(60, 64, 67, 0.28);
+  border-radius: 4px; }
+
+.right-click-menu-item {
+  padding: 4px 16px 4px 16px; }
+
+.right-click-menu-item:hover {
+  background-color: #d9e3f6;
+  cursor: pointer; }
+
 /*# sourceMappingURL=style.css.map */
