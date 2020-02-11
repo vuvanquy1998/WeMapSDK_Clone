@@ -44,7 +44,8 @@
 
         token = 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7'
 
-        wemapControl = new wemapgl.WeGeocoder({
+        var wemapControl = new wemapgl.WeGeocoder({
+            map: map,
             flyTo: 'hybrid',
             accessToken: token,
             wof: true,
@@ -58,23 +59,20 @@
             multiple: false
             }
         });
-
-        // wemapControl.init();
-        // console.log(wemapControl.getDefaultPosition());
-        console.log(wemapControl);
-
+    //     let peliasControl = new wemapgl.PeliasGeocoder({
+    //     params: {'access-token': 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7'},
+    //     flyTo: 'hybrid',
+    //     wof: true,
+    //     url: 'https://places.jawg.io/v1',
+    //     useFocusPoint: true,
+    //     marker: {
+    //       icon: iconMarkerEl,
+    //       multiple: false
+    //     },
+    //   });
+    //   map.addControl(peliasControl)
 
     </script>
-	
-	<!-- <script>
-		let wm =  new wemapgl.WeMap({
-			params: {'access-token': 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7'}
-		  });
-
-	    console.log(wm.showForm());
-
-	</script> -->
-
 </body>
 
 </html>
