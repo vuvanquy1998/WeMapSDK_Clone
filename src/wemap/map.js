@@ -4,7 +4,7 @@ export default class WeMap {
     constructor(options) {
         options = options || {};
         this.defaultOptions = {
-            style: "mapbox://styles/mapbox/streets-v11",
+            style: "https://apis.wemap.asia/vector-tiles/styles/osm-bright/style.json?key=IqzJukzUWpWrcDHJeDpUPLSGndDx",
             center: [105.8550736, 21.0283243],
             zoom: 13,
             reverse: false,
