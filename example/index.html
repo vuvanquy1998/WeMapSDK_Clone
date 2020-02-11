@@ -34,13 +34,15 @@
         var map = new wemapgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v11',
-            center: [-79.4512, 43.6568],
-            zoom: 13
+            center: [105.7884815, 21.02459],
+            zoom: 11
         });
 
         map.addControl(
             new wemapgl.MapboxDirections({
-                accessToken: wemapgl.accessToken
+                accessToken: wemapgl.accessToken,
+                unit: 'metric',
+                profile: 'mapbox/cycling'
             }),
             'top-left'
         );
@@ -52,6 +54,13 @@
 		  });
 
 	    console.log(wm.showForm());
+
+
+        let wd =  new wemapgl.WeDirections({
+            params: {'access-token': 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7'}
+        });
+
+        console.log(wd.init());
 
 	</script>
 
