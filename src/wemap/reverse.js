@@ -102,8 +102,19 @@ export default class Reverse{
                                     chosen_point_info = chosen_info
                                 }
                             }
-                         })
+                        })
                     }
+                })
+                this.map.on('contextmenu', (e) => {
+                    alert('đã đè chuột phải')
+                })
+                document.getElementById('click-detail').addEventListener('click', (e) => {
+                    showDetailFeature(chosen_point_info.properties.name, '', chosen_point_info.geometry.coordinates[0], chosen_point_info.geometry.coordinates[1], [chosen_point_info.properties.county, chosen_point_info.properties.region, chosen_point_info.properties.country], chosen_point_info.properties.id.split("/")[1], convert_to_osm_type(chosen_point_info.properties.id.split("/")[0]))
+                })
+                document.getElementById('placeclose').addEventListener('click', (e) => {
+                    // deleteUrlParam('rx');
+                    // deleteUrlParam('ry');
+                    document.getElementById('place').style.display = "none"
                 })
             })
         }
