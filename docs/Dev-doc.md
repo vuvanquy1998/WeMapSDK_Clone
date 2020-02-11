@@ -16,4 +16,13 @@ yarn install
 # First build
 yarn run wemap-pre-build
 
+# Dev build
+yarn run wemap-dev
+
+# Product Build
+yarn run wemap-prod
+
+# Recompile CSS
+yarn run gulp
+
 ```
