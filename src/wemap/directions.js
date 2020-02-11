@@ -1,3 +1,7 @@
+/**
+ * WeDirections show direction
+ *
+ */
 export default class WeDirections {
 
     constructor(options) {
@@ -9,14 +13,25 @@ export default class WeDirections {
             this.params = options.params;
         }
 
+        if (options.mode) {
+            this.mode = options.mode;
+        }
+
+        if (options.highlight) {
+            this.highlight = options.highlight;
+        }
+
         this.init();
     }
 
     /**
-     * Returns the origin of the current route.
+     * init function
      * @returns {Object} origin
      */
-    init() {
-        return 'Directions';
+    init(mode = 'car', highlight = 1) {
+        this.mode = mode;
+        this.highlight = highlight;
+        console.log('Directions Init')
+        return 'Directions: ' + mode + highlight;
     }
 }
