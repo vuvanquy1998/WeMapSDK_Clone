@@ -3,15 +3,16 @@ export default class WeGeocoder {
     constructor(options) {
         options = options || {};
 
-        this.options = {};
+        this.options = options;
 
-        if (options.params) {
-            this.params = options.params;
-        }
+        this.init();
     }
 
     /**
-     * Code below
+     * Returns the origin of the current route.
+     * @returns {Object} origin
      */
-
+    init(){
+        console.log('init')
+    }
 }
