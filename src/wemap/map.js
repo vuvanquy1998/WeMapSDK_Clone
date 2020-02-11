@@ -7,7 +7,8 @@ export default class WeMap {
             style: "mapbox://styles/mapbox/streets-v11",
             center: [105.8550736, 21.0283243],
             zoom: 13,
-            reverse: false
+            reverse: false,
+            attributionControl: false
         }
         this.options = options;
         this.setDefaultValue(this.defaultOptions, this.options);
@@ -23,12 +24,18 @@ export default class WeMap {
                 container: this.options.container,
                 style: this.options.style,
                 center: this.options.center,
-                zoom: this.options.zoom
+                zoom: this.options.zoom,
+                attributionControl: this.options.attributionControl
         });
+
+        this.map.addControl(new mapboxgl.AttributionControl({
+            compact: false,
+            customAttribution: ["© WeMap"]
+        }));
+
         if(this.options.reverse) {
             // TODO:
         }
-        console.log(this.options);
         
     }
 
