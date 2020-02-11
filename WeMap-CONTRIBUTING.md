@@ -1,10 +1,16 @@
 ## Bước 1:
+Install [yarn](https://classic.yarnpkg.com/en/docs/install/#debian-stable)
 ```bash
-git clone 
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 
-# Install yarn: https://yarnpkg.com/getting-started/install  - Ubuntu
+sudo apt update && sudo apt install yarn
+```
 
-npm install -g yarn@berry
+Clone the repository
+```bash
+git clone https://github.com/WEMAP-Official/WeMap-Web-SDK.git
+```
 
 # Dependencies
 yarn install
@@ -61,7 +67,6 @@ cd rootProject/example
 nano index.html
 
 ```
-
 
 ## Quy trình code
 - Bước 1: Chạy test để đảm bảo chương trình đang hoạt động bình thường
