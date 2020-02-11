@@ -28,37 +28,38 @@
 
 <body>
     <div id="map"></div>
+    <div id="place" style="display: none; position: absolute;">
+		<div class="class-pl">
+			<div class="image-place">
+				<img class="placeicon" id="preview-image" src="https://map.fimo.com.vn/assets/images/no_street.png"
+					alt="">
+			</div>
+			<div class="add-place">
+				<button class="click-detail" id="click-detail">
+					<a class="placename" id="placename">a</a>
+					<a class="placeadd" id="placeadd">a</a>
+				</button>
 
+				<div class="placelatlon"><a href="#" id="placelatlon"></a></div>
+			</div>
+			<div class="image-direc">
+				<img src="http://maps.gstatic.com/tactile/reveal/directions-1x-20150909.png">
+			</div>
+			<div class="close-place">
+				<div id="placeclose" style="color: black;"><i class="fas fa-times"></i></div>
+			</div>
+		</div>
+	</div>
     <script>
         wemapgl.accessToken = "pk.eyJ1IjoicGh1b25naHgiLCJhIjoiY2s2N3IxMnNiMWdlbTNlcW8ybG5jaXU4MCJ9.CkMLijVJ1Lp2ZbaR0zDgrg";
         var map = new wemapgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v11',
-            center: [-79.4512, 43.6568],
-            zoom: 13,
-            
+            center: [105.84370246986344, 21.003961186227826],
+            zoom: 13          
         });
 
-        map.addControl(
-            new wemapgl.MapboxDirections({
-                accessToken: wemapgl.accessToken
-            }),
-            'top-left'
-        );
+        new wemapgl.Reverse(map, true)
     </script>
-	
-	<script>
-		let wm =  new wemapgl.WeMap({
-            params: {
-                'access-token': 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7', 
-                'reverse': true,
-            }
-		});
-
-	    console.log(wm.showForm());
-
-	</script>
-
 </body>
-
 </html>
