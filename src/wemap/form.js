@@ -11,7 +11,7 @@ function getWeMapForm() {
 
     // Test fetch
     let pointLayers = [];
-    let url = 'https://api.mapbox.com/styles/v1/mapbox/streets-v11?access_token=pk.eyJ1IjoidGhhb2d1bSIsImEiOiJjazJwbHI0eDIwNW82M210b2JnaTBneHY5In0.t4RveeJuHKVJt0RIgFOAGQA';
+    let url = 'https://api.mapbox.com/styles/v1/mapbox/streets-v11?access_token=pk.eyJ1IjoidGhhb2d1bSIsImEiOiJjazJwbHI0eDIwNW82M210b2JnaTBneHY5In0.t4RveeJuHKVJt0RIgFOAGQ';
 
     fetch(url)
         .then((response) => {
@@ -22,12 +22,12 @@ function getWeMapForm() {
                 throw Error('ReadableStream not yet supported in this browser.')
             }
             // store the size of the entity-body, in bytes
-            const contentLength = response.headers.get('content-length');
-
-            // ensure contentLength is available
-            if (!contentLength) {
-                throw Error('Content-Length response header unavailable');
-            }
+            // const contentLength = response.headers.get('content-length');
+            //
+            // // ensure contentLength is available
+            // if (!contentLength) {
+            //     throw Error('Content-Length response header unavailable');
+            // }
 
             return response.json()
         })
