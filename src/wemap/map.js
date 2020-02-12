@@ -1,6 +1,8 @@
 import getWeMapForm from './form';
 import API from './api';
 
+import Reverse from './reverse';
+
 export default class WeMap {
     constructor(options) {
         options = options || {};
@@ -73,7 +75,7 @@ export default class WeMap {
         }));
 
         if(this.options.reverse) {
-            // TODO: init Reverse
+            this.reverse = new Reverse(this.map);
         }
         
     }
