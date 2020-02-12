@@ -45,33 +45,21 @@
         token = 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7'
 
         var wemapControl = new wemapgl.WeGeocoder({
-            map: map,
             flyTo: 'hybrid',
             accessToken: token,
             wof: true,
+            useFocusPoint: true,
             engine: 'default',  //ko biết
             suggestion: {
                 min_char: 4  // ko ghi = 4
             },
             useFocusPoint: true,
             marker: {
-            icon: iconMarkerEl,
-            multiple: false
+                icon: iconMarkerEl,
+                multiple: false
             }
         });
-    //     let peliasControl = new wemapgl.PeliasGeocoder({
-    //     params: {'access-token': 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7'},
-    //     flyTo: 'hybrid',
-    //     wof: true,
-    //     url: 'https://places.jawg.io/v1',
-    //     useFocusPoint: true,
-    //     marker: {
-    //       icon: iconMarkerEl,
-    //       multiple: false
-    //     },
-    //   });
-    //   map.addControl(peliasControl)
-
+        map.addControl(wemapControl)
     </script>
 </body>
 
