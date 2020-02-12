@@ -5,6 +5,21 @@ export default class PlaceDetail{
     
   }
   /**
+   * format address
+  */
+  getAddess(address) {
+    address_result = "";
+    var separator = "";
+    for (i = 0; i < address.length; i++) {
+      address[i] = address[i] ? address[i] : "";
+      if (address[i]) {
+        address_result = address_result + separator + address[i];
+        separator = ", ";
+      }
+    }
+    return address_result;
+  }
+  /**
    * show detail Feature
   */
   showDetailFeature(){
