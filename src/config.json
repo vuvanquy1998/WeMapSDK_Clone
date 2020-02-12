@@ -3,5 +3,6 @@
     "default" : "https://link-to-default-style",
     "streets" : "https://api.mapbox.com/styles/v1/mapbox/streets-v11?access_token="
   },
-  "reverse" : "https://apis.wemap.asia/we-tools/reverse?key="
+  "reverse" : "https://apis.wemap.asia/we-tools/reverse?key=",
+  "lookup" : "http://apis.wemap.asia/we-tools/lookup?key="
 }
