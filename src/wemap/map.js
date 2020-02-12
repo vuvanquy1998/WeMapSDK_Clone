@@ -4,7 +4,6 @@ import API from './api';
 export default class WeMap {
     constructor(options) {
         options = options || {};
-
         this.styleLinks = {
             // TODO: get link from config file
             "bright" : "https://apis.wemap.asia/vector-tiles/styles/osm-bright/style.json?key=",
@@ -55,6 +54,7 @@ export default class WeMap {
         // disable attribution control by default
         this.options.attributionControl = false;
 
+
         // create mapbox options object
         var mapboxOptions = Object.assign({}, this.options);
         // map wemap style -> link + key
@@ -63,7 +63,6 @@ export default class WeMap {
         delete mapboxOptions.reverse;
         delete mapboxOptions.key;
 
-        console.log(mapboxOptions);
         // init mapbox
         this.map = new wemapgl.Map(mapboxOptions);
 
@@ -81,6 +80,7 @@ export default class WeMap {
 
     isNotNull(variable) {
         return (variable != null && variable != undefined) ? true : false;
+
     }
 
     /**
