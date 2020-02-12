@@ -1,11 +1,5 @@
 import MapboxDirections from '../../mapbox-gl-directions/dist/mapbox-gl-directions';
 
-// import template from 'lodash.template';
-// import isEqual from 'lodash.isequal';
-
-// let fs = require('fs');
-// let inputTemplate = template(fs.readFileSync(__dirname + 'input.html', 'utf8'));
-
 /**
  * WeDirections show direction
  *
@@ -24,6 +18,9 @@ export default class WeDirections {
         this.mode = options.mode || 'driving'; // traffic, driving, walking, cycling
         this.highlight = options.highlight || true;
         this.accessToken = options.accessToken || '';
+
+        this.engine = ['osrm', 'graphhopper'].includes(options.engine) ? options.engine : 'osrm';
+
         this.unit = options.unit || 'metric';
     }
 
@@ -33,11 +30,13 @@ export default class WeDirections {
      * @returns {Object} origin
      */
     render() {
-        console.log('Directions Init');
-        return new MapboxDirections({
+        console.log('Directions Init: ', this.engine);
+        let directions =  new MapboxDirections({
             accessToken: this.accessToken,
             unit: 'metric',
             profile: 'mapbox/' + this.mode
         });
+
+        return directions;
     }
 }
