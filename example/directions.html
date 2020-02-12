@@ -37,15 +37,6 @@
             center: [105.7884815, 21.02459],
             zoom: 11
         });
-
-        map.addControl(
-            new wemapgl.MapboxDirections({
-                accessToken: wemapgl.accessToken,
-                unit: 'metric',
-                profile: 'mapbox/cycling'
-            }),
-            'top-left'
-        );
     </script>
 	
 	<script>
@@ -58,10 +49,16 @@
 
         let wd =  new wemapgl.WeDirections({
             params: {'access-token': 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7'},
-            mode: 'step'
+            mode: 'driving',
+            accessToken: "pk.eyJ1IjoicGh1b25naHgiLCJhIjoiY2s2N3IxMnNiMWdlbTNlcW8ybG5jaXU4MCJ9.CkMLijVJ1Lp2ZbaR0zDgrg"
         });
 
-        console.log(wd);
+        // console.log(wd.init());
+
+        map.addControl(
+            wd.render(),
+            'top-left'
+        );
 
 	</script>
 

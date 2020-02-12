@@ -27,11 +27,11 @@ import {clearTileCache} from './util/tile_request_cache';
 import {PerformanceUtils} from './util/performance';
 
 
-import MapboxDirections from './mapbox-gl-directions/dist/mapbox-gl-directions';
+// import MapboxDirections from './mapbox-gl-directions/dist/mapbox-gl-directions';
 
 
 import WeMap from './wemap/map';
-import WeDirections from './wemap/directions';
+import WeDirections from './wemap/directions/directions';
 import WeGeocoder from './wemap/geocoder';
 
 import PeliasGeocoder from './pelias-geocoder/pelias-geocoder';
@@ -55,7 +55,7 @@ const exported = {
     Point,
     MercatorCoordinate,
     Evented,
-    MapboxDirections,
+    // MapboxDirections,
     PeliasGeocoder,
     WeMap,
     WeDirections,
