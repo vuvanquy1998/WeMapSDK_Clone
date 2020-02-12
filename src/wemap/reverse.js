@@ -1,8 +1,7 @@
 import axios from 'axios';
 export default class Reverse{
-    constructor(map, stt) {
+    constructor(map) {
         this.map = map;
-        this.stt = stt;
         this.init();
     }
     init(){
@@ -29,6 +28,7 @@ export default class Reverse{
                 })
             })
             this.map.on('click', (e) => {
+            if(stt){
                 var features = map.queryRenderedFeatures(e.point);
                 console.log(features)
                 
@@ -44,20 +44,13 @@ export default class Reverse{
                         console.log('data reverse', data)
                         return data.data.features[0]
                     }
-                    //ui cho reverse không phải icon trên map
 
-                    let status = this.stt;
+                    //ui cho reverse không phải icon trên map
                     function not_point_render_detail(info){
                         console.log('kp điểm:', info.name, info.street, info.district, info.city, info.country)
                         
                         // document.getElementById('detail-feature').style.display = "none"
-                        if(status){
-                            console.log('bat')
-                            document.getElementById('place').style.display ='block';
-                        }else{
-                            console.log('tat')
-                            document.getElementById('place').style.visibility = 'hidden';
-                        }
+                        
                         document.getElementById('place').style.display ='block';
                         let address = [info.name, info.street, info.district, info.city, info.country]
                         let second_line = []
@@ -79,6 +72,7 @@ export default class Reverse{
                         document.getElementById('placeadd').innerHTML = second_line.join(', ')
                         document.getElementById('placelatlon').innerHTML = Number(e.lngLat.lat).toFixed(7)+' ,'+ Number(e.lngLat.lng).toFixed(7)
                     } 
+
                     //hiển thị ui reverse
                     if(features.length === 0){
                         let chosen_info = choose_received_data(false, null, null)
@@ -109,15 +103,19 @@ export default class Reverse{
                         }
                     }
                 })
+            }
             })
+            
             document.getElementById('click-detail').addEventListener('click', (e) => {
                 showDetailFeature(chosen_point_info.properties.name, '', chosen_point_info.geometry.coordinates[0], chosen_point_info.geometry.coordinates[1], [chosen_point_info.properties.county, chosen_point_info.properties.region, chosen_point_info.properties.country], chosen_point_info.properties.id.split("/")[1], convert_to_osm_type(chosen_point_info.properties.id.split("/")[0]))
             })
+            
             document.getElementById('placeclose').addEventListener('click', (e) => {
                 // deleteUrlParam('rx');
                 // deleteUrlParam('ry');
                 document.getElementById('place').style.display = "none"
             })
+            
         })
     }
 }
