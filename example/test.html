@@ -23,6 +23,10 @@
             bottom: 0;
             width: 100%;
         }
+        #place{
+            display: none; 
+            position: absolute;
+        }
     </style>
 </head>
 
@@ -33,7 +37,7 @@
         <div class = "right-click-menu-item">Điểm kết thúc</div>
         <div class = "right-click-menu-item">Reverse</div>
     </div>
-    <div id="place" style="display: none; position: absolute;">
+    <div id="place">
 		<div class="class-pl">
 			<div class="image-place">
 				<img class="placeicon" id="preview-image" src="https://map.fimo.com.vn/assets/images/no_street.png"
@@ -63,7 +67,7 @@
             center: [105.84370246986344, 21.003961186227826],
             zoom: 13          
         });
-        new wemapgl.RightClick(map, true)
+        // new wemapgl.RightClick(map, true)
         new wemapgl.Reverse(map, true)
     </script>
 </body>
