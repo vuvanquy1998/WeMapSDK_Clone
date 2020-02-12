@@ -1,22 +1,14 @@
-import {getJSON} from '../util/ajax';
 import getWeMapForm from './form';
+import API from './api';
 
 export default class WeMap {
     constructor(options) {
         options = options || {};
 
         this.styleLinks = {
-            "bright" : "https://apis.wemap.asia/vector-tiles/styles/osm-bright/style.json?key=IqzJukzUWpWrcDHJeDpUPLSGndDx",
-            "dark" : "https://apis.wemap.asia/vector-tiles/styles/osm-bright/style.json?key=IqzJukzUWpWrcDHJeDpUPLSGndDx",
-        }
-
-        this.defaultOptions = {
             // TODO: get link from config file
-            style: "bright",
-            center: [105.8550736, 21.0283243],
-            zoom: 13,
-            reverse: false,
-            attributionControl: false
+            "bright" : "https://apis.wemap.asia/vector-tiles/styles/osm-bright/style.json?key=",
+            "dark" : "https://apis.wemap.asia/vector-tiles/styles/osm-bright/style.json?key=",
         }
 
         this.options = options;
@@ -27,66 +19,68 @@ export default class WeMap {
      * Init
      */
     init() {
-
-        for (var p in this.defaultOptions) {
-            if(this.options.hasOwnProperty(p)) {
-                if(this.options === "default") {
-                    this.options[p] = this.defaultOptions[p];
-                }
-            } else {
-                this.options[p] = this.defaultOptions[p];
-            }
+        // center param
+        if(!this.isNotNull(this.options.center)) {
+            this.options.center = [105.8550736, 21.0283243]; 
         }
-        
-        this.map = new wemapgl.Map({
-                container: this.options.container,
-                style: this.styleLinks[this.options.style],
-                center: this.options.center,
-                zoom: this.options.zoom,
-                attributionControl: this.options.attributionControl
-        });
 
+        // zoom param
+        if(!this.isNotNull(this.options.zoom)) {
+            this.options.zoom = 13;
+        }
+
+        // style param
+        if(this.isNotNull(this.options.style)) {
+            this.options.style = this.options.style.toLowerCase();
+        }
+        switch (this.options.style) {
+            case 'dark':
+            case 'bright':
+                break;
+            default:
+                this.options.style = 'bright';
+                break;
+        }
+
+        // reverse
+        switch (this.options.reverse) {
+            case true:
+            case false:
+                break;
+            default:
+                this.options.reverse = false;
+                break;
+        }
+
+        // disable attribution control by default
+        this.options.attributionControl = false;
+
+        // create mapbox options object
+        var mapboxOptions = Object.assign({}, this.options);
+        // map wemap style -> link + key
+        mapboxOptions.style = this.styleLinks[this.options.style] + this.options.key;
+        // remove options copied from wemap option
+        delete mapboxOptions.reverse;
+        delete mapboxOptions.key;
+
+        console.log(mapboxOptions);
+        // init mapbox
+        this.map = new wemapgl.Map(mapboxOptions);
+
+        // custom attribution
         this.map.addControl(new mapboxgl.AttributionControl({
             compact: false,
             customAttribution: ["© WeMap"]
         }));
 
-        getJSON({
-            url: this.styleLinks[this.options.style],
-            method: 'GET'
-        }, (error, data) => {
-            var point_layers = [];
-            for(let i = 0; i < data.layers.length; i++){
-                let layer_id = data.layers[i].id
-                if(layer_id.includes('poi')){
-                    point_layers.push(layer_id);
-                }
-            }
-            point_layers.forEach((label, index) => {
-                this.map.on('mouseover', label, (e) => {
-                    this.map.getCanvas().style.cursor = 'pointer';
-                })
-                this.map.on('mouseleave', label, (e) => {
-                    this.map.getCanvas().style.cursor = '';
-                })
-            })
-        });
-
         if(this.options.reverse) {
-            // TODO:
+            // TODO: init Reverse
         }
         
     }
 
-    lookup(info) {
-        info = info || {};
-        // TODO: Call lookup API
-        return {};
-    }
-
-    doSomething(something) {
-        console.log("Hello!");
-        console.log(something);
+    isNotNull(variable) {
+        return (variable != null && variable != undefined) ? true : false;
     }
 
     /**
