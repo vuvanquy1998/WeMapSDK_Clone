@@ -7,7 +7,7 @@ export default class PlaceDetail{
   /**
    * format address
   */
-  getAddess(address) {
+  static getAddess(address) {
     address_result = "";
     var separator = "";
     for (i = 0; i < address.length; i++) {
@@ -35,7 +35,7 @@ export default class PlaceDetail{
         featureName.innerHTML =this.options.name;
     }
     
-    let address_result = getAddess(this.options.address);
+    let address_result = PlaceDetail.getAddess(this.options.address);
     let featureCoordinates = document.getElementById("feature-coordinates");
     featureCoordinates.innerHTML =
         '<i class="fas fa-compass"></i>  ' + this.options.lat + ", " + this.options.long;
