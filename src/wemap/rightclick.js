@@ -29,10 +29,27 @@ export default class RightClick{
                     translateY = mouseY;
                 }
                 $('#right-click-menu-container').css({'display':"block"})
+                if(stt){
+                    $('#right-click-reverse').text('Tắt reverse')
+                }else{
+                    $('#right-click-reverse').text('Bật reverse')
+                }
                 $('#right-click-menu-container').css({"transform":`translate(${translateX}px,${translateY}px)`})
             })
             map.on('click', (e) => {
                 $('#right-click-menu-container').css({'display':"none"})
+            })
+            document.getElementById('right-click-reverse').addEventListener('click', (e) => {
+                if(stt){
+                    console.log('tat reverse')
+                    stt = false
+                    $('#right-click-menu-container').css({'display':"none"})
+                }else{
+                    console.log('bat reverse')
+                    stt = true
+                    $('#right-click-menu-container').css({'display':"none"})
+                }
+
             })
         }
     }
