@@ -2,16 +2,10 @@ import axios from 'axios';
 export default class Reverse{
     constructor(map) {
         this.map = map;
-        this.init();
         this.initView();
+        this.init();
     }
     initView(){
-        let rightClick = document.createElement('div')
-        rightClick.innerHTML = '<div id = "right-click-menu-container"'+ "style = 'display: none'>"+
-        '<div class = "right-click-menu-item">Điểm bắt đầu</div>'+
-        '<div class = "right-click-menu-item">Điểm kết thúc</div>'+
-        '<div class = "right-click-menu-item" id ="right-click-reverse">Reverse</div>'+
-        '</div>'
         let showBottomDetail = document.createElement('div')
         showBottomDetail.innerHTML = '<div id="place">'+
             '<div class="class-pl">'+
@@ -34,7 +28,7 @@ export default class Reverse{
                 '</div>'+
             '</div>'+
         '</div>'
-        
+        document.body.appendChild(showBottomDetail)
     }
     init(){
         this.map.on('load', (e) => {
