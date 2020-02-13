@@ -1,21 +1,26 @@
-// TODO: move to config file
-const paramNames = [
-    "x", "y", "z",
-    "ox", "oy", "dx", "dy", "vehicle",
-    "osmid", "osmtype"
-];
-
 export default class UrlController {
 
+    /**
+     * Returns all current Url parameters
+     * @returns {Object} all params in Url
+     */
     static getParams() {
-        var allParams = {};
+        let paramNames = [
+            "x", "y", "z",
+            "ox", "oy", "dx", "dy", "vehicle",
+            "osmid", "osmtype"
+        ];
+        let allParams = {};
         paramNames.forEach((element) => {
-            console.log(element);
             allParams[element] = this.parseParam(element);
         });
         return allParams;
     }
 
+    /**
+     * Updates view parameters in Url (x: long, y: lat, z: zoom level)
+     * @param {*} viewParams {x, y, z}
+     */
     static updateViewParams(viewParams) {
         viewParams = viewParams || {};
         let url = new URL(window.location);
@@ -30,6 +35,10 @@ export default class UrlController {
         window.history.pushState("", "", url);
     }
 
+    /**
+     * Updates place parameters in Url
+     * @param {*} placeParams {osmid, osmtype}
+     */
     static updatePlaceParams(placeParams) {
         placeParams = placeParams || {};
         let url = new URL(window.location);
@@ -43,6 +52,9 @@ export default class UrlController {
         window.history.pushState("", "", url);
     }
 
+    /**
+     * Deletes place parameters in Url
+     */
     static deletePlaceParams() {
         let url = new URL(window.location);
         let search_params = new URLSearchParams(url.search);
@@ -55,6 +67,10 @@ export default class UrlController {
         window.history.pushState("", "", url);
     }
 
+    /**
+     * Updates route parameters in Url (ox, oy: origin, dx, dy: destination, vehicle)
+     * @param {*} placeParams {ox, oy, dx, dy, vehicle}
+     */
     static updateRouteParams(routeParams) {
         routeParams = routeParams || {};
         let url = new URL(window.location);
@@ -71,6 +87,9 @@ export default class UrlController {
         window.history.pushState("", "", url);
     }
 
+    /**
+     * Deletes route parameters in Url
+     */
     static deleteRouteParams() {
         let url = new URL(window.location);
         let search_params = new URLSearchParams(url.search);
@@ -86,6 +105,10 @@ export default class UrlController {
         window.history.pushState("", "", url);
     }
 
+    /**
+     * Returns array from Url with given parameter name
+     * @param {Array} paramName 
+     */
     static parseArrayParam(paramName) {
         let url = new URL(window.location);
         let param = url.searchParams.getAll(paramName);
@@ -97,18 +120,19 @@ export default class UrlController {
         return param; 
     }
 
+    /**
+     * Returns string from Url with given parameter name
+     * @param {String} paramName 
+     */
     static parseParam(paramName) {
         let url = new URL(window.location);
         let param = url.searchParams.get(paramName);
         if(param == null || param == "" || param == undefined) {
             param = null;
         }
-        console.log(param);
         return param;
     }
 
     // TODO: implement: sort url params by order: view -> place -> route
-    static sortUrlParams() {
-
-    }
+    static sortUrlParams() {}
 }

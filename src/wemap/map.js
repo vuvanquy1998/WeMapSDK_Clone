@@ -5,6 +5,11 @@ import Reverse from './reverse';
 import UrlController from './url';
 
 export default class WeMap {
+    /**
+     * WeMap class contructor
+     * @param {*} options
+     * Default options: {style: "bright", center: [105.8550736, 21.0283243], zoom: 13, reverse: false}
+     */
     constructor(options) {
         options = options || {};
         this.styleLinks = {
@@ -18,7 +23,7 @@ export default class WeMap {
     }
     
     /**
-     * Init
+     * Init WeMap
      */
     init() {
         // center param
@@ -85,28 +90,10 @@ export default class WeMap {
             customAttribution: ["© WeMap"]
         }));
 
-        // TODO: is this can be added in options?
-        // check before add
-        this.map.addControl(new wemapgl.NavigationControl(), 'bottom-right');
-
-        this.map.addControl(
-            new wemapgl.GeolocateControl({
-                positionOptions: {
-                    enableHighAccuracy: true
-                },
-                trackUserLocation: true
-            }),
-            'bottom-right'
-        );
-
-
         if(this.options.urlController) {
             var urlParams = UrlController.getParams();
-            console.log(urlParams);
             if(urlParams.x != null
             && urlParams.y != null) {
-                // TODO: validate x and y
-
                 // If z param is not given, assign the default value
                 if(urlParams.z == null) {
                     urlParams.z = this.map.getZoom();
@@ -152,6 +139,11 @@ export default class WeMap {
         
     }
 
+    /**
+     * Return false if value a variable is null or undefined
+     * @param {any} variable 
+     * @returns {Boolean}
+     */
     isNotNull(variable) {
         return (variable != null && variable != undefined) ? true : false;
     }
