@@ -28,10 +28,31 @@
 
 <body>
     <div id="map"></div>
+    <div id="place">
+		<div class="class-pl">
+			<div class="image-place">
+				<img class="placeicon" id="preview-image" src="https://map.fimo.com.vn/assets/images/no_street.png"
+					alt="">
+			</div>
+			<div class="add-place">
+				<button class="click-detail" id="click-detail">
+					<a class="placename" id="placename">a</a>
+					<a class="placeadd" id="placeadd">a</a>
+				</button>
 
+				<div class="placelatlon"><a href="#" id="placelatlon"></a></div>
+			</div>
+			<div class="image-direc">
+				<img src="http://maps.gstatic.com/tactile/reveal/directions-1x-20150909.png">
+			</div>
+			<div class="close-place">
+				<div id="placeclose" style="color: black;"><i class="fa fa-times"></i></div>
+			</div>
+		</div>
+	</div>
     <script>
         wemapgl.accessToken = "pk.eyJ1IjoicGh1b25naHgiLCJhIjoiY2s2N3IxMnNiMWdlbTNlcW8ybG5jaXU4MCJ9.CkMLijVJ1Lp2ZbaR0zDgrg";
-        
+        // url params: ?x=106.0263698294442&y=20.219749345706532&z=13&ox=1&oy=2&dx=0&dy=10&vehicle=car&osmid=123456&osmtype=w
         // test: normal
         // var wemap = new wemapgl.WeMap({
         //     key: 'vpstPRxkBBTLaZkOaCfAHlqXtCR',
@@ -47,6 +68,7 @@
             reverse: true
         });
 
+        let stt = true;
         // // test: wrong info
 
         // var wemap = new wemapgl.WeMap({
