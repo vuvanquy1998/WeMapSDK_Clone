@@ -26,6 +26,11 @@
 		"gulp-sourcemaps": "^2.6.5",
 		"gulp-watch": "^5.0.1"
    ```
+   4. Add font-awesome:
+    ```json
+		"font-awesome": "^4.7.0"
+    ```
+
 5. Update code Mapbox GL JS
    - Open `./src/index.js` add `import MapboxDirections from './mapbox-gl-directions/dist/mapbox-gl-directions';` abow row `const exported = {`
    - Export `MapboxDirections` add abow row `config,`

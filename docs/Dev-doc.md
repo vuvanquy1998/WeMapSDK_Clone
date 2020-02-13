@@ -23,6 +23,6 @@ yarn run wemap-dev
 yarn run wemap-prod
 
 # Recompile CSS
-yarn run gulp
+yarn run wemap-gulp
 
 ```

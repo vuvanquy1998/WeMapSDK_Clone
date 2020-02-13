@@ -93,7 +93,7 @@
     "diff": "^4.0.1",
     "documentation": "^4.0.0-beta16",
     "ejs": "^2.5.7",
-    "eslint": "^2.13.1",
+    "eslint": "^5.15.3",
     "eslint-config-mourner": "^3.0.0",
     "eslint-plugin-flowtype": "^3.9.1",
     "eslint-plugin-html": "^5.0.5",
