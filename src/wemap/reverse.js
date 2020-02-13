@@ -1,9 +1,11 @@
 import axios from 'axios';
+import { getJSON } from '../util/ajax'
 export default class Reverse{
     constructor(map) {
         this.map = map;
         this.initView();
         this.init();
+        this.testAjax();
     }
     initView(){
         let showBottomDetail = document.createElement('div')
@@ -29,6 +31,20 @@ export default class Reverse{
             '</div>'+
         '</div>'
         document.body.appendChild(showBottomDetail)
+    }
+    testAjax(){
+        let params = {
+            url: 'https://api.mapbox.com/styles/v1/mapbox/streets-v11?access_token=pk.eyJ1IjoidGhhb2d1bSIsImEiOiJjazJwbHI0eDIwNW82M210b2JnaTBneHY5In0.t4RveeJuHKVJt0RIgFOAGQ',
+            method: 'GET',
+            headers: Object,
+            body: '',
+            type: 'string' | 'json' | 'arrayBuffer',
+            credentials?: 'same-origin' | 'include',
+            collectResourceTiming?: boolean
+        };
+        getJSON(params, (e) => {
+            console.log(e)
+        })
     }
     init(){
         this.map.on('load', (e) => {
@@ -60,7 +76,7 @@ export default class Reverse{
                 
                 //addMarkder(e.lngLat, e.lngLat.lat)
 
-                axios.get(`https://apis.wemap.asia/we-tools/reverse?key=IqzJukzUWpWrcDHJeDpUPLSGndDx&lat=${e.lngLat.lat}&lon=${e.lngLat.lng}`)
+                axios.get(`https://apis.wemap.asia/we-tools/reverse?key=vpstPRxkBBTLaZkOaCfAHlqXtCR&lat=${e.lngLat.lat}&lon=${e.lngLat.lng}`)
                 .then((data, stt) => {
                     console.log(data)
                     document.getElementById('place').style.display = 'block'
