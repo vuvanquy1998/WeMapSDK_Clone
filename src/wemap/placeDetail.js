@@ -1,8 +1,10 @@
+import API from "./api";
+
 export default class PlaceDetail{
   constructor(options){
     options = options ||{}
     this.options = options
-    
+    self=this
   }
   /**
    * format address
@@ -52,7 +54,12 @@ export default class PlaceDetail{
     let featureDescription = document.getElementById("feature-description");
     let featurePhone = document.getElementById("feature-phone");
 
-
+    osm_id = this.options.osm_id
+    osm_type = this.options.osm_type
+    key = 'vpstPRxkBBTLaZkOaCfAHlqXtCR'
+    API.lookup({osm_id, osm_type, key}, (data) => {
+      console.log(data)
+    });
     // if (this.options.osm_id) {
     //     point_detail(this.options.osm_id, this.options.osm_type).then(detail => {
     //     detail = detail[0]
