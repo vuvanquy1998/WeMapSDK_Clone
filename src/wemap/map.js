@@ -1,8 +1,9 @@
 import getWeMapForm from './form';
-import API from './api';
 
 import Reverse from './reverse';
 import UrlController from './url';
+
+// const config = require('../config.json');
 
 export default class WeMap {
     /**
@@ -26,6 +27,7 @@ export default class WeMap {
      * Init WeMap
      */
     init() {
+        // console.log(config);
         // center param
         if(!this.isNotNull(this.options.center)) {
             this.options.center = [105.8550736, 21.0283243]; 
@@ -85,7 +87,7 @@ export default class WeMap {
         this.map = new wemapgl.Map(mapboxOptions);
 
         // custom attribution
-        this.map.addControl(new mapboxgl.AttributionControl({
+        this.map.addControl(new wemapgl.AttributionControl({
             compact: false,
             customAttribution: ["© WeMap"]
         }));
@@ -137,6 +139,15 @@ export default class WeMap {
         }
         
         
+    }
+
+    /**
+     * Adds control to map
+     * @param {IControl} control 
+     * @param {string} position 
+     */
+    addControl(control, position) {
+        this.map.addControl(control, position);
     }
 
     /**

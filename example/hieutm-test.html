@@ -68,6 +68,19 @@
             reverse: true
         });
 
+
+        wemap.addControl(new wemapgl.NavigationControl(), 'bottom-right');
+
+        wemap.addControl(new wemapgl.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true
+            },
+            trackUserLocation: true
+        }),
+        'bottom-right');
+
+
+
         let stt = true;
         // // test: wrong info
 
