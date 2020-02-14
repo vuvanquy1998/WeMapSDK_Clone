@@ -70,11 +70,8 @@
         
         let stt = true;
         new wemapgl.RightClick(map, true)
-        new wemapgl.Reverse(map, true)
-
-        map.on('contextmenu', (e) => {
-            console.log(e.lngLat.lng, e.lngLat.lat)
-        })
+        let reverse = new wemapgl.Reverse(map, true)
+        reverse.off_reverse()
 
     </script>
 </body>

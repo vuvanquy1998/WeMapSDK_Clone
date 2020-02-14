@@ -2,6 +2,7 @@ import { getJSON } from '../util/ajax'
 export default class Reverse{
     constructor(map) {
         this.map = map;
+        this.on = true;
         this.initView();
         this.init();
     }
@@ -30,7 +31,12 @@ export default class Reverse{
         // '</div>'
         // document.body.appendChild(showBottomDetail)
     }
-
+    on_reverse(){
+        this.on = true;
+    }
+    off_reverse(){
+        this.on = false;
+    }
     init(){
         this.map.on('load', (e) => {
             let point_layers = []
@@ -57,7 +63,7 @@ export default class Reverse{
                 })
             })
             this.map.on('click', (e) => {
-                if(stt){
+                if(this.on){
                     let chosen_point_info = {}
                     let features = this.map.queryRenderedFeatures(e.point);
                     console.log(features)
