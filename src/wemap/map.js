@@ -15,32 +15,33 @@ export default class WeMap {
         options = options || {};
         this.styleLinks = {
             // TODO: get link from config file
-            "bright" : "https://apis.wemap.asia/vector-tiles/styles/osm-bright/style.json?key=",
-            "dark" : "https://apis.wemap.asia/vector-tiles/styles/osm-bright/style.json?key=",
+            "bright": "https://apis.wemap.asia/vector-tiles/styles/osm-bright/style.json?key=",
+            "dark": "https://apis.wemap.asia/vector-tiles/styles/osm-bright/style.json?key=",
         }
 
         this.options = options;
         this.init();
         return this.map;
     }
-    
+
     /**
      * Init WeMap
      */
     init() {
-        // console.log(config);
         // center param
-        if(!this.isNotNull(this.options.center)) {
-            this.options.center = [105.8550736, 21.0283243]; 
+        if (!this.isNotNull(this.options.center)) {
+            // TODO: Load default center from config file
+            this.options.center = [105.8550736, 21.0283243];
         }
 
         // zoom param
-        if(!this.isNotNull(this.options.zoom)) {
+        if (!this.isNotNull(this.options.zoom)) {
+            // TODO: Load default zoom from config file
             this.options.zoom = 13;
         }
 
         // style param
-        if(this.isNotNull(this.options.style)) {
+        if (this.isNotNull(this.options.style)) {
             this.options.style = this.options.style.toLowerCase();
         }
         switch (this.options.style) {
@@ -93,14 +94,14 @@ export default class WeMap {
             customAttribution: ["© WeMap"]
         }));
 
-        if(this.options.urlController) {
+        if (this.options.urlController) {
             var urlParams = UrlController.getParams();
-            if(urlParams.x != null
-            && urlParams.y != null) {
+            if (urlParams.x != null
+                && urlParams.y != null) {
                 // If z param is not given, assign the default value
-                if(urlParams.z == null) {
+                if (urlParams.z == null) {
                     urlParams.z = this.map.getZoom();
-                } 
+                }
 
                 this.map.jumpTo({
                     center: [
@@ -135,7 +136,7 @@ export default class WeMap {
             });
         }
 
-        if(this.options.reverse) {
+        if (this.options.reverse) {
             this.reverse = new Reverse(this.map, true);
         }
     }
