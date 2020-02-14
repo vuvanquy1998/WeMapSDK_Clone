@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <title>Test - HieuTM</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="../dist/js/wemap-gl.js" type="text/javascript"></script>
 
     <link href="../dist/css/wemap.min.css" rel="stylesheet" />
@@ -28,28 +28,7 @@
 
 <body>
     <div id="map"></div>
-    <div id="place">
-		<div class="class-pl">
-			<div class="image-place">
-				<img class="placeicon" id="preview-image" src="https://map.fimo.com.vn/assets/images/no_street.png"
-					alt="">
-			</div>
-			<div class="add-place">
-				<button class="click-detail" id="click-detail">
-					<a class="placename" id="placename">a</a>
-					<a class="placeadd" id="placeadd">a</a>
-				</button>
 
-				<div class="placelatlon"><a href="#" id="placelatlon"></a></div>
-			</div>
-			<div class="image-direc">
-				<img src="http://maps.gstatic.com/tactile/reveal/directions-1x-20150909.png">
-			</div>
-			<div class="close-place">
-				<div id="placeclose" style="color: black;"><i class="fa fa-times"></i></div>
-			</div>
-		</div>
-	</div>
     <script>
         wemapgl.accessToken = "pk.eyJ1IjoicGh1b25naHgiLCJhIjoiY2s2N3IxMnNiMWdlbTNlcW8ybG5jaXU4MCJ9.CkMLijVJ1Lp2ZbaR0zDgrg";
         // url params: ?x=106.0263698294442&y=20.219749345706532&z=13&ox=1&oy=2&dx=0&dy=10&vehicle=car&osmid=123456&osmtype=w
@@ -62,6 +41,7 @@
         // });
 
         // test: no more info, excepts key and container
+        let stt = true;
         var wemap = new wemapgl.WeMap({
             key: 'vpstPRxkBBTLaZkOaCfAHlqXtCR',
             container: 'map',
@@ -77,18 +57,17 @@
             },
             trackUserLocation: true
         }),
-        'bottom-right');
+            'bottom-right');
 
 
 
-        let stt = true;
         // // test: wrong info
 
         // var wemap = new wemapgl.WeMap({
         //     key: 'vpstPRxkBBTLaZkOaCfAHlqXtCR',
         //     container: 'map',
         //     style: 'brown',
-            
+
         // });
 
         // // test: upper case values
@@ -96,26 +75,26 @@
         //     key: 'vpstPRxkBBTLaZkOaCfAHlqXtCR',
         //     container: 'map',
         //     style: 'BriGht',
-            
+
         // });
-        
+
         // test: reverse is on
         // var wemap = new wemapgl.WeMap({
         //     key: 'vpstPRxkBBTLaZkOaCfAHlqXtCR',
         //     container: 'map',
         //     reverse: true
         // });
-       
+
     </script>
-	
-	<script>
+
+    <script>
 		// let wm =  new wemapgl.WeMap({
 		// 	params: {'access-token': 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7'}
 		//   });
 
 	    // console.log(wm.showForm());
 
-	</script>
+    </script>
 
 </body>
 

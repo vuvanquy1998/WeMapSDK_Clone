@@ -1,7 +1,11 @@
 import getWeMapForm from './form';
 
 import Reverse from './reverse';
+import RightClick from './rightclick';
 import UrlController from './url';
+
+import { default as config } from '../config.json';
+import API from './api';
 
 // const config = require('../config.json');
 
@@ -12,13 +16,12 @@ export default class WeMap {
      * Default options: {style: "bright", center: [105.8550736, 21.0283243], zoom: 13, reverse: false}
      */
     constructor(options) {
+        console.log(config);
         options = options || {};
         this.styleLinks = {
-            // TODO: get link from config file
-            "bright": "https://apis.wemap.asia/vector-tiles/styles/osm-bright/style.json?key=",
-            "dark": "https://apis.wemap.asia/vector-tiles/styles/osm-bright/style.json?key=",
+            "bright": config.style.bright,
+            "dark": config.style.dark,
         }
-
         this.options = options;
         this.init();
         return this.map;
@@ -30,14 +33,12 @@ export default class WeMap {
     init() {
         // center param
         if (!this.isNotNull(this.options.center)) {
-            // TODO: Load default center from config file
-            this.options.center = [105.8550736, 21.0283243];
+            this.options.center = config.center;
         }
 
         // zoom param
         if (!this.isNotNull(this.options.zoom)) {
-            // TODO: Load default zoom from config file
-            this.options.zoom = 13;
+            this.options.zoom = config.zoom;
         }
 
         // style param
@@ -49,7 +50,7 @@ export default class WeMap {
             case 'bright':
                 break;
             default:
-                this.options.style = 'bright';
+                this.options.style = config.style.default;
                 break;
         }
 
@@ -136,8 +137,9 @@ export default class WeMap {
             });
         }
 
+        this.rightClick = new wemapgl.RightClick(this.map, true);
         if (this.options.reverse) {
-            this.reverse = new Reverse(this.map, true);
+            this.reverse = new Reverse(this.map);
         }
     }
 
@@ -156,5 +158,17 @@ export default class WeMap {
      */
     showForm() {
         return getWeMapForm();
+    }
+
+    /**
+     * Test wemapgl.API.lookup({...})
+     */
+    testLookup() {
+        API.lookup({ osmId: "123", key: this.options.key }, (data) => {
+            console.log(data);
+        });
+        API.lookup({ osmId: "123", osmType: "W", key: this.options.key }, (data) => {
+            console.log(data);
+        });
     }
 }
