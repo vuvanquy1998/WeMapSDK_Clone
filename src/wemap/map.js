@@ -136,9 +136,8 @@ export default class WeMap {
 
 
         if (this.options.reverse) {
-            this.rightClick = new RightClick(this.map, true);
-            this.reverse = new Reverse(this.map);
-            this.reverse.off_reverse();
+            wemapgl.rightClick = new RightClick(this.map, true);
+            wemapgl.reverse = new Reverse(this.map)
         }
     }
 
