@@ -15,6 +15,29 @@ export default class RightClick{
         '<div class = "right-click-menu-item" id ="right-click-reverse">Đây là đâu ?</div>'+
         '</div>'
         document.body.appendChild(rightClick)
+        let showBottomDetail = document.createElement('div')
+        showBottomDetail.innerHTML = '<div id="place">'+
+            '<div class="class-pl">'+
+                '<div class="image-place">'+
+                    '<img class="placeicon" id="preview-image" src="https://map.fimo.com.vn/assets/images/no_street.png">'+
+                '</div>'+
+                '<div class="add-place">'+
+                    '<button class="click-detail" id="click-detail">'+
+                        '<a class="placename" id="placename">a</a>'+
+                        '<a class="placeadd" id="placeadd">a</a>'+
+                    '</button>'+
+
+                    '<div class="placelatlon"><a href="#" id="placelatlon"></a></div>'+
+                '</div>'+
+                '<div class="image-direc">'+
+                    '<img src="http://maps.gstatic.com/tactile/reveal/directions-1x-20150909.png">'+
+                '</div>'+
+                '<div class="close-place">'+
+                    '<div id="placeclose" style="color: black;"><i class="fa fa-times"></i></div>'+
+                '</div>'+
+            '</div>'+
+        '</div>'
+        document.body.appendChild(showBottomDetail)
     }
     init(){
         if(this.stt){
