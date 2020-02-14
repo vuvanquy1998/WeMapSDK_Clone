@@ -21,6 +21,7 @@ export default class WeMap {
 
         this.options = options;
         this.init();
+        return this.map;
     }
     
     /**
@@ -137,17 +138,6 @@ export default class WeMap {
         if(this.options.reverse) {
             this.reverse = new Reverse(this.map, true);
         }
-        
-        
-    }
-
-    /**
-     * Adds control to map
-     * @param {IControl} control 
-     * @param {string} position 
-     */
-    addControl(control, position) {
-        this.map.addControl(control, position);
     }
 
     /**
