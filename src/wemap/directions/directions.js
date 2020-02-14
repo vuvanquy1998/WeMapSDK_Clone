@@ -24,10 +24,7 @@ export default class WeDirections {
             this.params = options.params;
         }
 
-        this.mode = options.mode || 'driving'; // traffic, driving, walking, cycling
-        if (this.mode === 'default') {
-            this.mode = 'driving';
-        }
+
         this.highlight = options.highlight || true;
         this.accessToken = options.accessToken || '';
         this.key = options.key || '';
@@ -50,28 +47,37 @@ export default class WeDirections {
 
 
         this.engine = ['default', 'osrm', 'graphhopper', 'mapbox'].includes(options.engine) ? options.engine : 'osrm';
-        this.api = '';
-        console.log(config);
-        console.log(config.style);
-        console.log(config.direction.engine);
-        switch (this.engine) {
-            case 'default':
-            case 'osrm':
-                this.api = config.direction.engine.osrm;
-                console.log('Engine osrm: ', this.api);
-                break;
-            case 'graphhopper':
-                this.api = config.direction.engine.graphhopper;
-                console.log('Engine graphhopper: ', this.api);
-                break;
-            case 'mapbox':
-                this.api = config.direction.engine.mapbox;
-                console.log('Engine mapbox: ', this.api);
-                break;
-            default:
-                this.api = config.direction.engine.osrm;
-                console.log('Engine default: ', this.api);
-        }
+        this.api = this._apiEngine();
+
+        // this.mode = options.mode || 'driving'; // traffic, driving, walking, cycling
+        this.mode = this._travelMode(options.mode);
+        // if (this.mode === 'default') {
+        //     this.mode = 'driving';
+        // }
+
+        console.log("API: ", this.api);
+        console.log("Mode: ", this.mode);
+
+        // console.log(config.style);
+        // console.log(config.direction.engine);
+        // switch (this.engine) {
+        //     case 'default':
+        //     case 'osrm':
+        //         this.api = config.direction.engine.osrm;
+        //         console.log('Engine osrm: ', this.api);
+        //         break;
+        //     case 'graphhopper':
+        //         this.api = config.direction.engine.graphhopper;
+        //         console.log('Engine graphhopper: ', this.api);
+        //         break;
+        //     case 'mapbox':
+        //         this.api = config.direction.engine.mapbox;
+        //         console.log('Engine mapbox: ', this.api);
+        //         break;
+        //     default:
+        //         this.api = config.direction.engine.osrm;
+        //         console.log('Engine default: ', this.api);
+        // }
     }
 
     /**
@@ -114,5 +120,110 @@ export default class WeDirections {
         console.log('Directions Init: ', directions);
 
         return directions;
+    }
+
+    _apiEngine() {
+        let api = '';
+        switch (this.engine) {
+            case 'default':
+            case 'osrm':
+                console.log('Engine osrm');
+                api = config.direction.engine.osrm;
+                break;
+            case 'graphhopper':
+                console.log('Engine graphhopper');
+                api = config.direction.engine.graphhopper;
+                break;
+            case 'mapbox':
+                console.log('Engine mapbox');
+                api = config.direction.engine.mapbox;
+                break;
+            default:
+                console.log('Engine default');
+                api = config.direction.engine.osrm;
+        }
+
+        return api;
+    }
+
+    _travelMode(modeDrive) {
+        console.log('modeDrive: ', modeDrive);
+        let mode = '';
+        switch (this.engine) {
+            case 'default':
+            case 'osrm':
+                console.log('Engine osrm');
+                switch (modeDrive) {
+                    case 'default':
+                    case 'driving':
+                        mode = 'driving';
+                        break;
+                    case 'walking':
+                        mode = 'walking';
+                        break;
+                    case 'cycling':
+                        mode = 'cycling';
+                        break;
+                    default:
+                        mode = 'driving';
+                        break;
+                }
+                break;
+            case 'graphhopper':
+                console.log('Engine graphhopper');
+                switch (modeDrive) {
+                    case 'default':
+                    case 'driving':
+                        mode = 'car';
+                        break;
+                    case 'walking':
+                        mode = 'foot';
+                        break;
+                    case 'cycling':
+                        mode = 'bike';
+                        break;
+                    default:
+                        mode = 'car';
+                        break;
+                }
+                break;
+            case 'mapbox':
+                console.log('Engine mapbox');
+                switch (modeDrive) {
+                    case 'default':
+                    case 'driving':
+                        mode = 'mapbox/' + 'driving';
+                        break;
+                    case 'walking':
+                        mode = 'mapbox/' + 'walking';
+                        break;
+                    case 'cycling':
+                        mode = 'mapbox/' + 'cycling';
+                        break;
+                    default:
+                        mode = 'mapbox/' + 'driving';
+                        break;
+                }
+                break;
+            default:
+                console.log('Engine default');
+                switch (modeDrive) {
+                    case 'default':
+                    case 'driving':
+                        mode = 'driving';
+                        break;
+                    case 'walking':
+                        mode = 'walking';
+                        break;
+                    case 'cycling':
+                        mode = 'cycling';
+                        break;
+                    default:
+                        mode = 'driving';
+                        break;
+                }
+        }
+
+        return mode;
     }
 }
