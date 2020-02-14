@@ -43,7 +43,10 @@ export default class WeDirections {
         this.profileSwitcher = options.profileSwitcher || true;
         this.inputs = options.inputs || true;
         this.instructions = options.instructions || true;
+
         this.geocoder = options.geocoder || {};
+        this.geocoder.api = options.geocoder.api ? options.geocoder.api : config.direction.geocoder.pelias;
+        this.geocoder.engine = this._geocodeEngine();
 
 
         this.engine = ['default', 'osrm', 'graphhopper', 'mapbox'].includes(options.engine) ? options.engine : 'osrm';
@@ -51,33 +54,10 @@ export default class WeDirections {
 
         // this.mode = options.mode || 'driving'; // traffic, driving, walking, cycling
         this.mode = this._travelMode(options.mode);
-        // if (this.mode === 'default') {
-        //     this.mode = 'driving';
-        // }
 
         console.log("API: ", this.api);
         console.log("Mode: ", this.mode);
 
-        // console.log(config.style);
-        // console.log(config.direction.engine);
-        // switch (this.engine) {
-        //     case 'default':
-        //     case 'osrm':
-        //         this.api = config.direction.engine.osrm;
-        //         console.log('Engine osrm: ', this.api);
-        //         break;
-        //     case 'graphhopper':
-        //         this.api = config.direction.engine.graphhopper;
-        //         console.log('Engine graphhopper: ', this.api);
-        //         break;
-        //     case 'mapbox':
-        //         this.api = config.direction.engine.mapbox;
-        //         console.log('Engine mapbox: ', this.api);
-        //         break;
-        //     default:
-        //         this.api = config.direction.engine.osrm;
-        //         console.log('Engine default: ', this.api);
-        // }
     }
 
     /**
@@ -225,5 +205,27 @@ export default class WeDirections {
         }
 
         return mode;
+    }
+
+    _geocodeEngine(engine) {
+        let geoEngine = '';
+        switch (engine) {
+            case 'default':
+            case 'pelias':
+                geoEngine = 'pelias';
+                break;
+            case 'mapbox':
+                geoEngine = 'mapbox';
+                break;
+            default:
+                geoEngine = 'pelias';
+                break;
+        }
+        return geoEngine;
+    }
+
+    _geocodeOption(options) {
+        let ops = options;
+        return ops;
     }
 }

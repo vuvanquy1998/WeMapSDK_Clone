@@ -100,15 +100,32 @@ export default class Geocoder {
       return key + '=' + geocodingOptions[key];
     });
 
-    var accessToken = this.options.accessToken ? this.options.accessToken : mapboxgl.accessToken;
-    options.push('access_token=' + accessToken);
-    this.request.abort();
-    this.request.open('GET', this.api + encodeURIComponent(q.trim()) + '.json?' + options.join('&'), true);
+    var engine = this.options.engine;
+    var pelias = (engine === 'pelias');
+      var accessToken = this.options.accessToken ? this.options.accessToken : mapboxgl.accessToken;
+      options.push('access_token=' + accessToken);
+      this.request.abort();
+    if (engine === 'mapbox') {
+        this.request.open('GET', this.api + encodeURIComponent(q.trim()) + '.json?' + options.join('&'), true);
+    } else {
+        // console.log('Options: ', options);
+        this.request.open('GET', this.api
+            + encodeURIComponent(q.trim())
+            + '&key=' + accessToken
+            + '&boundary.country=VNM' , true);
+    }
+
     this.request.onload = function() {
       this._loadingEl.classList.remove('active');
       if (this.request.status >= 200 && this.request.status < 400) {
         var data = JSON.parse(this.request.responseText);
         if (data.features.length) {
+            if (pelias) {
+                for(let i =0; i<data.features.length ; i++ ){
+                    data.features[i] = this._convertPeliasData(data.features[i])
+                }
+            }
+
           this._clearEl.classList.add('active');
         } else {
           this._clearEl.classList.remove('active');
@@ -141,7 +158,25 @@ export default class Geocoder {
     }
   }
 
-  _change() {
+  _convertPeliasData(data) {
+        var name = '';
+        name = data.properties.name ? (name + data.properties.name) : name;
+        name = data.properties.street ? (name + ", " + data.properties.street) : name;
+        name = data.properties.county ? (name + "-" + data.properties.county + ", ") : name;
+        name = data.properties.region ? (name + data.properties.region + ", ") : name;
+        name = data.properties.country ? (name + data.properties.country) : name;
+        let result = {};
+        result.type = 'Feature';
+        result.geometry = data.geometry;
+        result.place_name = name;
+        result.text = name;
+        result.matching_text = data.properties.name;
+        result.matching_place_name = 'address' + data.properties.name;
+        result.center = data.geometry.coordinates;
+        return result;
+    }
+
+    _change() {
     var onChange = document.createEvent('HTMLEvents');
     onChange.initEvent('change', true, false);
     this._inputEl.dispatchEvent(onChange);
