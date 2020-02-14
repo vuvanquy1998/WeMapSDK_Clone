@@ -52,14 +52,14 @@ export default class Reverse{
                         this.map.getCanvas().style.cursor = 'pointer';
                     })
                     this.map.on('mouseleave', label, (e) => {
-                        map.getCanvas().style.cursor = '';
+                        this.map.getCanvas().style.cursor = '';
                     })
                 })
             })
             this.map.on('click', (e) => {
                 if(stt){
                     let chosen_point_info = {}
-                    let features = map.queryRenderedFeatures(e.point);
+                    let features = this.map.queryRenderedFeatures(e.point);
                     console.log(features)
                     
                     //addMarkder(e.lngLat, e.lngLat.lat)
