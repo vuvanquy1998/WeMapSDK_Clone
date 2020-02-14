@@ -73,7 +73,6 @@ export default class RightClick{
                 $('#right-click-menu-container').css({'display':"none"})
             })
              
-
             document.getElementById('right-click-reverse').addEventListener('click', (event) => {
                 let chosen_point_info = {}
                 let features = map.queryRenderedFeatures(this.clicked_poi.point);
