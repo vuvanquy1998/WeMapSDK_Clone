@@ -23,4 +23,8 @@ git https://github.com/WEMAP-Official/mapbox-gl-js-pelias
 git remote add mapbox https://github.com/Joxit/pelias-mapbox-gl-js
 ```
 
-### 
+### Update submodule
+
+```bash
+git submodule update --init --recursive
+```
