@@ -37,10 +37,16 @@ export default class WeDirections {
         this.inputs = options.inputs || true;
         this.instructions = options.instructions || true;
 
+        this.sayHello = this.sayHello.bind(this);
+        this.elm = document.getElementById('map');
+        this.elm.addEventListener("contextmenu", this.sayHello);
 
         this.engine = ['osrm', 'graphhopper'].includes(options.engine) ? options.engine : 'osrm';   
     };
     
+    sayHello(){
+        console.log("cái này là của Thảo");
+    };
     /**
      * render function
      * Render UI Input
@@ -66,7 +72,7 @@ export default class WeDirections {
             compile: null,
             proximity: this.proximity, // false
             styles: this.styles, // []
-    
+           
             // UI controls
             controls: {
                 profileSwitcher: this.profileSwitcher, //true
