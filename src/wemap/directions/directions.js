@@ -7,6 +7,7 @@ import MapboxDirections from '../../mapbox-gl-directions/dist/mapbox-gl-directio
  */
 export default class WeDirections {
 
+
     constructor(options) {
         options = options || {};
 
@@ -37,19 +38,18 @@ export default class WeDirections {
         this.instructions = options.instructions || true;
 
 
-
-        this.engine = ['osrm', 'graphhopper'].includes(options.engine) ? options.engine : 'osrm';
-    }
-
+        this.engine = ['osrm', 'graphhopper'].includes(options.engine) ? options.engine : 'osrm';   
+    };
+    
     /**
      * render function
      * Render UI Input
      * @returns {Object} origin
      */
     render() {
-        console.log('Directions Init: ', this.engine);
+        console.log('Directions Init : ', this.engine);
+  
         // console.log('initialState: ', new initialState());
-
         let directions =  new MapboxDirections({
             accessToken: this.accessToken,
             unit: this.unit, // metric
@@ -66,12 +66,13 @@ export default class WeDirections {
             compile: null,
             proximity: this.proximity, // false
             styles: this.styles, // []
-
+    
             // UI controls
             controls: {
                 profileSwitcher: this.profileSwitcher, //true
                 inputs: this.inputs, //true
                 instructions: this.instructions // true
+                  
             },
         });
 
