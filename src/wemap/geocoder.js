@@ -1,11 +1,13 @@
 import PeliasGeocoder from '../pelias-geocoder/pelias-geocoder'
+import PlaceDetail from './placeDetail';
 export default class WeGeocoder {
-
         constructor(options) {
                 options = options || {};
                 this.options = options;
-                WeGeocoder.initMultiView()
+                
                 this.geocoder = this.init();
+                WeGeocoder.initMultiView()
+                this.initEvent()
                 return this.geocoder
         }
 
@@ -43,6 +45,158 @@ export default class WeGeocoder {
                 },
             });
             return geocoder
+        }
+        overridebuildInputHTMLElement(){
+            console.log(this)
+            let self = this;
+            // console.log(self.constructor.name)
+
+            var inputEl = self._createElement({type: 'input'});
+            inputEl.type = 'text';
+            inputEl.placeholder = self.opts.placeholder;
+
+            inputEl.addEventListener("keyup", function (e) {
+            // Enter -> go to feature location.
+                if (self._eventMatchKey(e, self._keys.enter) && self._selectedFeature) {
+                inputEl.blur();
+                self._goToFeatureLocation(self._selectedFeature);
+                return;
+                }
+
+                if (e.keyCode == 27) {
+                self._resultsListEl.hideAll();
+                return;
+                }
+                //  inputEl.blur();
+                //  self._goToFeatureLocation(self._selectedFeature);
+                //  return;
+                //}
+
+
+                // Arrow down -> focus on the first result.
+                if (self._eventMatchKey(e, self._keys.arrowDown) && self._results && self._results.features[0]) {
+                self._resultsListEl.firstChild.focus();
+                return;
+                }
+
+                var value = this.value.trim();
+
+                if (value.length === 0) {
+                self._clearAll();
+                return;
+                }
+
+                if (self._selectedFeature && value !== self._selectedFeature.properties.label) {
+                self._addOrRemoveClassToElement(self._iconSearchEl, true, "pelias-ctrl-disabled");
+                self._selectedFeature = undefined;
+                }
+
+                //if (!self._eventMatchKey(e, self._keys.enter) && self.opts.onSubmitOnly) {
+                //  return;
+                //}
+
+
+                // if (self._eventMatchKey(e, self._keys.enter)) {
+                //   // if(this.value.length > 3)
+                //     self.search({text: value}, function (err, result) {
+                //       if (err) {
+                //         return self._showError(err);
+                //       }
+                //       if (result) {
+                //         // self._clearAll()
+                        
+                //         hideDetailFeatureFrame();
+                //         showresultsSearch(result)
+                //       }
+                //     }, 'search');
+                //     self._resultsListEl.hideAll();
+                //     document.getElementById('results-search').style.display = 'inline-block';
+                // }
+
+                if (!self._eventMatchKey(e, self._keys.enter)) {
+                if(value.length > 3)
+                    self.autocomplete({text: value}, function (err, result) {
+                    if (err) {
+                        return self._showError(err);
+                    }
+                    if (result) {
+                        console.log(result)
+                        // self._resultsListEl.showAll();
+                        return self._showResults(result)
+                    }
+                    });
+                }
+
+                self._addOrRemoveClassToElement(self._iconCrossEl, false, "pelias-ctrl-hide");
+
+            });
+            return inputEl;
+        }
+        initEventIconCross(){
+            // var iconCrossEl = document.getElementsByClassName('pelias-ctrl-icon-cross')
+            // iconCrossEl.addEventListener("click", function () {
+            //     this._clearAll();
+            //     WeGeocoder.hideDetailFeatureFrame();
+            //     WeGeocoder.hideResultSearch();
+            //   });
+            console.log('init event cross')
+            var originBuildIconCross = this.geocoder._buildIconCrossHTMLElement
+            this.geocoder._buildIconCrossHTMLElement = function(){
+                let iconCrossEl = originBuildIconCross.call(this)
+                iconCrossEl.addEventListener("click", function () {
+                    // if(marker){
+                    //     marker.remove();
+                    // }
+                    // self._clearAll();
+                    WeGeocoder.hideDetailFeatureFrame();
+                    WeGeocoder.hideResultSearch();
+                    // document.getElementById('place').style.display = 'none'
+                });
+                return iconCrossEl
+            }
+        }
+        initEventCloseDetailFrame(){
+            document.getElementById('close-detail-button').addEventListener('click', function(){
+                WeGeocoder.hideDetailFeatureFrame()
+            })
+        }
+        initEvent(){
+            console.log('init event')
+            if(!this.geocoder){
+                console.log('no init event')
+                return 
+            }
+            this.initEventIconCross()
+            this.initEventCloseDetailFrame()
+            this.geocoder._buildInputHTMLElement = this.overridebuildInputHTMLElement
+            var originGoToFeatureLocation =  this.geocoder._goToFeatureLocation
+            this.geocoder._goToFeatureLocation = function(feature){
+                console.log('custome function goToFeatureLocation')
+                // let place = new PlaceDetail()
+                console.log(feature)
+                let info = feature.properties
+                let osm_id = ''
+                let osm_type = ''
+                if(info.source == 'openstreetmap'){
+                    var get_number = /[0-9]/g
+                    osm_id = info.id.match(get_number).join('')
+                    var get_text = /[a-zA-Z]/
+                    osm_type = info.id.match(get_text).join('').toUpperCase()
+                }
+                let name = info.name
+                let type = feature.geometry.type
+                let lat = feature.geometry.coordinates[0]
+                let lon = feature.geometry.coordinates[1]
+                let address = [info.street, info.county, info.region, info.country]
+                let place = new PlaceDetail({name, type, lat, lon,address ,osm_id, osm_type});
+                console.log({name, type, lat, lon,address ,osm_id, osm_type})
+                place.showDetailFeature()
+                console.log('this')
+
+                console.log(this)
+                originGoToFeatureLocation.call(this, feature)
+            }
+        
         }
         /**
          * init view detailFeature, result search
@@ -103,7 +257,7 @@ export default class WeGeocoder {
         }
 
         static hideDetailFeatureFrame() {
-            deleteAllUrlParams()
+            // deleteAllUrlParams()
             let detail_feature = document.getElementById("detail-feature");
             if (detail_feature) {
               document.getElementById("detail-feature").style.display = "none";

@@ -1,8 +1,10 @@
 import API from "./api";
 
 export default class PlaceDetail{
+  // name, type, lat, long, address, osm_id, osm_type
   constructor(options){
     options = options ||{}
+    console.log(options)
     this.options = options
     self=this
   }
@@ -25,9 +27,10 @@ export default class PlaceDetail{
    * show detail Feature
   */
   showDetailFeature(){
+    console.log('show detail feature')
     // addMarker(this.options.lat, this.options.long);
     document.getElementById('no-result').style.display = 'none';
-    document.getElementById('place').style.display = 'none'
+    // document.getElementById('place').style.display = 'none'
     document.getElementById("detail-feature").style.display = "block";
     let featureName = document.getElementById("feature-name");
 
@@ -36,13 +39,26 @@ export default class PlaceDetail{
     }else{
         featureName.innerHTML =this.options.name;
     }
-    
-    let address_result = PlaceDetail.getAddess(this.options.address);
+    let address = this.options.address
+    console.log(address)
+    var address_result =""
+    // var address_result = PlaceDetail.getAddess(address);
+    var separator = "";
+    var i=0
+    for (i = 0; i < address.length; i++) {
+      address[i] = address[i] ? address[i] : "";
+      if (address[i]) {
+        address_result = address_result + separator + address[i];
+        separator = ", ";
+      }
+    }
+    console.log(address_result)
     let featureCoordinates = document.getElementById("feature-coordinates");
     featureCoordinates.innerHTML =
-        '<i class="fas fa-compass"></i>  ' + this.options.lat + ", " + this.options.long;
+        '<i class="fas fa-compass"></i>  ' + this.options.lat + ", " + this.options.lon;
     let featureLocation = document.getElementById("feature-location");
     featureLocation.innerHTML = '<i class="fas fa-map"></i>  ' + address_result;
+
 
     document.getElementById("feature-website").innerHTML = '';
     document.getElementById("feature-opening-hours").innerHTML = ''
@@ -54,12 +70,14 @@ export default class PlaceDetail{
     let featureDescription = document.getElementById("feature-description");
     let featurePhone = document.getElementById("feature-phone");
 
-    osm_id = this.options.osm_id
-    osm_type = this.options.osm_type
-    key = 'vpstPRxkBBTLaZkOaCfAHlqXtCR'
-    API.lookup({osm_id, osm_type, key}, (data) => {
-      console.log(data)
-    });
+    // osm_id = this.options.osm_id
+    // osm_type = this.options.osm_type
+    // var key = 'vpstPRxkBBTLaZkOaCfAHlqXtCR'
+    // if(osm_id){
+    //   API.lookup({osm_id, osm_type, key}, (data) => {
+    //     console.log(data)
+    //   });
+    // }
     // if (this.options.osm_id) {
     //     point_detail(this.options.osm_id, this.options.osm_type).then(detail => {
     //     detail = detail[0]
