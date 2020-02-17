@@ -1,7 +1,8 @@
 {
-  "style" : {
-    "default" : "https://link-to-default-style",
-    "streets" : "https://api.mapbox.com/styles/v1/mapbox/streets-v11?access_token="
+  "style": {
+    "default": "bright",
+    "bright": "https://apis.wemap.asia/vector-tiles/styles/osm-bright/style.json?key=",
+    "dark": "https://apis.wemap.asia/vector-tiles/styles/osm-bright/style.json?key="
   },
   "reverse" : "https://apis.wemap.asia/we-tools/reverse?key=",
   "direction" : {
@@ -17,6 +18,13 @@
       "mapbox" : "https://api.mapbox.com/geocoding/v5/mapbox.places"
     }
   },
+  "lookup": "http://apis.wemap.asia/we-tools/lookup?key=",
+  "lookupOsmIdOnly": "https://apis.wemap.asia/we-tools/lookup/",
+  "center": [
+    105.8550736,
+    21.0283243
+  ],
+  "zoom": 13,
   "language" : {
     "vi" : "vi-VN",
     "en" : "en-US"

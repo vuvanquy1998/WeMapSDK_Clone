@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Test - HieuTM</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="../dist/js/wemap-gl.js" type="text/javascript"></script>
+
+    <link href="../dist/css/wemap.min.css" rel="stylesheet" />
+
+    <link href="../dist/css/dev.min.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+
+    <script>
+        wemapgl.accessToken = "pk.eyJ1IjoicGh1b25naHgiLCJhIjoiY2s2N3IxMnNiMWdlbTNlcW8ybG5jaXU4MCJ9.CkMLijVJ1Lp2ZbaR0zDgrg";
+        // url params: ?x=106.0263698294442&y=20.219749345706532&z=13&ox=1&oy=2&dx=0&dy=10&vehicle=car&osmid=123456&osmtype=w
+        // test: normal
+        // var wemap = new wemapgl.WeMap({
+        //     key: 'vpstPRxkBBTLaZkOaCfAHlqXtCR',
+        //     container: 'map',
+        //     center: [105.8550736, 21.0283243],
+        //     zoom: 13
+        // });
+
+        // test: no more info, excepts key and container
+        let stt = true;
+        var wemap = new wemapgl.WeMap({
+            key: 'vpstPRxkBBTLaZkOaCfAHlqXtCR',
+            container: 'map',
+            reverse: true
+        });
+
+
+        wemap.addControl(new wemapgl.NavigationControl(), 'bottom-right');
+
+        wemap.addControl(new wemapgl.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true
+            },
+            trackUserLocation: true
+        }),
+            'bottom-right');
+
+
+
+        // // test: wrong info
+
+        // var wemap = new wemapgl.WeMap({
+        //     key: 'vpstPRxkBBTLaZkOaCfAHlqXtCR',
+        //     container: 'map',
+        //     style: 'brown',
+
+        // });
+
+        // // test: upper case values
+        // var wemap = new wemapgl.WeMap({
+        //     key: 'vpstPRxkBBTLaZkOaCfAHlqXtCR',
+        //     container: 'map',
+        //     style: 'BriGht',
+
+        // });
+
+        // test: reverse is on
+        // var wemap = new wemapgl.WeMap({
+        //     key: 'vpstPRxkBBTLaZkOaCfAHlqXtCR',
+        //     container: 'map',
+        //     reverse: true
+        // });
+
+    </script>
+
+    <script>
+		// let wm =  new wemapgl.WeMap({
+		// 	params: {'access-token': 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7'}
+		//   });
+
+	    // console.log(wm.showForm());
+
+    </script>
+
+</body>
+
+</html>
