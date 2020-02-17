@@ -69,8 +69,8 @@ function fetchDirections() {
     // if (accessToken) options.push('access_token=' + accessToken);
     request.abort();
 
-    console.log('Direction options: ', options);
-    console.log('getState: ', getState());
+    // console.log('Direction options: ', options);
+    // console.log('getState: ', getState());
     let URLDirection = '';
     if (engine === 'mapbox') {
         if (language) options.push('language='+language);

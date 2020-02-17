@@ -283,7 +283,6 @@ button {
           box-shadow: 5px 5px 10px #b9b9b9; }
 
 #feature-img {
-  background: url("../img/detail.jpg") no-repeat;
   background-position: center center;
   height: 200px;
   opacity: 90%; }
