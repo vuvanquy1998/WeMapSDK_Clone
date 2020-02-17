@@ -49,8 +49,7 @@ export default class WeDirections {
         this.geocoder = options.geocoder || {};
 
         this.sayHello = this.sayHello.bind(this);
-        this.elm = document.getElementById('map');
-        this.elm.addEventListener("contextmenu", this.sayHello);
+       
 
         this.engine = ['default', 'osrm', 'graphhopper', 'mapbox'].includes(options.engine) ? options.engine : 'osrm';
         this.api = '';
@@ -77,9 +76,7 @@ export default class WeDirections {
         }
     };
 
-    sayHello(){
-        console.log("cái này là của Thảo");
-    };
+   
     /**
      * render function
      * Render UI Input
@@ -112,7 +109,7 @@ export default class WeDirections {
                 profileSwitcher: this.profileSwitcher, //true
                 inputs: this.inputs, //true
                 instructions: this.instructions // true
-            },
+            }
         });
 
         console.log('Directions Init: ', directions);

@@ -31,16 +31,21 @@
 
     <script>
         wemapgl.accessToken = "pk.eyJ1IjoicGh1b25naHgiLCJhIjoiY2s2N3IxMnNiMWdlbTNlcW8ybG5jaXU4MCJ9.CkMLijVJ1Lp2ZbaR0zDgrg";
-        var map = new wemapgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v11',
-            center: [105.7884815, 21.02459],
-            zoom: 11
-        });
+        // var map = new wemapgl.Map({
+        //     container: 'map',
+        //     style: 'mapbox://styles/mapbox/streets-v11',
+        //     center: [105.7884815, 21.02459],
+        //     zoom: 11
+        // });
     </script>
 	
 	<script>
 		let wm =  new wemapgl.WeMap({
+            container: 'map',
+            center: [105.7884815, 21.02459],
+            style: 'mapbox://styles/mapbox/streets-v11',
+            zoom: 11,
+            key: 'vpstPRxkBBTLaZkOaCfAHlqXtCR',
 			params: {'access-token': 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7'}
 		  });
 
@@ -63,13 +68,12 @@
 
         console.log(wd.render());
 
-        map.addControl(
+        wm.addControl(
             wd.render(),
             'top-left'
         );
-
+        // new wemapgl.RightClick(map, true).init();
 	</script>
-
 </body>
 
 </html>
