@@ -131,7 +131,7 @@ const style = [{
   'source': 'directions',
   'layout': {
     'text-field': 'A',
-    'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+    'text-font': ['Open Sans Bold'],
     'text-size': 12
   },
   'paint': {
@@ -161,7 +161,7 @@ const style = [{
   'source': 'directions',
   'layout': {
     'text-field': 'B',
-    'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+    'text-font': ['Open Sans Bold'],
     'text-size': 12
   },
   'paint': {

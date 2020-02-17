@@ -1,13 +1,13 @@
 // import * as json from '../../config.json';
 // const {config} = json;
-import { default as config } from '../../config.json';
+import { default as config } from '../config.json';
 
 // const config = require('../config.json');
 // const fs = require('fs');
 //
 // const { config } = JSON.parse(fs.readFileSync('../config.json', 'utf8'))
 // import {config} from '../../config.js'
-import MapboxDirections from '../../mapbox-gl-directions/dist/mapbox-gl-directions';
+import MapboxDirections from '../mapbox-gl-directions/dist/mapbox-gl-directions';
 
 /**
  * WeDirections show direction
