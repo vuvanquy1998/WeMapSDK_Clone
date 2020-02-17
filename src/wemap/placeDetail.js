@@ -4,9 +4,10 @@ export default class PlaceDetail{
   // name, type, lat, long, address, osm_id, osm_type
   constructor(options){
     options = options ||{}
+    console.log('options')
     console.log(options)
     this.options = options
-    self=this
+    // self=this
   }
   /**
    * format address
@@ -70,14 +71,15 @@ export default class PlaceDetail{
     let featureDescription = document.getElementById("feature-description");
     let featurePhone = document.getElementById("feature-phone");
 
-    // osm_id = this.options.osm_id
-    // osm_type = this.options.osm_type
-    // var key = 'vpstPRxkBBTLaZkOaCfAHlqXtCR'
-    // if(osm_id){
-    //   API.lookup({osm_id, osm_type, key}, (data) => {
-    //     console.log(data)
-    //   });
-    // }
+    let osm_id = this.options.osm_id
+    let osm_type = this.options.osm_type
+    var key = 'vpstPRxkBBTLaZkOaCfAHlqXtCR'
+    if(osm_id){
+        console.log(osm_id)
+      API.lookup({osm_id, osm_type, key}, (data) => {
+        alert(data)
+      });
+    }
     // if (this.options.osm_id) {
     //     point_detail(this.options.osm_id, this.options.osm_type).then(detail => {
     //     detail = detail[0]

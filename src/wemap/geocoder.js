@@ -168,7 +168,7 @@ export default class WeGeocoder {
             }
             this.initEventIconCross()
             this.initEventCloseDetailFrame()
-            this.geocoder._buildInputHTMLElement = this.overridebuildInputHTMLElement
+            // this.geocoder._buildInputHTMLElement = this.overridebuildInputHTMLElement
             var originGoToFeatureLocation =  this.geocoder._goToFeatureLocation
             this.geocoder._goToFeatureLocation = function(feature){
                 console.log('custome function goToFeatureLocation')
@@ -188,8 +188,12 @@ export default class WeGeocoder {
                 let lat = feature.geometry.coordinates[0]
                 let lon = feature.geometry.coordinates[1]
                 let address = [info.street, info.county, info.region, info.country]
-                let place = new PlaceDetail({name, type, lat, lon,address ,osm_id, osm_type});
-                console.log({name, type, lat, lon,address ,osm_id, osm_type})
+                // {name: name, type: type, lat: lat, lon: lon,address: address ,osm_id: osm_id, osm_type: osm_type}
+                let place = new PlaceDetail({name: name, type: type, lat: lat, lon: lon,address: address ,osm_id: osm_id, osm_type: osm_type});
+                console.log('name, type, lat')
+                console.log(name)
+                
+                console.log(place)
                 place.showDetailFeature()
                 console.log('this')
 
