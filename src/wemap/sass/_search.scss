@@ -286,7 +286,7 @@ button {
 }
 
 #feature-img {
-  background: url('../img/detail.jpg') no-repeat;
+  //background: url('../img/detail.jpg') no-repeat;
   background-position: center center;
   height: 200px;
   opacity: 90%;
@@ -421,4 +421,18 @@ i {
 .information-feature{
   border-top: 1px solid lightgray;
   padding-top: 15px;
+}
+
+
+#no-result{
+  display: none;
+}
+//pelias-geocoder.css
+.pelias-ctrl{
+  min-width: 410px;
+  max-width: 420px;
+  z-index: 2147483647;
+  pointer-events: none;
+  margin: 0;
+  padding: 10px 0 0 10px;
 }
