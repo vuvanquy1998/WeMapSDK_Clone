@@ -72,7 +72,7 @@ export default class WeDirections {
             compile: null,
             proximity: this.proximity, // false
             styles: this.styles, // []
-           
+            elm: this.elm,
             // UI controls
             controls: {
                 profileSwitcher: this.profileSwitcher, //true
