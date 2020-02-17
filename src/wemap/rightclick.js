@@ -1,4 +1,5 @@
 import { getJSON } from '../util/ajax'
+
 export default class RightClick {
     constructor(map, stt) {
         this.map = map;
@@ -10,8 +11,8 @@ export default class RightClick {
     initView() {
         let rightClick = document.createElement('div')
         rightClick.innerHTML = '<div id = "right-click-menu-container"' + "style = 'display: none'>" +
-            '<div class = "right-click-menu-item">Điểm bắt đầu</div>' +
-            '<div class = "right-click-menu-item">Điểm kết thúc</div>' +
+            '<div class = "right-click-menu-item" style = "display: none">Điểm bắt đầu</div>' +
+            '<div class = "right-click-menu-item" style = "display: none">Điểm kết thúc</div>' +
             '<div class = "right-click-menu-item" id ="right-click-reverse">Đây là đâu ?</div>' +
             '</div>'
         document.body.appendChild(rightClick)
@@ -41,13 +42,18 @@ export default class RightClick {
     }
     init() {
         if (this.stt) {
+            let chosen_point_info = {}
             this.map.on('contextmenu', (e) => {
                 let mouseX = e.point.x;
                 let mouseY = e.point.y;
-                let max_width = $(window).width();
-                let max_height = $(window).height();
-                let context_menu_width = $('#right-click-menu-container').width();
-                let context_menu_height = $('#right-click-menu-container').height();
+                // let max_width = $(window).width();
+                let max_width = window.innerWidth;
+                // let max_height = $(window).height();
+                let max_height = window.innerHeight;
+                // let context_menu_width = $('#right-click-menu-container').width();
+                let context_menu_width = document.getElementById("right-click-menu-container").clientWidth;
+                //let context_menu_height = $('#right-click-menu-container').height();
+                let context_menu_height = document.getElementById("right-click-menu-container").clientHeight;
                 let translateX = 0;
                 let translateY = 0;
 
@@ -63,18 +69,19 @@ export default class RightClick {
                 } else {
                     translateY = mouseY;
                 }
-                $('#right-click-menu-container').css({ 'display': "block" })
-                $('#right-click-menu-container').css({ "transform": `translate(${translateX}px,${translateY}px)` })
-
+                // $('#right-click-menu-container').css({ 'display': "block" })
+                document.getElementById("right-click-menu-container").style.display = "block"
+                //$('#right-click-menu-container').css({ "transform": `translate(${translateX}px,${translateY}px)` })
+                document.getElementById("right-click-menu-container").style.transform = `translate(${translateX}px,${translateY}px)`
                 this.clicked_poi = e;
             })
 
             this.map.on('click', (e) => {
-                $('#right-click-menu-container').css({ 'display': "none" })
+                // $('#right-click-menu-container').css({ 'display': "none" })
+                document.getElementById("right-click-menu-container").style.display = "none";
             })
              
             document.getElementById('right-click-reverse').addEventListener('click', (event) => {
-                let chosen_point_info = {}
                 let features = this.map.queryRenderedFeatures(this.clicked_poi.point);
                 console.log('feature', features)
 
@@ -128,7 +135,8 @@ export default class RightClick {
                         let chosen_info = choose_received_data(false, null, null)
                         not_point_render_detail(chosen_info.properties, chosen_info.geometry)
                         chosen_point_info = chosen_info
-                        $('#right-click-menu-container').css({ 'display': "none" })
+                        // $('#right-click-menu-container').css({ 'display': "none" })
+                        document.getElementById('right-click-menu-containe').style.display = "none"
                     }
                     else {
                         let not_point_layer = 0
@@ -150,9 +158,21 @@ export default class RightClick {
                             not_point_render_detail(chosen_info.properties, chosen_info.geometry)
                             chosen_point_info = chosen_info
                         }
-                        $('#right-click-menu-container').css({ 'display': "none" })
+                        // $('#right-click-menu-container').css({ 'display': "none" })
+                        document.getElementById("right-click-menu-containe").style.display = "none"
                     }
                 })
+            })
+            document.getElementById('click-detail').addEventListener('click', (e) => {
+                // let place = new PlaceDetail({name: chosen_point_info.properties.name, type: chosen_point_info.type, lat: chosen_point_info.geometry.coordinates[1], lon: chosen_point_info.geometry.coordinates[0],address: [chosen_point_info.properties.housenumber,chosen_point_info.properties.street, chosen_point_info.properties.district, chosen_point_info.properties.city, chosen_point_info.properties.country],osm_id: chosen_point_info.properties.osm_id, osm_type: chosen_point_info.properties.osm_type});
+                // place.showDetailFeature()
+                document.getElementById('place').style.display = 'none'
+            })
+            
+            document.getElementById('placeclose').addEventListener('click', (e) => {
+                // deleteUrlParam('rx');
+                // deleteUrlParam('ry');
+                document.getElementById('place').style.display = "none"
             })
         }
     }
