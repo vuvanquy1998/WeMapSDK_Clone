@@ -47,10 +47,6 @@ export default class WeDirections {
         this.inputs = options.inputs || true;
         this.instructions = options.instructions || true;
         this.geocoder = options.geocoder || {};
-
-        this.sayHello = this.sayHello.bind(this);
-       
-
         this.engine = ['default', 'osrm', 'graphhopper', 'mapbox'].includes(options.engine) ? options.engine : 'osrm';
         this.api = '';
         console.log(config);
