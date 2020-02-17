@@ -9,7 +9,7 @@
     "engine": {
       "default": "https://apis.wemap.asia/direction-api/route/v1/",
       "osrm": "https://apis.wemap.asia/direction-api/route/v1/",
-      "graphhopper": "",
+      "graphhopper": "https://apis.wemap.asia/route-api/route?",
       "mapbox": "https://api.mapbox.com/directions/v5/"
     },
     "geocoder": {

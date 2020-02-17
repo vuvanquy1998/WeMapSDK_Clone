@@ -80,8 +80,17 @@ function fetchDirections() {
         if (accessToken) options.push('key=' + accessToken);
         URLDirection = `${api}${profile}/${query}?${options.join('&')}`
     } else if (engine === 'graphhopper') {
-        if (accessToken) options.push('key=' + accessToken);
-        URLDirection = `${api}${profile}/${query}?${options.join('&')}`
+        if (accessToken) options.push('key=' + accessToken);Đa
+        const startEnd = query.split('%3B');
+        const latLonStart = startEnd[0].split('%2C')
+        const latLonEnd = startEnd[1].split('%2C')
+        // URLDirection = `${api}point=${latLonStart[0]},${latLonStart[1]}&point=${latLonEnd[0]},${latLonEnd[1]}&type=json&vehicle=${profile}&weighting=fastest&elevation=false&key=${accessToken}`
+
+        URLDirection = api + 'point=' + latLonStart[1] + ',' + latLonStart[0]
+                        + '&point=' + latLonEnd[1] + ',' + latLonEnd[0]
+                        + '&type=json' + '&vehicle=' + profile
+                        + '&weighting=fastest&elevation=false&locale=vi-VN' + '&key=' + accessToken
+        // TODO: Check graphhopper Direction
     }
     // request.open('GET', `${api}${profile}/${query}.json?${options.join('&')}`, true);
     request.open('GET', URLDirection, true);

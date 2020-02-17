@@ -9,6 +9,8 @@ import { default as config } from '../config.json';
 // import {config} from '../../config.js'
 import MapboxDirections from '../mapbox-gl-directions/dist/mapbox-gl-directions';
 
+// import updateRouteParams from './url';
+
 /**
  * WeDirections show direction
  *
