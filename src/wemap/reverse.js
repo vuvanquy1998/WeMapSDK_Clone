@@ -1,4 +1,6 @@
 import { getJSON } from '../util/ajax'
+import PlaceDetail from './placeDetail'
+
 export default class Reverse{
     constructor(map) {
         this.map = map;
@@ -40,6 +42,7 @@ export default class Reverse{
     init(){
         this.map.on('load', (e) => {
             let point_layers = []
+            let chosen_point_info = {}
 
             getJSON({
                 url: 'https://apis.wemap.asia/vector-tiles/styles/osm-bright/style.json?key=vpstPRxkBBTLaZkOaCfAHlqXtCR',
@@ -64,7 +67,6 @@ export default class Reverse{
             })
             this.map.on('click', (e) => {
                 if(this.on){
-                    let chosen_point_info = {}
                     let features = this.map.queryRenderedFeatures(e.point);
                     console.log(features)
                     
@@ -87,7 +89,7 @@ export default class Reverse{
                         function not_point_render_detail(info){
                             console.log('kp điểm:', info.name, info.street, info.district, info.city, info.country)
                             
-                            // document.getElementById('detail-feature').style.display = "none"
+                            document.getElementById('detail-feature').style.display = "none"
                             
                             document.getElementById('place').style.display ='block';
                             let address = [info.name, info.street, info.district, info.city, info.country]
@@ -125,13 +127,11 @@ export default class Reverse{
                                     
                                     
                                     let chosen_info = choose_received_data(true, place_name_en, place_name_vi)
-        
-                                    // chosen_info.properties.name = features[index].properties.name
-                                    // showDetailFeature(features[index].properties.name, '', chosen_info.geometry.coordinates[0], chosen_info.geometry.coordinates[1], [chosen_info.properties.street, chosen_info.properties.district, chosen_info.properties.city, chosen_info.properties.country], chosen_info.properties.osm_id, null)
+                                    chosen_point_info = chosen_info
+                                    // let place = new PlaceDetail({name: place_name_vi, type: chosen_info.type, lat: chosen_info.geometry.coordinates[1], lon: chosen_info.geometry.coordinates[0],address: [chosen_info.properties.housenumber,chosen_info.properties.street, chosen_info.properties.district, chosen_info.properties.city, chosen_info.properties.country],osm_id: chosen_info.properties.osm_id, osm_type: chosen_info.properties.osm_type});
+                                    // place.showDetailFeature()
                                     $('#place').css({'display':"none"})
                                     not_point_layer += 1
-                                    console.log('chính là điểm:', chosen_info.properties.name)
-                                    console.log('gọi hàm của Quý')
                                 }
                             });
                             if(not_point_layer == 0){
@@ -145,7 +145,9 @@ export default class Reverse{
             })
             
             document.getElementById('click-detail').addEventListener('click', (e) => {
-                showDetailFeature(chosen_point_info.properties.name, '', chosen_point_info.geometry.coordinates[0], chosen_point_info.geometry.coordinates[1], [chosen_point_info.properties.county, chosen_point_info.properties.region, chosen_point_info.properties.country], chosen_point_info.properties.id.split("/")[1], convert_to_osm_type(chosen_point_info.properties.id.split("/")[0]))
+                // let place = new PlaceDetail({name: chosen_point_info.properties.name, type: chosen_point_info.type, lat: chosen_point_info.geometry.coordinates[1], lon: chosen_point_info.geometry.coordinates[0],address: [chosen_point_info.properties.housenumber,chosen_point_info.properties.street, chosen_point_info.properties.district, chosen_point_info.properties.city, chosen_point_info.properties.country],osm_id: chosen_point_info.properties.osm_id, osm_type: chosen_point_info.properties.osm_type});
+                // place.showDetailFeature()
+                document.getElementById('place').style.display = 'none'
             })
             
             document.getElementById('placeclose').addEventListener('click', (e) => {

@@ -67,11 +67,32 @@
             center: [105.84370246986344, 21.003961186227826],
             zoom: 13          
         });
-        
+        var iconMarkerEl = document.createElement("div");
+        iconMarkerEl.innerHTML = "<div class='marker-arrow'></div>" +
+            "<div class='marker-pulse'></div>";
+
+        token = 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7'
+
+        var wemapControl = new wemapgl.WeGeocoder({
+            flyTo: 'hybrid',
+            accessToken: token,
+            wof: true,
+            useFocusPoint: true,
+            engine: 'default',  //ko biết
+            suggestion: {
+                min_char: 4  // ko ghi = 4
+            },
+            useFocusPoint: true,
+            marker: {
+                icon: iconMarkerEl,
+                multiple: false
+            }
+        });
+        map.addControl(wemapControl)
         let stt = true;
         new wemapgl.RightClick(map, true)
         let reverse = new wemapgl.Reverse(map, true)
-        reverse.off_reverse()
+        // reverse.off_reverse()
 
     </script>
 </body>
