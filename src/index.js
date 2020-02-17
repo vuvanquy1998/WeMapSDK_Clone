@@ -33,6 +33,8 @@ import {PerformanceUtils} from './util/performance';
 import WeMap from './wemap/map';
 import WeDirections from './wemap/directions/directions';
 import WeGeocoder from './wemap/geocoder';
+import Reverse from './wemap/reverse';
+import RightClick from './wemap/rightclick';
 
 import PeliasGeocoder from './pelias-geocoder/pelias-geocoder';
 
@@ -60,6 +62,8 @@ const exported = {
     WeMap,
     WeDirections,
     WeGeocoder,
+    Reverse,
+    RightClick,
     config,
 
     /**

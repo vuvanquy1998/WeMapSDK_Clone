@@ -1,0 +1,16 @@
+#right-click-menu-container{
+    position: absolute;
+    padding: 8px 0px 8px 0px;
+    display:flex;
+    flex-direction: column;
+    background-color: white;
+    box-shadow: 0 1px 6px rgba(60,64,67,.28);
+    border-radius: 4px;
+}
+.right-click-menu-item{
+    padding: 4px 16px 4px 16px;
+} 
+.right-click-menu-item:hover{
+    background-color: #d9e3f6;
+    cursor: pointer;
+} 
