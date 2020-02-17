@@ -168,7 +168,7 @@ export default class WeGeocoder {
             }
             this.initEventIconCross()
             this.initEventCloseDetailFrame()
-            this.geocoder._buildInputHTMLElement = this.overridebuildInputHTMLElement
+            // this.geocoder._buildInputHTMLElement = this.overridebuildInputHTMLElement
             var originGoToFeatureLocation =  this.geocoder._goToFeatureLocation
             this.geocoder._goToFeatureLocation = function(feature){
                 console.log('custome function goToFeatureLocation')
