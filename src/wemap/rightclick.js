@@ -46,10 +46,14 @@ export default class RightClick {
             this.map.on('contextmenu', (e) => {
                 let mouseX = e.point.x;
                 let mouseY = e.point.y;
-                let max_width = $(window).width();
-                let max_height = $(window).height();
-                let context_menu_width = $('#right-click-menu-container').width();
-                let context_menu_height = $('#right-click-menu-container').height();
+                // let max_width = $(window).width();
+                let max_width = window.innerWidth;
+                // let max_height = $(window).height();
+                let max_height = window.innerHeight;
+                // let context_menu_width = $('#right-click-menu-container').width();
+                let context_menu_width = document.getElementById("right-click-menu-container").clientWidth;
+                //let context_menu_height = $('#right-click-menu-container').height();
+                let context_menu_height = document.getElementById("right-click-menu-container").clientHeight;
                 let translateX = 0;
                 let translateY = 0;
 
@@ -65,14 +69,16 @@ export default class RightClick {
                 } else {
                     translateY = mouseY;
                 }
-                $('#right-click-menu-container').css({ 'display': "block" })
-                $('#right-click-menu-container').css({ "transform": `translate(${translateX}px,${translateY}px)` })
-
+                // $('#right-click-menu-container').css({ 'display': "block" })
+                document.getElementById("right-click-menu-container").style.display = "block"
+                //$('#right-click-menu-container').css({ "transform": `translate(${translateX}px,${translateY}px)` })
+                document.getElementById("right-click-menu-container").style.transform = `translate(${translateX}px,${translateY}px)`
                 this.clicked_poi = e;
             })
 
             this.map.on('click', (e) => {
-                $('#right-click-menu-container').css({ 'display': "none" })
+                // $('#right-click-menu-container').css({ 'display': "none" })
+                document.getElementById("right-click-menu-container").style.display = "none";
             })
              
             document.getElementById('right-click-reverse').addEventListener('click', (event) => {
@@ -129,7 +135,8 @@ export default class RightClick {
                         let chosen_info = choose_received_data(false, null, null)
                         not_point_render_detail(chosen_info.properties, chosen_info.geometry)
                         chosen_point_info = chosen_info
-                        $('#right-click-menu-container').css({ 'display': "none" })
+                        // $('#right-click-menu-container').css({ 'display': "none" })
+                        document.getElementById('right-click-menu-containe').style.display = "none"
                     }
                     else {
                         let not_point_layer = 0
@@ -151,7 +158,8 @@ export default class RightClick {
                             not_point_render_detail(chosen_info.properties, chosen_info.geometry)
                             chosen_point_info = chosen_info
                         }
-                        $('#right-click-menu-container').css({ 'display': "none" })
+                        // $('#right-click-menu-container').css({ 'display': "none" })
+                        document.getElementById("right-click-menu-containe").style.display = "none"
                     }
                 })
             })

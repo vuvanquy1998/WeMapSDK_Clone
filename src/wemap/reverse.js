@@ -130,7 +130,7 @@ export default class Reverse{
                                     chosen_point_info = chosen_info
                                     // let place = new PlaceDetail({name: place_name_vi, type: chosen_info.type, lat: chosen_info.geometry.coordinates[1], lon: chosen_info.geometry.coordinates[0],address: [chosen_info.properties.housenumber,chosen_info.properties.street, chosen_info.properties.district, chosen_info.properties.city, chosen_info.properties.country],osm_id: chosen_info.properties.osm_id, osm_type: chosen_info.properties.osm_type});
                                     // place.showDetailFeature()
-                                    $('#place').css({'display':"none"})
+                                    document.getElementById('place').style.display = 'none';
                                     not_point_layer += 1
                                 }
                             });
