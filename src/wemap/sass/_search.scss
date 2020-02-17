@@ -422,3 +422,17 @@ i {
   border-top: 1px solid lightgray;
   padding-top: 15px;
 }
+
+
+#no-result{
+  display: none;
+}
+//pelias-geocoder.css
+.pelias-ctrl{
+  min-width: 410px;
+  max-width: 420px;
+  z-index: 2147483647;
+  pointer-events: none;
+  margin: 0;
+  padding: 10px 0 0 10px;
+}
