@@ -52,7 +52,7 @@ function setHoverMarker(feature) {
 
 function fetchDirections() {
   return (dispatch, getState) => {
-    const { api, accessToken, routeIndex, profile, alternatives, congestion, destination, language } = getState();
+    const { api, accessToken, routeIndex, profile, alternatives, congestion, destination, language, engine } = getState();
     // if there is no destination set, do not make request because it will fail
     if (!(destination && destination.geometry)) return;
 
@@ -65,10 +65,26 @@ function fetchDirections() {
     if (congestion) options.push('annotations=congestion');
     options.push('steps=true');
     options.push('overview=full');
-    if (language) options.push('language='+language);
-    if (accessToken) options.push('access_token=' + accessToken);
+    // if (language) options.push('language='+language);
+    // if (accessToken) options.push('access_token=' + accessToken);
     request.abort();
-    request.open('GET', `${api}${profile}/${query}.json?${options.join('&')}`, true);
+
+    console.log('Direction options: ', options);
+    console.log('getState: ', getState());
+    let URLDirection = '';
+    if (engine === 'mapbox') {
+        if (language) options.push('language='+language);
+        if (accessToken) options.push('access_token=' + accessToken);
+        URLDirection = `${api}${profile}/${query}.json?${options.join('&')}`
+    } else if (engine === 'osrm' || engine === 'default') {
+        if (accessToken) options.push('key=' + accessToken);
+        URLDirection = `${api}${profile}/${query}?${options.join('&')}`
+    } else if (engine === 'graphhopper') {
+        if (accessToken) options.push('key=' + accessToken);
+        URLDirection = `${api}${profile}/${query}?${options.join('&')}`
+    }
+    // request.open('GET', `${api}${profile}/${query}.json?${options.join('&')}`, true);
+    request.open('GET', URLDirection, true);
 
     request.onload = () => {
       if (request.status >= 200 && request.status < 400) {

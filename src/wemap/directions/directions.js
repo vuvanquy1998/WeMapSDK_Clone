@@ -26,7 +26,6 @@ export default class WeDirections {
 
 
         this.highlight = options.highlight || true;
-        this.accessToken = options.accessToken || '';
         this.key = options.key || '';
 
         this.unit = options.unit || 'metric';
@@ -44,12 +43,14 @@ export default class WeDirections {
         this.inputs = options.inputs || true;
         this.instructions = options.instructions || true;
 
-        this.geocoder = options.geocoder || {};
-        this.geocoder.api = options.geocoder.api ? options.geocoder.api : config.direction.geocoder.pelias;
-        this.geocoder.engine = this._geocodeEngine();
-
-
         this.engine = ['default', 'osrm', 'graphhopper', 'mapbox'].includes(options.engine) ? options.engine : 'osrm';
+
+        this.geocoder = options.geocoder || {};
+
+        this.geocoder.engine = this._geocodeEngine(options.geocoder.engine);
+        // this.geocoder.api = options.geocoder.api ? options.geocoder.api : config.direction.geocoder.pelias;
+        this.geocoder.api = this._geocodeApi(options.geocoder.engine, options.geocoder.api);
+
         this.api = this._apiEngine();
 
         // this.mode = options.mode || 'driving'; // traffic, driving, walking, cycling
@@ -69,12 +70,13 @@ export default class WeDirections {
         // console.log('Directions Init: ', this.engine);
 
         let directions =  new MapboxDirections({
-            accessToken: this.accessToken,
+            accessToken: this.key,
             unit: this.unit, // metric
             // profile: 'mapbox/' + this.mode,
             profile: this.mode,
             key: this.key,
             api: this.api, // https://api.mapbox.com/directions/v5/
+            engine: this.engine,
 
             alternatives: this.alternatives, // false
             congestion: this.congestion, // false
@@ -102,6 +104,11 @@ export default class WeDirections {
         return directions;
     }
 
+    /**
+     * Return API Engine
+     * @returns {string}
+     * @private
+     */
     _apiEngine() {
         let api = '';
         switch (this.engine) {
@@ -126,6 +133,12 @@ export default class WeDirections {
         return api;
     }
 
+    /**
+     * Return travel Mode
+     * @param modeDrive
+     * @returns {string}
+     * @private
+     */
     _travelMode(modeDrive) {
         console.log('modeDrive: ', modeDrive);
         let mode = '';
@@ -207,7 +220,14 @@ export default class WeDirections {
         return mode;
     }
 
+    /**
+     * Return Geocode Engine
+     * @param engine
+     * @returns {string}
+     * @private
+     */
     _geocodeEngine(engine) {
+        console.log('GeoCode Engine: ', engine)
         let geoEngine = '';
         switch (engine) {
             case 'default':
@@ -224,8 +244,28 @@ export default class WeDirections {
         return geoEngine;
     }
 
-    _geocodeOption(options) {
-        let ops = options;
-        return ops;
+    /**
+     * Return Geocode Api
+     * @param engine
+     * @param api
+     * @returns {string}
+     * @private
+     */
+    _geocodeApi(engine, api) {
+        console.log('GeoCode Engine: ', engine)
+        let geoApi = '';
+        switch (engine) {
+            case 'default':
+            case 'pelias':
+                geoApi = api ? api : config.direction.geocoder.pelias;
+                break;
+            case 'mapbox':
+                geoApi = api ? api : config.direction.geocoder.mapbox;
+                break;
+            default:
+                geoApi = api ? api : config.direction.geocoder.pelias;
+                break;
+        }
+        return geoApi;
     }
 }
