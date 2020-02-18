@@ -1,9 +1,11 @@
 import { getJSON } from '../util/ajax'
+import { default as config } from '../config.json';
 
 export default class RightClick {
-    constructor(map, stt) {
+    constructor(map, stt, key) {
         this.map = map;
         this.stt = stt;
+        this.key = key;
         this.initView();
         this.init();
         this.clicked_poi = {};
@@ -88,9 +90,10 @@ export default class RightClick {
                 //addMarkder(e.lngLat, e.lngLat.lat)
 
                 let point_layers = ['poi-level-1', 'poi-level-2', 'poi-level-3', 'poi-level-4']
-
+          
                 getJSON({
-                    url: `https://apis.wemap.asia/we-tools/reverse?key=vpstPRxkBBTLaZkOaCfAHlqXtCR&lat=${this.clicked_poi.lngLat.lat}&lon=${this.clicked_poi.lngLat.lng}`,
+                    // url: `${config.reverse}${this.key}&lat=${this.clicked_poi.lngLat.lat}&lon=${this.clicked_poi.lngLat.lng}`,
+                    url: "https://apis.wemap.asia/we-tools/reverse?key=vpstPRxkBBTLaZkOaCfAHlqXtCR&lat=21.0050013&lon=105.8609077",
                     method: 'GET'
                 }, (err, data) => {
                     console.log('ajax data', data)
@@ -136,7 +139,7 @@ export default class RightClick {
                         not_point_render_detail(chosen_info.properties, chosen_info.geometry)
                         chosen_point_info = chosen_info
                         // $('#right-click-menu-container').css({ 'display': "none" })
-                        document.getElementById('right-click-menu-containe').style.display = "none"
+                        document.getElementById('right-click-menu-container').style.display = "none"
                     }
                     else {
                         let not_point_layer = 0
@@ -159,7 +162,7 @@ export default class RightClick {
                             chosen_point_info = chosen_info
                         }
                         // $('#right-click-menu-container').css({ 'display': "none" })
-                        document.getElementById("right-click-menu-containe").style.display = "none"
+                        document.getElementById("right-click-menu-container").style.display = "none"
                     }
                 })
             })
