@@ -8,6 +8,8 @@ import { default as config } from '../config.json';
 // const { config } = JSON.parse(fs.readFileSync('../config.json', 'utf8'))
 // import {config} from '../../config.js'
 import MapboxDirections from '../mapbox-gl-directions/dist/mapbox-gl-directions';
+import UrlController from "./url";
+import {clearOrigin} from "../mapbox-gl-directions/src/actions";
 
 // import updateRouteParams from './url';
 
@@ -61,6 +63,7 @@ export default class WeDirections {
         console.log("API: ", this.api);
         console.log("Mode: ", this.mode);
         this.onClick(this.engine);
+        this.onChange(this.engine);
     }
 
     /**
@@ -99,7 +102,6 @@ export default class WeDirections {
                 instructions: this.instructions // true
             },
         });
-
         console.log('Directions Init: ', directions);
         document.getElementById('start').style.display ="block";
         document.getElementById('end').style.display ="block";
@@ -165,6 +167,31 @@ export default class WeDirections {
                 }
                 console.log(engine, cycling);
             });
+        });
+    }
+
+    /**
+     *
+     */
+    onChange(engine) {
+        window.addEventListener('DOMContentLoaded', function(){
+
+            var start = document.getElementById('mapbox-directions-origin-input');
+            var end = document.getElementById('mapbox-directions-destination-input');
+            let latlonStart = '';
+            let latlonEnd = '';
+
+            start.addEventListener('change', () => {
+                latlonStart = start.querySelectorAll('input')[0].value;
+                console.log('latlonStart: ', latlonStart);
+
+            });
+
+            end.addEventListener('change', () => {
+                latlonEnd = end.querySelectorAll('input')[0].value;
+                console.log('latlonEnd: ', latlonEnd);
+            });
+
         });
     }
 
