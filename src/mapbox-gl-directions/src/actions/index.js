@@ -70,7 +70,10 @@ function fetchDirections() {
     request.abort();
 
     // console.log('Direction options: ', options);
-    // console.log('getState: ', getState());
+    console.log('query: ', query);
+    let formArea = document.getElementById('mapbox-directions-form-area');
+      formArea.dataset.query = query;
+
     let URLDirection = '';
     if (engine === 'mapbox') {
         if (language) options.push('language='+language);
