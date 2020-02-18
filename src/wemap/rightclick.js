@@ -1,9 +1,11 @@
 import { getJSON } from '../util/ajax'
+import { default as config } from '../config.json';
 
 export default class RightClick {
-    constructor(map, stt) {
+    constructor(map, stt, key) {
         this.map = map;
         this.stt = stt;
+        this.key = key;
         this.initView();
         this.init();
         this.clicked_poi = {};
@@ -11,6 +13,8 @@ export default class RightClick {
     initView() {
         let rightClick = document.createElement('div')
         rightClick.innerHTML = '<div id = "right-click-menu-container"' + "style = 'display: none'>" +
+            '<div class = "right-click-menu-item" style = "display: none">Điểm bắt đầu</div>' +
+            '<div class = "right-click-menu-item" style = "display: none">Điểm kết thúc</div>' +
 
             '<div class = "right-click-menu-item" id = "start" style = "display: none">Điểm bắt đầu</div>' +
             '<div class = "right-click-menu-item" id = "end" style = "display: none">Điểm kết thúc</div>' +
@@ -47,10 +51,14 @@ export default class RightClick {
             this.map.on('contextmenu', (e) => {
                 let mouseX = e.point.x;
                 let mouseY = e.point.y;
-                let max_width = $(window).width();
-                let max_height = $(window).height();
-                let context_menu_width = $('#right-click-menu-container').width();
-                let context_menu_height = $('#right-click-menu-container').height();
+                // let max_width = $(window).width();
+                let max_width = window.innerWidth;
+                // let max_height = $(window).height();
+                let max_height = window.innerHeight;
+                // let context_menu_width = $('#right-click-menu-container').width();
+                let context_menu_width = document.getElementById("right-click-menu-container").clientWidth;
+                //let context_menu_height = $('#right-click-menu-container').height();
+                let context_menu_height = document.getElementById("right-click-menu-container").clientHeight;
                 let translateX = 0;
                 let translateY = 0;
 
@@ -66,16 +74,18 @@ export default class RightClick {
                 } else {
                     translateY = mouseY;
                 }
-                $('#right-click-menu-container').css({ 'display': "block" })
-                $('#right-click-menu-container').css({ "transform": `translate(${translateX}px,${translateY}px)` })
-
+                // $('#right-click-menu-container').css({ 'display': "block" })
+                document.getElementById("right-click-menu-container").style.display = "block"
+                //$('#right-click-menu-container').css({ "transform": `translate(${translateX}px,${translateY}px)` })
+                document.getElementById("right-click-menu-container").style.transform = `translate(${translateX}px,${translateY}px)`
                 this.clicked_poi = e;
             })
 
             this.map.on('click', (e) => {
-                $('#right-click-menu-container').css({ 'display': "none" })
+                // $('#right-click-menu-container').css({ 'display': "none" })
+                document.getElementById("right-click-menu-container").style.display = "none";
             })
-             
+
             document.getElementById('right-click-reverse').addEventListener('click', (event) => {
                 let features = this.map.queryRenderedFeatures(this.clicked_poi.point);
                 console.log('feature', features)
@@ -85,7 +95,7 @@ export default class RightClick {
                 let point_layers = ['poi-level-1', 'poi-level-2', 'poi-level-3', 'poi-level-4']
 
                 getJSON({
-                    url: `https://apis.wemap.asia/we-tools/reverse?key=vpstPRxkBBTLaZkOaCfAHlqXtCR&lat=${this.clicked_poi.lngLat.lat}&lon=${this.clicked_poi.lngLat.lng}`,
+                    url: `${config.reverse}${this.key}&lat=${this.clicked_poi.lngLat.lat}&lon=${this.clicked_poi.lngLat.lng}`,
                     method: 'GET'
                 }, (err, data) => {
                     console.log('ajax data', data)
@@ -130,7 +140,8 @@ export default class RightClick {
                         let chosen_info = choose_received_data(false, null, null)
                         not_point_render_detail(chosen_info.properties, chosen_info.geometry)
                         chosen_point_info = chosen_info
-                        $('#right-click-menu-container').css({ 'display': "none" })
+                        // $('#right-click-menu-container').css({ 'display': "none" })
+                        document.getElementById('right-click-menu-container').style.display = "none"
                     }
                     else {
                         let not_point_layer = 0
@@ -152,7 +163,8 @@ export default class RightClick {
                             not_point_render_detail(chosen_info.properties, chosen_info.geometry)
                             chosen_point_info = chosen_info
                         }
-                        $('#right-click-menu-container').css({ 'display': "none" })
+                        // $('#right-click-menu-container').css({ 'display': "none" })
+                        document.getElementById("right-click-menu-container").style.display = "none"
                     }
                 })
             })
@@ -161,7 +173,7 @@ export default class RightClick {
                 // place.showDetailFeature()
                 document.getElementById('place').style.display = 'none'
             })
-            
+
             document.getElementById('placeclose').addEventListener('click', (e) => {
                 // deleteUrlParam('rx');
                 // deleteUrlParam('ry');

@@ -4,9 +4,7 @@
     "bright": "https://apis.wemap.asia/vector-tiles/styles/osm-bright/style.json?key=",
     "dark": "https://apis.wemap.asia/vector-tiles/styles/osm-bright/style.json?key="
   },
-
-  "reverse" : "https://apis.wemap.asia/we-tools/reverse?key=",
-
+  "reverse": "https://apis.wemap.asia/we-tools/reverse?key=",
   "direction" : {
     "engine" : {
       "default" : "https://apis.wemap.asia/direction-api/route/v1",
