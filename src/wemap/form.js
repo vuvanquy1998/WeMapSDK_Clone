@@ -7,7 +7,7 @@ const json = require('../config.json');
  */
 function getWeMapForm() {
     // Test config json
-    console.log(json);
+    console.log(config);
 
     // Test fetch
     let pointLayers = [];

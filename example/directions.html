@@ -5,8 +5,8 @@
     <meta charset="utf-8" />
     <title>Display driving directions</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-
-    <script src="../dist/js/wemap-gl.js"  type="text/javascript"></script>
+        <script src="../dist/js/wemap-gl.js"  type="text/javascript"></script>
+<!--    <script src="../dist/js/wemap-gl.js"  type="module"></script>-->
 
     <link href="../dist/css/wemap.min.css" rel="stylesheet" />
 
@@ -44,16 +44,21 @@
 			params: {'access-token': 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7'}
 		  });
 
-	    console.log(wm.showForm());
+	    // console.log(wm.showForm());
 
 
         let wd =  new wemapgl.WeDirections({
             params: {'access-token': 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7'},
             mode: 'driving',
-            accessToken: "pk.eyJ1IjoicGh1b25naHgiLCJhIjoiY2s2N3IxMnNiMWdlbTNlcW8ybG5jaXU4MCJ9.CkMLijVJ1Lp2ZbaR0zDgrg",
-            engine: 'graphhopper',
-            api: 'https://api.mapbox.com/directions/v5/',
-            // api: 'https://api.mapbox.com/directions/',
+            // accessToken: "pk.eyJ1IjoicGh1b25naHgiLCJhIjoiY2s2N3IxMnNiMWdlbTNlcW8ybG5jaXU4MCJ9.CkMLijVJ1Lp2ZbaR0zDgrg",
+            accessToken: "vpstPRxkBBTLaZkOaCfAHlqXtCR",
+            key: "vpstPRxkBBTLaZkOaCfAHlqXtCR",
+            engine: 'osrm',
+            // api: 'https://api.mapbox.com/directions/v5/',
+            // api: 'https://apis.wemap.asia/direction-api/route/v1/',
+            geocoder: {
+                api: 'https://apis.wemap.asia/geocode-1/autocomplete?text='
+            }
         });
 
         console.log(wd.render());
@@ -62,6 +67,7 @@
             wd.render(),
             'top-left'
         );
+        new wemapgl.RightClick(map, true).init()
 
 	</script>
 
