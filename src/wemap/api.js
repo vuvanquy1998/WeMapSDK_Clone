@@ -1,25 +1,22 @@
-import {getJSON} from '../util/ajax';
+import { getJSON } from '../util/ajax';
+import { default as config } from '../config.json';
 
 export default class API {
     /**
-     * Returns detail infomation of an OSM Id with OSM type
+     * Returns detail infomation of an OSM Id (with or without OSM type)
      * @returns {Object} detail infomation
      */
-    static lookup({osmId, osmType, key}, cb) {
-        // TODO: get lookup api
-        if(osmType != null && osmType != undefined && osmType != "") {
-            var url = "https://apis.wemap.asia/we-tools/lookup?key=" + key + "&id=" + osmType + osmId;
+    static lookup({ osmId, osmType, key }, callback) {
+        if (osmType != null && osmType != undefined && osmType != "") {
+            var url = config.lookup + key + "&id=" + osmType + osmId;
         } else {
-            var url = "https://apis.wemap.asia/we-tools/lookup/" + osmId + "?key=" + key;
+            var url = config.lookupOsmIdOnly + osmId + "?key=" + key;
         }
-        
-        console.log(url);
-        getJSON({ 
+        getJSON({
             url: url,
             method: 'GET'
         }, (error, data) => {
-            // TODO: handle error
-            cb(data);
+            callback(data);
         });
     }
 }

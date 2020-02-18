@@ -23,19 +23,14 @@
             bottom: 0;
             width: 100%;
         }
-        #place{
-            display: none; 
-            position: absolute;
-        }
     </style>
 </head>
-
 <body>
     <div id="map"></div>
-    <div id = "right-click-menu-container" style = 'display: none'>
+    <!-- <div id = "right-click-menu-container" style = 'display: none'>
         <div class = "right-click-menu-item">Điểm bắt đầu</div>
         <div class = "right-click-menu-item">Điểm kết thúc</div>
-        <div class = "right-click-menu-item">Reverse</div>
+        <div class = "right-click-menu-item" id ="right-click-reverse">Reverse</div>
     </div>
     <div id="place">
 		<div class="class-pl">
@@ -58,19 +53,41 @@
 				<div id="placeclose" style="color: black;"><i class="fa fa-times"></i></div>
 			</div>
 		</div>
-	</div>
+	</div> -->
     <script>
         wemapgl.accessToken = "pk.eyJ1IjoicGh1b25naHgiLCJhIjoiY2s2N3IxMnNiMWdlbTNlcW8ybG5jaXU4MCJ9.CkMLijVJ1Lp2ZbaR0zDgrg";
         var map = new wemapgl.Map({
             container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v11',
+            style: 'https://apis.wemap.asia/vector-tiles/styles/osm-bright/style.json?key=vpstPRxkBBTLaZkOaCfAHlqXtCR',
             center: [105.84370246986344, 21.003961186227826],
             zoom: 13          
         });
-        // new wemapgl.RightClick(map, true)
+        var iconMarkerEl = document.createElement("div");
+        iconMarkerEl.innerHTML = "<div class='marker-arrow'></div>" +
+            "<div class='marker-pulse'></div>";
+
+        token = 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7'
+
+        var wemapControl = new wemapgl.WeGeocoder({
+            flyTo: 'hybrid',
+            accessToken: token,
+            wof: true,
+            useFocusPoint: true,
+            engine: 'default',  //ko biết
+            suggestion: {
+                min_char: 4  // ko ghi = 4
+            },
+            useFocusPoint: true,
+            marker: {
+                icon: iconMarkerEl,
+                multiple: false
+            }
+        });
+        map.addControl(wemapControl)
         let stt = true;
-        new wemapgl.Reverse(map, true)
-        stt = false;
+        new wemapgl.RightClick(map, true, 'vpstPRxkBBTLaZkOaCfAHlqXtCR')
+        let reverse = new wemapgl.Reverse(map, 'vpstPRxkBBTLaZkOaCfAHlqXtCR')
+        // reverse.off_reverse()
 
     </script>
 </body>

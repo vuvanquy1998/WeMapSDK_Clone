@@ -37,6 +37,40 @@
             class='mapbox-directions-step'>
             <span class='directions-icon directions-icon-<%= icon %>'></span>
             <div class='mapbox-directions-step-maneuver'>
+            <!-- TODO: Update code template or support using language in Direction -->
+                <%
+                    if (!step.maneuver.instruction) {
+                        if (step.maneuver.modifier === 'sharp left') {
+                        step.maneuver.instruction = 'Rẽ trái rồi quay ngược'
+                        }
+                        if (step.maneuver.modifier === 'sharp right') {
+                        step.maneuver.instruction = 'Rẽ trái rồi quay ngược'
+                        }
+                        if (step.maneuver.modifier === 'slight left') {
+                        step.maneuver.instruction = 'Chếch trái' + ' ' + step.name
+                        }
+                        if (step.maneuver.modifier === 'uturn') {
+                        step.maneuver.instruction = 'Quay ngược' + ' ' + step.name
+                        }
+                        if (step.maneuver.modifier === 'slight right') {
+                        step.maneuver.instruction = 'Chếch phải' + ' ' + step.name
+                        }
+                        if (step.maneuver.modifier === 'straight') {
+                        step.maneuver.instruction = 'Đi thẳng' + ' ' + step.name
+                        }
+                        if (step.maneuver.modifier === 'left') {
+                        step.maneuver.instruction = 'Rẽ trái' + ' ' + step.name
+                        }
+                        if (step.maneuver.modifier === 'right') {
+                        step.maneuver.instruction = 'Rẽ phải' + ' ' + step.name
+                        }
+                        if (step.maneuver.modifier === undefined) {
+                        step.maneuver.instruction = ''
+                        }
+                    }
+
+                %>
+
               <%= step.maneuver.instruction %>
             </div>
             <% if (distance) { %>

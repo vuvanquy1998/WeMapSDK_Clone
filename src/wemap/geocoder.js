@@ -4,7 +4,7 @@ export default class WeGeocoder {
         constructor(options) {
                 options = options || {};
                 this.options = options;
-                
+
                 this.geocoder = this.init();
                 WeGeocoder.initMultiView()
                 this.initEvent()
@@ -15,7 +15,6 @@ export default class WeGeocoder {
          * @returns geocoder
          */
         init(){
-            console.log('init geocoder')
             let engine = this.options.engine
             switch (engine) {
                 case undefined:
@@ -28,7 +27,7 @@ export default class WeGeocoder {
                     return null
             }
         }
-        
+
         /**
          * @returns peliasGeocoder
          */
@@ -47,9 +46,7 @@ export default class WeGeocoder {
             return geocoder
         }
         overridebuildInputHTMLElement(){
-            console.log(this)
             let self = this;
-            // console.log(self.constructor.name)
 
             var inputEl = self._createElement({type: 'input'});
             inputEl.type = 'text';
@@ -104,7 +101,7 @@ export default class WeGeocoder {
                 //       }
                 //       if (result) {
                 //         // self._clearAll()
-                        
+
                 //         hideDetailFeatureFrame();
                 //         showresultsSearch(result)
                 //       }
@@ -139,7 +136,6 @@ export default class WeGeocoder {
             //     WeGeocoder.hideDetailFeatureFrame();
             //     WeGeocoder.hideResultSearch();
             //   });
-            console.log('init event cross')
             var originBuildIconCross = this.geocoder._buildIconCrossHTMLElement
             this.geocoder._buildIconCrossHTMLElement = function(){
                 let iconCrossEl = originBuildIconCross.call(this)
@@ -161,19 +157,15 @@ export default class WeGeocoder {
             })
         }
         initEvent(){
-            console.log('init event')
             if(!this.geocoder){
-                console.log('no init event')
-                return 
+                return
             }
             this.initEventIconCross()
             this.initEventCloseDetailFrame()
             // this.geocoder._buildInputHTMLElement = this.overridebuildInputHTMLElement
             var originGoToFeatureLocation =  this.geocoder._goToFeatureLocation
             this.geocoder._goToFeatureLocation = function(feature){
-                console.log('custome function goToFeatureLocation')
                 // let place = new PlaceDetail()
-                console.log(feature)
                 let info = feature.properties
                 let osm_id = ''
                 let osm_type = ''
@@ -190,23 +182,16 @@ export default class WeGeocoder {
                 let address = [info.street, info.county, info.region, info.country]
                 // {name: name, type: type, lat: lat, lon: lon,address: address ,osm_id: osm_id, osm_type: osm_type}
                 let place = new PlaceDetail({name: name, type: type, lat: lat, lon: lon,address: address ,osm_id: osm_id, osm_type: osm_type});
-                console.log('name, type, lat')
-                console.log(name)
                 
-                console.log(place)
                 place.showDetailFeature()
-                console.log('this')
-
-                console.log(this)
                 originGoToFeatureLocation.call(this, feature)
             }
-        
+
         }
         /**
          * init view detailFeature, result search
          */
         static initMultiView(){
-            console.log('init multi view')
             let map = document.getElementById('map')
             let view = document.createElement('div')
             view.innerHTML = '<div id="no-result"\>'+
@@ -282,7 +267,7 @@ export default class WeGeocoder {
             let features = result.features;
             let resultFeatures = '';
             changeStarColor = function(){
-              
+
             }
             features.forEach(function (feature, i) {
                 if (i < features.length) {
@@ -318,8 +303,7 @@ export default class WeGeocoder {
                     '</div>' +
                     '</li>';
                 }
-            }); 
+            });
         }
-
 
 }

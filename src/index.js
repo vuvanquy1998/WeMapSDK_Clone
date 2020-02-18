@@ -3,7 +3,7 @@
 import assert from 'assert';
 import supported from '@mapbox/mapbox-gl-supported';
 
-import {version} from '../package.json';
+import { version } from '../package.json';
 import Map from './ui/map';
 import NavigationControl from './ui/control/navigation_control';
 import GeolocateControl from './ui/control/geolocate_control';
@@ -17,20 +17,21 @@ import LngLat from './geo/lng_lat';
 import LngLatBounds from './geo/lng_lat_bounds';
 import Point from '@mapbox/point-geometry';
 import MercatorCoordinate from './geo/mercator_coordinate';
-import {Evented} from './util/evented';
+import { Evented } from './util/evented';
 import config from './util/config';
-import {Debug} from './util/debug';
-import {isSafari} from './util/util';
-import {setRTLTextPlugin, getRTLTextPluginStatus} from './source/rtl_text_plugin';
+import { Debug } from './util/debug';
+import { isSafari } from './util/util';
+import { setRTLTextPlugin, getRTLTextPluginStatus } from './source/rtl_text_plugin';
 import WorkerPool from './util/worker_pool';
-import {clearTileCache} from './util/tile_request_cache';
-import {PerformanceUtils} from './util/performance';
+import { clearTileCache } from './util/tile_request_cache';
+import { PerformanceUtils } from './util/performance';
 
 
-import MapboxDirections from './mapbox-gl-directions/dist/mapbox-gl-directions';
+// import MapboxDirections from './mapbox-gl-directions/dist/mapbox-gl-directions';
 
 
 import WeMap from './wemap/map';
+import WeDirections from './wemap/directions';
 import WeGeocoder from './wemap/geocoder';
 import Reverse from './wemap/reverse';
 import RightClick from './wemap/rightclick';
@@ -56,9 +57,10 @@ const exported = {
     Point,
     MercatorCoordinate,
     Evented,
-    MapboxDirections,
+    // MapboxDirections,
     PeliasGeocoder,
     WeMap,
+    WeDirections,
     WeGeocoder,
     Reverse,
     RightClick,
@@ -79,6 +81,33 @@ const exported = {
     set accessToken(token: string) {
         config.ACCESS_TOKEN = token;
     },
+
+    /**
+     * Gets and sets the map's reverse.
+     *
+     * @var {Reverse} reverse instance
+     */
+    get reverse(): ?Reverse {
+        return config.reverse;
+    },
+
+    set reverse(reverse: Reverse) {
+        config.reverse = reverse;
+    },
+
+    /**
+     * Gets and sets the map's rightClick controller.
+     *
+     * @var {RightClick} rightClick instance
+     */
+    get rightClick(): ?RightClick {
+        return config.rightClick;
+    },
+
+    set rightClick(rightClick: RightClick) {
+        config.rightClick = rightClick;
+    },
+
 
     /**
      * Gets and sets the map's default API URL for requesting tiles, styles, sprites, and glyphs
@@ -151,7 +180,7 @@ const exported = {
 };
 
 //This gets automatically stripped out in production builds.
-Debug.extend(exported, {isSafari, getPerformanceMetrics: PerformanceUtils.getPerformanceMetrics});
+Debug.extend(exported, { isSafari, getPerformanceMetrics: PerformanceUtils.getPerformanceMetrics });
 
 /**
  * The version of Mapbox GL JS in use as specified in `package.json`,

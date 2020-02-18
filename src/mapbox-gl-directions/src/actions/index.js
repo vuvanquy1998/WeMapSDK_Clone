@@ -52,7 +52,7 @@ function setHoverMarker(feature) {
 
 function fetchDirections() {
   return (dispatch, getState) => {
-    const { api, accessToken, routeIndex, profile, alternatives, congestion, destination, language } = getState();
+    const { api, accessToken, routeIndex, profile, alternatives, congestion, destination, language, engine } = getState();
     // if there is no destination set, do not make request because it will fail
     if (!(destination && destination.geometry)) return;
 
@@ -65,10 +65,38 @@ function fetchDirections() {
     if (congestion) options.push('annotations=congestion');
     options.push('steps=true');
     options.push('overview=full');
-    if (language) options.push('language='+language);
-    if (accessToken) options.push('access_token=' + accessToken);
+    // if (language) options.push('language='+language);
+    // if (accessToken) options.push('access_token=' + accessToken);
     request.abort();
-    request.open('GET', `${api}${profile}/${query}.json?${options.join('&')}`, true);
+
+    // console.log('Direction options: ', options);
+    console.log('query: ', query);
+    let formArea = document.getElementById('mapbox-directions-form-area');
+      formArea.dataset.query = query;
+
+    let URLDirection = '';
+    if (engine === 'mapbox') {
+        if (language) options.push('language='+language);
+        if (accessToken) options.push('access_token=' + accessToken);
+        URLDirection = `${api}${profile}/${query}.json?${options.join('&')}`
+    } else if (engine === 'osrm' || engine === 'default') {
+        if (accessToken) options.push('key=' + accessToken);
+        URLDirection = `${api}${profile}/${query}?${options.join('&')}`
+    } else if (engine === 'graphhopper') {
+        if (accessToken) options.push('key=' + accessToken);
+        const startEnd = query.split('%3B');
+        const latLonStart = startEnd[0].split('%2C')
+        const latLonEnd = startEnd[1].split('%2C')
+        // URLDirection = `${api}point=${latLonStart[0]},${latLonStart[1]}&point=${latLonEnd[0]},${latLonEnd[1]}&type=json&vehicle=${profile}&weighting=fastest&elevation=false&key=${accessToken}`
+
+        URLDirection = api + 'point=' + latLonStart[1] + ',' + latLonStart[0]
+                        + '&point=' + latLonEnd[1] + ',' + latLonEnd[0]
+                        + '&type=json' + '&vehicle=' + profile
+                        + '&weighting=fastest&elevation=false&locale=vi-VN' + '&key=' + accessToken
+        // TODO: Check graphhopper Direction
+    }
+    // request.open('GET', `${api}${profile}/${query}.json?${options.join('&')}`, true);
+    request.open('GET', URLDirection, true);
 
     request.onload = () => {
       if (request.status >= 200 && request.status < 400) {
