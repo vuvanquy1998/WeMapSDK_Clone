@@ -54,8 +54,6 @@
 
         let wd =  new wemapgl.WeDirections({
             mode: 'driving',
-            // accessToken: "pk.eyJ1IjoicGh1b25naHgiLCJhIjoiY2s2N3IxMnNiMWdlbTNlcW8ybG5jaXU4MCJ9.CkMLijVJ1Lp2ZbaR0zDgrg",
-            // accessToken: "vpstPRxkBBTLaZkOaCfAHlqXtCR",
             key: "vpstPRxkBBTLaZkOaCfAHlqXtCR",
             // key: "pk.eyJ1IjoicGh1b25naHgiLCJhIjoiY2s2N3IxMnNiMWdlbTNlcW8ybG5jaXU4MCJ9.CkMLijVJ1Lp2ZbaR0zDgrg",
             engine: 'osrm',
@@ -74,7 +72,8 @@
             wd.render(),
             'top-left'
         );
-        new wemapgl.RightClick(map, true).init()
+        new wemapgl.RightClick(map, true);
+        new wemapgl.Reverse(map, true);
 
 	</script>
 
