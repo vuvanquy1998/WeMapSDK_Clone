@@ -99,18 +99,8 @@ export default class WeMap {
                 // If z param is not given, assign the default value
                 if (urlParams.z == null) {
                     urlParams.z = this.map.getZoom();
+                    UrlController.updateViewParams(urlParams);
                 }
-
-                this.map.jumpTo({
-                    center: [
-                        urlParams.x,
-                        urlParams.y
-                    ],
-                    zoom: urlParams.z
-                });
-
-                // This update call is for case that z param is not given in url
-                UrlController.updateViewParams(urlParams);
             } else {
                 UrlController.updateViewParams({
                     x: this.map.getCenter().lng,
@@ -118,6 +108,26 @@ export default class WeMap {
                     z: this.map.getZoom()
                 });
             }
+
+            this.map.jumpTo({
+                center: [
+                    urlParams.x,
+                    urlParams.y
+                ],
+                zoom: urlParams.z
+            });
+
+            if(urlParams.ox != null && urlParams.oy != null && urlParams.dx != null && urlParams.dy != null) {
+                if(urlParams.vehicle == null) {
+                    // TODO: Set default vechicle
+                }
+                // TODO: Show directions
+            }
+
+            if(urlParams.osmId != null) {
+                // TODO: Show detail
+            }
+
             this.map.on("zoomend", () => {
                 UrlController.updateViewParams({
                     x: this.map.getCenter().lng,
@@ -125,6 +135,7 @@ export default class WeMap {
                     z: this.map.getZoom()
                 });
             });
+            
             this.map.on('moveend', () => {
                 UrlController.updateViewParams({
                     x: this.map.getCenter().lng,
