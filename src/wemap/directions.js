@@ -101,6 +101,8 @@ export default class WeDirections {
         });
 
         console.log('Directions Init: ', directions);
+        document.getElementById('start').style.display ="block";
+        document.getElementById('end').style.display ="block";
 
         return directions;
     }
