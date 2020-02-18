@@ -1,9 +1,11 @@
 import { getJSON } from '../util/ajax'
 import PlaceDetail from './placeDetail'
+import { default as config } from '../config.json'; 
 
 export default class Reverse{
-    constructor(map) {
+    constructor(map, key) {
         this.map = map;
+        this.key = key;
         this.on = true;
         this.initView();
         this.init();
@@ -45,7 +47,7 @@ export default class Reverse{
             let chosen_point_info = {}
 
             getJSON({
-                url: 'https://apis.wemap.asia/vector-tiles/styles/osm-bright/style.json?key=vpstPRxkBBTLaZkOaCfAHlqXtCR',
+                url: `${config.style.bright}${this.key}`,
                 method: 'GET'
             }, (err, data) => {
                 console.log('test ajax style',data)
@@ -73,7 +75,7 @@ export default class Reverse{
                     //addMarkder(e.lngLat, e.lngLat.lat)
 
                     getJSON({
-                        url:`https://apis.wemap.asia/we-tools/reverse?key=vpstPRxkBBTLaZkOaCfAHlqXtCR&lat=${e.lngLat.lat}&lon=${e.lngLat.lng}`,
+                        url:`${config.reverse}${this.key}&lat=${e.lngLat.lat}&lon=${e.lngLat.lng}`,
                         method: 'GET'
                     }, (err, data) => {
                         console.log('test ajax reverse', data)

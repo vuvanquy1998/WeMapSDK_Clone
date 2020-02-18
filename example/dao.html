@@ -32,51 +32,48 @@
     <script>
         wemapgl.accessToken = "pk.eyJ1IjoicGh1b25naHgiLCJhIjoiY2s2N3IxMnNiMWdlbTNlcW8ybG5jaXU4MCJ9.CkMLijVJ1Lp2ZbaR0zDgrg";
         // var map = new wemapgl.Map({
-        //     key: 'vpstPRxkBBTLaZkOaCfAHlqXtCR',
         //     container: 'map',
         //     style: 'mapbox://styles/mapbox/streets-v11',
         //     center: [105.7884815, 21.02459],
         //     zoom: 11
         // });
     </script>
-
+	
 	<script>
-		let map =  new wemapgl.WeMap({
-            key: 'vpstPRxkBBTLaZkOaCfAHlqXtCR',
+		let wm =  new wemapgl.WeMap({
             container: 'map',
-            reverse: true,
             center: [105.7884815, 21.02459],
-            zoom: 11
+            style: 'mapbox://styles/mapbox/streets-v11',
+            zoom: 11,
+            key: 'vpstPRxkBBTLaZkOaCfAHlqXtCR',
+			params: {'access-token': 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7'}
 		  });
 
 	    // console.log(wm.showForm());
 
 
         let wd =  new wemapgl.WeDirections({
+            params: {'access-token': 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7'},
             mode: 'driving',
+            // accessToken: "pk.eyJ1IjoicGh1b25naHgiLCJhIjoiY2s2N3IxMnNiMWdlbTNlcW8ybG5jaXU4MCJ9.CkMLijVJ1Lp2ZbaR0zDgrg",
+            accessToken: "vpstPRxkBBTLaZkOaCfAHlqXtCR",
             key: "vpstPRxkBBTLaZkOaCfAHlqXtCR",
-            // key: "pk.eyJ1IjoicGh1b25naHgiLCJhIjoiY2s2N3IxMnNiMWdlbTNlcW8ybG5jaXU4MCJ9.CkMLijVJ1Lp2ZbaR0zDgrg",
             engine: 'osrm',
             // api: 'https://api.mapbox.com/directions/v5/',
             // api: 'https://apis.wemap.asia/direction-api/route/v1/',
             geocoder: {
-                // api: 'https://apis.wemap.asia/geocode-1/autocomplete?text=',
-                engine: 'pelias',
-                // engine: 'mapbox'
+                api: 'https://apis.wemap.asia/geocode-1/autocomplete?text='
             }
         });
 
         console.log(wd.render());
 
-        map.addControl(
+        wm.addControl(
             wd.render(),
             'top-left'
         );
-        new wemapgl.RightClick(map, true);
-        new wemapgl.Reverse(map, true);
-
+        new wemapgl.RightClick(wm, true);
 	</script>
-
 </body>
 
 </html>

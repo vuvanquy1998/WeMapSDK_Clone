@@ -1,8 +1,11 @@
 import { getJSON } from '../util/ajax'
+import { default as config } from '../config.json';
+
 export default class RightClick {
-    constructor(map, stt) {
+    constructor(map, stt, key) {
         this.map = map;
         this.stt = stt;
+        this.key = key;
         this.initView();
         this.init();
         this.clicked_poi = {};
@@ -12,6 +15,9 @@ export default class RightClick {
         rightClick.innerHTML = '<div id = "right-click-menu-container"' + "style = 'display: none'>" +
             '<div class = "right-click-menu-item" style = "display: none">Điểm bắt đầu</div>' +
             '<div class = "right-click-menu-item" style = "display: none">Điểm kết thúc</div>' +
+
+            '<div class = "right-click-menu-item" id = "start" style = "display: none">Điểm bắt đầu</div>' +
+            '<div class = "right-click-menu-item" id = "end" style = "display: none">Điểm kết thúc</div>' +
             '<div class = "right-click-menu-item" id ="right-click-reverse">Đây là đâu ?</div>' +
             '</div>'
         document.body.appendChild(rightClick)
@@ -79,7 +85,7 @@ export default class RightClick {
                 // $('#right-click-menu-container').css({ 'display': "none" })
                 document.getElementById("right-click-menu-container").style.display = "none";
             })
-             
+
             document.getElementById('right-click-reverse').addEventListener('click', (event) => {
                 let features = this.map.queryRenderedFeatures(this.clicked_poi.point);
                 console.log('feature', features)
@@ -89,7 +95,7 @@ export default class RightClick {
                 let point_layers = ['poi-level-1', 'poi-level-2', 'poi-level-3', 'poi-level-4']
 
                 getJSON({
-                    url: `https://apis.wemap.asia/we-tools/reverse?key=vpstPRxkBBTLaZkOaCfAHlqXtCR&lat=${this.clicked_poi.lngLat.lat}&lon=${this.clicked_poi.lngLat.lng}`,
+                    url: `${config.reverse}${this.key}&lat=${this.clicked_poi.lngLat.lat}&lon=${this.clicked_poi.lngLat.lng}`,
                     method: 'GET'
                 }, (err, data) => {
                     console.log('ajax data', data)
@@ -135,7 +141,7 @@ export default class RightClick {
                         not_point_render_detail(chosen_info.properties, chosen_info.geometry)
                         chosen_point_info = chosen_info
                         // $('#right-click-menu-container').css({ 'display': "none" })
-                        document.getElementById('right-click-menu-containe').style.display = "none"
+                        document.getElementById('right-click-menu-container').style.display = "none"
                     }
                     else {
                         let not_point_layer = 0
@@ -158,7 +164,7 @@ export default class RightClick {
                             chosen_point_info = chosen_info
                         }
                         // $('#right-click-menu-container').css({ 'display': "none" })
-                        document.getElementById("right-click-menu-containe").style.display = "none"
+                        document.getElementById("right-click-menu-container").style.display = "none"
                     }
                 })
             })
