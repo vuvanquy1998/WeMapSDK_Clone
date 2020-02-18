@@ -56,15 +56,15 @@ export default class PlaceDetail{
     featureLocation.innerHTML = '<i class="fas fa-map"></i>  ' + address_result;
 
 
-    document.getElementById("feature-website").innerHTML = '';
-    document.getElementById("feature-opening-hours").innerHTML = ''
-    document.getElementById("feature-description").innerHTML = ''
-    document.getElementById("feature-phone").innerHTML = ''
+    // document.getElementById("feature-website").innerHTML = '';
+    // document.getElementById("feature-opening-hours").innerHTML = ''
+    // document.getElementById("feature-description").innerHTML = ''
+    // document.getElementById("feature-phone").innerHTML = ''
 
-    let featureWebsite = document.getElementById("feature-website");
-    let featureOpening_hours = document.getElementById("feature-opening-hours");
-    let featureDescription = document.getElementById("feature-description");
-    let featurePhone = document.getElementById("feature-phone");
+    // let featureWebsite = document.getElementById("feature-website");
+    // let featureOpening_hours = document.getElementById("feature-opening-hours");
+    // let featureDescription = document.getElementById("feature-description");
+    // let featurePhone = document.getElementById("feature-phone");
 
     let osm_id = this.options.osm_id
     let osm_type = this.options.osm_type
