@@ -80,7 +80,7 @@ function fetchDirections() {
         if (accessToken) options.push('key=' + accessToken);
         URLDirection = `${api}${profile}/${query}?${options.join('&')}`
     } else if (engine === 'graphhopper') {
-        if (accessToken) options.push('key=' + accessToken);Đa
+        if (accessToken) options.push('key=' + accessToken);
         const startEnd = query.split('%3B');
         const latLonStart = startEnd[0].split('%2C')
         const latLonEnd = startEnd[1].split('%2C')
