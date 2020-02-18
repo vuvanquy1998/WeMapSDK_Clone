@@ -3,7 +3,6 @@
 // ---------------------------------------------
 
 function PeliasGeocoder(opts) {
-  console.log('init pelias')
   opts = opts || {};
 
   this.opts = {};
@@ -58,7 +57,6 @@ function PeliasGeocoder(opts) {
 }
 
 PeliasGeocoder.prototype.onAdd = function (map) {
-  console.log('on add')
   this._map = map;
 
   var wrapperEl = this._createElement({class: 'pelias-ctrl mapboxgl-ctrl'});
@@ -78,10 +76,7 @@ PeliasGeocoder.prototype.onAdd = function (map) {
   this._resultsEl.appendChild(this._resultsListEl);
   wrapperEl.appendChild(inputActionsWrapperEl);
   wrapperEl.appendChild(this._resultsEl);
-  // console.log(this._iconSearchEl)
-  // console.log(this)
 
-  // console.log(Object.keys(this))
   return wrapperEl;
 };
 
@@ -173,37 +168,23 @@ PeliasGeocoder.prototype._selectFeature = function (feature) {
 };
 
 PeliasGeocoder.prototype._goToFeatureLocation = function (feature) {
-  console.log('goto feature')
-  console.log(Object.keys(this))
   this._results = undefined;
-  console.log('1')
-
   this._resultsListEl.removeAll();
-  console.log('2')
-  
   var cameraOpts = {
     center: feature.geometry.coordinates,
     zoom: this._getBestZoom(feature)
   };
-  console.log('3')
-  
   if (this._useFlyTo(cameraOpts)) {
     this._map.flyTo(cameraOpts);
   } else {
     this._map.jumpTo(cameraOpts);
   }
-  console.log('4')
-  
   // this._updateMarkers(feature);
-  console.log('5')
-
   if (feature.properties.source === 'whosonfirst' && ['macroregion', 'region', 'macrocounty', 'county', 'locality', 'localadmin', 'borough', 'macrohood', 'neighbourhood', 'postalcode'].indexOf(feature.properties.layer) >= 0) {
     this._showPolygon(feature.properties, cameraOpts.zoom);
   } else {
     this._removePolygon();
   }
-  console.log('6')
-
 };
 
 // -----------------------------
@@ -317,8 +298,6 @@ PeliasGeocoder.prototype._createElement = function (opts) {
 PeliasGeocoder.prototype._buildIconCrossHTMLElement = function () {
   var self = this;
   var iconCrossEl = this._createElement({type: "span", class: "pelias-ctrl-icon-cross pelias-ctrl-hide"});
-  console.log('init icon cross')
-
   iconCrossEl.addEventListener("click", function () {
     self._clearAll();
   });
@@ -331,7 +310,6 @@ PeliasGeocoder.prototype._buildIconSearchHTMLElement = function () {
   iconSearchEl.addEventListener("click", function () {
     if (self._selectedFeature) {
       self._goToFeatureLocation(self._selectedFeature);
-      console.log('iconsearch click')
     }
   });
   return iconSearchEl;
@@ -351,16 +329,6 @@ PeliasGeocoder.prototype._buildInputHTMLElement = function () {
       return;
     }
 
-    if (e.keyCode == 27) {
-      self._resultsListEl.hideAll();
-      return;
-    }
-    //  inputEl.blur();
-    //  self._goToFeatureLocation(self._selectedFeature);
-    //  return;
-    //}
-
-
     // Arrow down -> focus on the first result.
     if (self._eventMatchKey(e, self._keys.arrowDown) && self._results && self._results.features[0]) {
       self._resultsListEl.firstChild.focus();
@@ -379,44 +347,26 @@ PeliasGeocoder.prototype._buildInputHTMLElement = function () {
       self._selectedFeature = undefined;
     }
 
-    //if (!self._eventMatchKey(e, self._keys.enter) && self.opts.onSubmitOnly) {
-    //  return;
-    //}
-
-
-    // if (self._eventMatchKey(e, self._keys.enter)) {
-    //   // if(this.value.length > 3)
-    //     self.search({text: value}, function (err, result) {
-    //       if (err) {
-    //         return self._showError(err);
-    //       }
-    //       if (result) {
-    //         // self._clearAll()
-            
-    //         hideDetailFeatureFrame();
-    //         showresultsSearch(result)
-    //       }
-    //     }, 'search');
-    //     self._resultsListEl.hideAll();
-    //     document.getElementById('results-search').style.display = 'inline-block';
-    // }
-
-    if (!self._eventMatchKey(e, self._keys.enter)) {
-      if(this.value.length > 3)
-        self.autocomplete({text: value}, function (err, result) {
-          if (err) {
-            return self._showError(err);
-          }
-          if (result) {
-            console.log(result)
-            // self._resultsListEl.showAll();
-            return self._showResults(result)
-          }
-        });
+    if (!self._eventMatchKey(e, self._keys.enter) && self.opts.onSubmitOnly) {
+      return;
     }
 
     self._addOrRemoveClassToElement(self._iconCrossEl, false, "pelias-ctrl-hide");
 
+    // Do the search request.
+    if (this._timeoutId !== undefined) {
+      clearTimeout(this._timeoutId);
+    }
+    this._timeoutId = setTimeout(function () {
+      self.search({text: value}, function (err, result) {
+        if (err) {
+          return self._showError(err);
+        }
+        if (result) {
+          return self._showResults(result)
+        }
+      });
+    }, self._eventMatchKey(e, self._keys.enter) ? 0 : 350);
   });
   return inputEl;
 };
@@ -474,8 +424,6 @@ PeliasGeocoder.prototype._buildAndGetResult = function (feature, index) {
 
   resultEl.onclick = function () {
     self._goToFeatureLocation(feature);
-    console.log('resultEL click')
-
   };
   resultEl.addEventListener("focus", function () {
     self._selectFeature(this.feature);
@@ -483,8 +431,6 @@ PeliasGeocoder.prototype._buildAndGetResult = function (feature, index) {
   resultEl.addEventListener("keydown", function (e) {
     if (self._eventMatchKey(e, self._keys.enter)) {
       self._goToFeatureLocation(feature);
-    console.log('resultEL enter')
-
     }
     if (self._eventMatchKey(e, self._keys.arrowUp)) {
       if (self._resultsListEl.childNodes[index - 1]) {
