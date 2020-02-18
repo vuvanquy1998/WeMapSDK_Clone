@@ -32,7 +32,7 @@ export default class UrlController {
         
         this.sortUrlParams();
         url.search = search_params.toString();
-        window.history.pushState("", "", url);
+        window.history.replaceState("", "", url);
     }
 
     /**
