@@ -60,7 +60,7 @@ export default class WeDirections {
 
         console.log("API: ", this.api);
         console.log("Mode: ", this.mode);
-
+        this.onClick(this.engine);
     }
 
     /**
@@ -70,7 +70,6 @@ export default class WeDirections {
      */
     render() {
         // console.log('Directions Init: ', this.engine);
-
         let directions =  new MapboxDirections({
             accessToken: this.key,
             unit: this.unit, // metric
@@ -104,6 +103,67 @@ export default class WeDirections {
         console.log('Directions Init: ', directions);
 
         return directions;
+    }
+
+    onClick(engine) {
+        window.addEventListener('DOMContentLoaded', function(){
+            var traffic = document.getElementById('mapbox-directions-profile-driving-traffic');
+            var driving = document.getElementById('mapbox-directions-profile-driving');
+            var walking = document.getElementById('mapbox-directions-profile-walking');
+            var cycling = document.getElementById('mapbox-directions-profile-cycling');
+
+            traffic.addEventListener('click', () => {
+                if (engine === 'osrm') {
+                    traffic.value = 'driving';
+                }
+                if (engine === 'graphhopper') {
+                    traffic.value = 'car';
+                }
+                if (engine === 'mapbox') {
+                    traffic.value = 'mapbox/' + 'traffic';
+                }
+                console.log(engine, traffic);
+            });
+
+            driving.addEventListener('click', () => {
+                if (engine === 'osrm') {
+                    driving.value = 'driving';
+                }
+                if (engine === 'graphhopper') {
+                    driving.value = 'car';
+                }
+                if (engine === 'mapbox') {
+                    driving.value = 'mapbox/' + 'driving';
+                }
+                console.log(engine, driving);
+            });
+
+            walking.addEventListener('click', () => {
+                if (engine === 'osrm') {
+                    walking.value = 'walking';
+                }
+                if (engine === 'graphhopper') {
+                    walking.value = 'foot';
+                }
+                if (engine === 'mapbox') {
+                    walking.value = 'mapbox/' + 'walking';
+                }
+                console.log(engine, walking);
+            });
+
+            cycling.addEventListener('click', () => {
+                if (engine === 'osrm') {
+                    cycling.value = 'cycling';
+                }
+                if (engine === 'graphhopper') {
+                    cycling.value = 'bike';
+                }
+                if (engine === 'mapbox') {
+                    cycling.value = 'mapbox/' + 'cycling';
+                }
+                console.log(engine, cycling);
+            });
+        });
     }
 
     /**
@@ -229,7 +289,7 @@ export default class WeDirections {
      * @private
      */
     _geocodeEngine(engine) {
-        console.log('GeoCode Engine: ', engine)
+        // console.log('GeoCode Engine: ', engine)
         let geoEngine = '';
         switch (engine) {
             case 'default':
@@ -254,7 +314,7 @@ export default class WeDirections {
      * @private
      */
     _geocodeApi(engine, api) {
-        console.log('GeoCode Engine: ', engine)
+        // console.log('GeoCode Engine: ', engine)
         let geoApi = '';
         switch (engine) {
             case 'default':
