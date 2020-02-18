@@ -54,6 +54,7 @@ function PeliasGeocoder(opts) {
   this._keys.arrowDown = {};
   this._keys.arrowDown.key = 'ArrowDown';
   this._keys.arrowDown.keyCode = 40;
+  console.log('init peliasgeocoder')
 }
 
 PeliasGeocoder.prototype.onAdd = function (map) {
@@ -76,7 +77,7 @@ PeliasGeocoder.prototype.onAdd = function (map) {
   this._resultsEl.appendChild(this._resultsListEl);
   wrapperEl.appendChild(inputActionsWrapperEl);
   wrapperEl.appendChild(this._resultsEl);
-
+  console.log('onadd')
   return wrapperEl;
 };
 
@@ -101,6 +102,7 @@ PeliasGeocoder.prototype.search = function (opts, callback) {
     + (this.params ? this.params : '')
     + (this.opts.sources ? ('&sources=' + this.opts.sources) : '')
     + (this.opts.useFocusPoint ? ('&focus.point.lat=' + this._map.getCenter().lat + '&focus.point.lon=' + this._map.getCenter().lng) : '');
+  console.log('default search')
   this._sendXmlHttpRequest(url, callback);
 };
 
@@ -316,12 +318,15 @@ PeliasGeocoder.prototype._buildIconSearchHTMLElement = function () {
 };
 
 PeliasGeocoder.prototype._buildInputHTMLElement = function () {
+  console.log('default builInput')
+  
   var self = this;
   var inputEl = this._createElement({type: 'input'});
   inputEl.type = 'text';
   inputEl.placeholder = this.opts.placeholder;
 
   inputEl.addEventListener("keyup", function (e) {
+    console.log('default keyup')
     // Enter -> go to feature location.
     if (self._eventMatchKey(e, self._keys.enter) && self._selectedFeature) {
       inputEl.blur();

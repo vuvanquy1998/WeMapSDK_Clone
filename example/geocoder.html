@@ -38,24 +38,19 @@
             zoom: 13  
         });
 
-        var iconMarkerEl = document.createElement("div");
-        iconMarkerEl.innerHTML = "<div class='marker-arrow'></div>" +
-            "<div class='marker-pulse'></div>";
-
         token = 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7'
 
         var wemapControl = new wemapgl.WeGeocoder({
             flyTo: 'hybrid',
-            accessToken: token,
+            key: token,
             wof: true,
             useFocusPoint: true,
             engine: 'default',  //ko biết
             suggestion: {
-                min_char: 4  // ko ghi = 4
+                min_chars: 4  // ko ghi = 4
             },
             useFocusPoint: true,
             marker: {
-                icon: iconMarkerEl,
                 multiple: false
             }
         });

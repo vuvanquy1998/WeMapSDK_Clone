@@ -51,9 +51,9 @@ export default class PlaceDetail{
     }
     let featureCoordinates = document.getElementById("feature-coordinates");
     featureCoordinates.innerHTML =
-        '<i class="fas fa-compass"></i>  ' + this.options.lat + ", " + this.options.lon;
+        '<i class="fa fa-compass"></i>  ' + this.options.lat + ", " + this.options.lon;
     let featureLocation = document.getElementById("feature-location");
-    featureLocation.innerHTML = '<i class="fas fa-map"></i>  ' + address_result;
+    featureLocation.innerHTML = '<i class="fa fa-map"></i>  ' + address_result;
 
 
     // document.getElementById("feature-website").innerHTML = '';
@@ -91,7 +91,7 @@ export default class PlaceDetail{
     // //     let inrternet_access = detail.extratags.inrternet_access;
     // //     if (website) {
     // //         featureWebsite.innerHTML =
-    // //         '<i class="fas fa-home"></i>' +
+    // //         '<i class="fa fa-home"></i>' +
     // //         '<a href="{' +
     // //         website +
     // //         '}">' +
@@ -100,31 +100,31 @@ export default class PlaceDetail{
     // //         featureWebsite.className = "detail-feature-element";
     // //     }
     // //     if (phone) {
-    // //         featurePhone.innerHTML = '<i class="fas fa-phone"></i>' + phone;
+    // //         featurePhone.innerHTML = '<i class="fa fa-phone"></i>' + phone;
     // //         featurePhone.className = "detail-feature-element";
     // //     }
     // //     if (inrternet_access) {
-    // //         featureInternet_access.innerHTML = '<i class="fas fa-wifi"></i>' + inrternet_access;
+    // //         featureInternet_access.innerHTML = '<i class="fa fa-wifi"></i>' + inrternet_access;
     // //         featureInternet_access.className = "detail-feature-element";
     // //     }
     // //     if (fax) {
-    // //         featureFax.innerHTML = '<i class="fas fa-fax"></i>' + fax;
+    // //         featureFax.innerHTML = '<i class="fa fa-fax"></i>' + fax;
     // //         featureFax.className = "detail-feature-element";
     // //     }
     // //     if (email) {
-    // //         featureEmail.innerHTML = '<i class="fas fa-envelope"></i>' + email;
+    // //         featureEmail.innerHTML = '<i class="fa fa-envelope"></i>' + email;
     // //         featureEmail.className = "detail-feature-element";
     // //     }
     // //     if (level) {
-    // //         featureLevel.innerHTML = '<i class="fas fa-layer-group"></i>' + level;
+    // //         featureLevel.innerHTML = '<i class="fa fa-layer-group"></i>' + level;
     // //         featureLevel.className = "detail-feature-element";
     // //     }
     // //     if (smoking) {
-    // //         featureSmoking.innerHTML = '<i class="fas fa-smoking-ban"></i>' + smoking;
+    // //         featureSmoking.innerHTML = '<i class="fa fa-smoking-ban"></i>' + smoking;
     // //         featureSmoking.className = "detail-feature-element";
     // //     }
     // //     if (stars) {
-    // //         featureStars.innerHTML = '<i class="fas fa-star"></i>' + stars;
+    // //         featureStars.innerHTML = '<i class="fa fa-star"></i>' + stars;
     // //         featureStars.className = "detail-feature-element";
     // //     }
     // //     if (description) {
@@ -144,7 +144,7 @@ export default class PlaceDetail{
     // //         .replace(/Su/gi, "Chủ nhật")
     // //         .replace(/;/gi, "<br>");
     // //         featureOpening_hours.innerHTML =
-    // //         '<i class="fas fa-hourglass-start"></i> <span>' +opening_hour +'</span>';
+    // //         '<i class="fa fa-hourglass-start"></i> <span>' +opening_hour +'</span>';
     // //         featureOpening_hours.className = "detail-feature-element";
     // //     }
 
