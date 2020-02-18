@@ -107,7 +107,8 @@ export default class WeDirections {
                 instructions: this.instructions // true
             }
         });
-
+        document.getElementById('start').style.display ="block";
+        document.getElementById('end').style.display ="block";
         console.log('Directions Init: ', directions);
 
         return directions;

@@ -12,8 +12,8 @@ export default class RightClick {
         let rightClick = document.createElement('div')
         rightClick.innerHTML = '<div id = "right-click-menu-container"' + "style = 'display: none'>" +
 
-            '<div class = "right-click-menu-item" style = "display: none">Điểm bắt đầu</div>' +
-            '<div class = "right-click-menu-item" style = "display: none">Điểm kết thúc</div>' +
+            '<div class = "right-click-menu-item" id = "start" style = "display: none">Điểm bắt đầu</div>' +
+            '<div class = "right-click-menu-item" id = "end" style = "display: none">Điểm kết thúc</div>' +
             '<div class = "right-click-menu-item" id ="right-click-reverse">Đây là đâu ?</div>' +
             '</div>'
         document.body.appendChild(rightClick)
