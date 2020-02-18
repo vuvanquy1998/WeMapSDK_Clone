@@ -92,8 +92,7 @@ export default class RightClick {
                 let point_layers = ['poi-level-1', 'poi-level-2', 'poi-level-3', 'poi-level-4']
           
                 getJSON({
-                    // url: `${config.reverse}${this.key}&lat=${this.clicked_poi.lngLat.lat}&lon=${this.clicked_poi.lngLat.lng}`,
-                    url: "https://apis.wemap.asia/we-tools/reverse?key=vpstPRxkBBTLaZkOaCfAHlqXtCR&lat=21.0050013&lon=105.8609077",
+                    url: `${config.reverse}${this.key}&lat=${this.clicked_poi.lngLat.lat}&lon=${this.clicked_poi.lngLat.lng}`,
                     method: 'GET'
                 }, (err, data) => {
                     console.log('ajax data', data)
