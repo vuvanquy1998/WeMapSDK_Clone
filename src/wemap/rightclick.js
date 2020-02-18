@@ -1,5 +1,4 @@
 import { getJSON } from '../util/ajax'
-
 export default class RightClick {
     constructor(map, stt) {
         this.map = map;
@@ -168,7 +167,7 @@ export default class RightClick {
                 // place.showDetailFeature()
                 document.getElementById('place').style.display = 'none'
             })
-            
+
             document.getElementById('placeclose').addEventListener('click', (e) => {
                 // deleteUrlParam('rx');
                 // deleteUrlParam('ry');
