@@ -124,7 +124,7 @@ export default class WeDirections {
                 if (engine === 'mapbox') {
                     traffic.value = 'mapbox/' + 'traffic';
                 }
-                console.log(engine, traffic);
+                // console.log(engine, traffic);
             });
 
             driving.addEventListener('click', () => {
@@ -137,7 +137,7 @@ export default class WeDirections {
                 if (engine === 'mapbox') {
                     driving.value = 'mapbox/' + 'driving';
                 }
-                console.log(engine, driving);
+                // console.log(engine, driving);
             });
 
             walking.addEventListener('click', () => {
@@ -150,7 +150,7 @@ export default class WeDirections {
                 if (engine === 'mapbox') {
                     walking.value = 'mapbox/' + 'walking';
                 }
-                console.log(engine, walking);
+                // console.log(engine, walking);
             });
 
             cycling.addEventListener('click', () => {
@@ -163,7 +163,7 @@ export default class WeDirections {
                 if (engine === 'mapbox') {
                     cycling.value = 'mapbox/' + 'cycling';
                 }
-                console.log(engine, cycling);
+                // console.log(engine, cycling);
             });
         });
     }
