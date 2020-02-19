@@ -28,36 +28,31 @@
 
 <body>
     <div id="map"></div>
-
-    <script>
+	<script>
         wemapgl.accessToken = "pk.eyJ1IjoicGh1b25naHgiLCJhIjoiY2s2N3IxMnNiMWdlbTNlcW8ybG5jaXU4MCJ9.CkMLijVJ1Lp2ZbaR0zDgrg";
-        var map = new wemapgl.Map({
+		let map =  new wemapgl.WeMap({
+            key: 'vpstPRxkBBTLaZkOaCfAHlqXtCR',
             container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v11',
+            style: 'https://apis.wemap.asia/vector-tiles/styles/osm-bright/style.json?key=vpstPRxkBBTLaZkOaCfAHlqXtCR',
+            reverse: true,
             center: [105.7884815, 21.02459],
             zoom: 11
-        });
-    </script>
-	
-	<script>
-		let wm =  new wemapgl.WeMap({
-			params: {'access-token': 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7'}
 		  });
 
 	    // console.log(wm.showForm());
 
 
         let wd =  new wemapgl.WeDirections({
-            params: {'access-token': 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7'},
             mode: 'driving',
-            // accessToken: "pk.eyJ1IjoicGh1b25naHgiLCJhIjoiY2s2N3IxMnNiMWdlbTNlcW8ybG5jaXU4MCJ9.CkMLijVJ1Lp2ZbaR0zDgrg",
-            accessToken: "vpstPRxkBBTLaZkOaCfAHlqXtCR",
             key: "vpstPRxkBBTLaZkOaCfAHlqXtCR",
+            // key: "pk.eyJ1IjoicGh1b25naHgiLCJhIjoiY2s2N3IxMnNiMWdlbTNlcW8ybG5jaXU4MCJ9.CkMLijVJ1Lp2ZbaR0zDgrg",
             engine: 'osrm',
             // api: 'https://api.mapbox.com/directions/v5/',
             // api: 'https://apis.wemap.asia/direction-api/route/v1/',
             geocoder: {
-                api: 'https://apis.wemap.asia/geocode-1/autocomplete?text='
+                // api: 'https://apis.wemap.asia/geocode-1/autocomplete?text=',
+                engine: 'pelias',
+                // engine: 'mapbox'
             }
         });
 
@@ -67,7 +62,6 @@
             wd.render(),
             'top-left'
         );
-        new wemapgl.RightClick(map, true).init()
 
 	</script>
 

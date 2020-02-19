@@ -29,7 +29,6 @@ export default class UrlController {
         search_params.set("x", viewParams.x);
         search_params.set("y", viewParams.y);
         search_params.set("z", viewParams.z);
-        
         this.sortUrlParams();
         url.search = search_params.toString();
         window.history.pushState("", "", url);
@@ -46,7 +45,6 @@ export default class UrlController {
 
         search_params.set("osmid", placeParams.osmid);
         search_params.set("osmtype", placeParams.osmtype);
-        
         this.sortUrlParams();
         url.search = search_params.toString();
         window.history.pushState("", "", url);
@@ -61,7 +59,6 @@ export default class UrlController {
 
         search_params.delete("osmid");
         search_params.delete("osmtype");
-        
         url.search = search_params.toString();
         this.sortUrlParams();
         window.history.pushState("", "", url);
@@ -81,7 +78,6 @@ export default class UrlController {
         search_params.set("dx", routeParams.dx);
         search_params.set("dy", routeParams.dy);
         search_params.set("vehicle", routeParams.vehicle);
-        
         this.sortUrlParams();
         url.search = search_params.toString();
         window.history.pushState("", "", url);
@@ -99,7 +95,6 @@ export default class UrlController {
         search_params.delete("dx");
         search_params.delete("dy");
         search_params.delete("vehicle");
-        
         url.search = search_params.toString();
         this.sortUrlParams();
         window.history.pushState("", "", url);
@@ -107,7 +102,7 @@ export default class UrlController {
 
     /**
      * Returns array from Url with given parameter name
-     * @param {Array} paramName 
+     * @param {Array} paramName
      */
     static parseArrayParam(paramName) {
         let url = new URL(window.location);
@@ -117,12 +112,12 @@ export default class UrlController {
                 param.splice(param.indexOf(element), 1);
             }
         }
-        return param; 
+        return param;
     }
 
     /**
      * Returns string from Url with given parameter name
-     * @param {String} paramName 
+     * @param {String} paramName
      */
     static parseParam(paramName) {
         let url = new URL(window.location);
