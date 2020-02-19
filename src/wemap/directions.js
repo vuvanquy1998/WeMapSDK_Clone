@@ -6,8 +6,6 @@ import { default as config } from '../config.json';
 import MapboxDirections from '../mapbox-gl-directions/dist/mapbox-gl-directions';
 import UrlController from "./url";
 
-// import updateRouteParams from './url';
-
 /**
  * WeDirections
  */
