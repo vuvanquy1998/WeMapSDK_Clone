@@ -4,7 +4,7 @@ export default class UrlController {
      * Returns all current Url parameters
      * @returns {Object} all params in Url
      */
-    static getParams() {
+    getParams() {
         let paramNames = [
             "x", "y", "z",
             "ox", "oy", "dx", "dy", "vehicle",
@@ -21,7 +21,7 @@ export default class UrlController {
      * Updates view parameters in Url (x: long, y: lat, z: zoom level)
      * @param {*} viewParams {x, y, z}
      */
-    static updateViewParams(viewParams) {
+    updateViewParams(viewParams) {
         viewParams = viewParams || {};
         let url = new URL(window.location);
         let search_params = new URLSearchParams(url.search);
@@ -39,7 +39,7 @@ export default class UrlController {
      * Updates place parameters in Url
      * @param {*} placeParams {osmid, osmtype}
      */
-    static updatePlaceParams(placeParams) {
+    updatePlaceParams(placeParams) {
         placeParams = placeParams || {};
         let url = new URL(window.location);
         let search_params = new URLSearchParams(url.search);
@@ -55,7 +55,7 @@ export default class UrlController {
     /**
      * Deletes place parameters in Url
      */
-    static deletePlaceParams() {
+    deletePlaceParams() {
         let url = new URL(window.location);
         let search_params = new URLSearchParams(url.search);
 
@@ -71,7 +71,7 @@ export default class UrlController {
      * Updates route parameters in Url (ox, oy: origin, dx, dy: destination, vehicle)
      * @param {*} placeParams {ox, oy, dx, dy, vehicle}
      */
-    static updateRouteParams(routeParams) {
+    updateRouteParams(routeParams) {
         routeParams = routeParams || {};
         let url = new URL(window.location);
         let search_params = new URLSearchParams(url.search);
@@ -90,7 +90,7 @@ export default class UrlController {
     /**
      * Deletes route parameters in Url
      */
-    static deleteRouteParams() {
+    deleteRouteParams() {
         let url = new URL(window.location);
         let search_params = new URLSearchParams(url.search);
 
@@ -109,7 +109,7 @@ export default class UrlController {
      * Returns array from Url with given parameter name
      * @param {Array} paramName 
      */
-    static parseArrayParam(paramName) {
+    parseArrayParam(paramName) {
         let url = new URL(window.location);
         let param = url.searchParams.getAll(paramName);
         for(element of param) {
@@ -124,7 +124,7 @@ export default class UrlController {
      * Returns string from Url with given parameter name
      * @param {String} paramName 
      */
-    static parseParam(paramName) {
+    parseParam(paramName) {
         let url = new URL(window.location);
         let param = url.searchParams.get(paramName);
         if(param == null || param == "" || param == undefined) {
@@ -134,5 +134,5 @@ export default class UrlController {
     }
 
     // TODO: implement: sort url params by order: view -> place -> route
-    static sortUrlParams() {}
+    sortUrlParams() {}
 }
