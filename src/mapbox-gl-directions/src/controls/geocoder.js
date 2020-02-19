@@ -111,7 +111,6 @@ export default class Geocoder {
         URLAutoComplete = this.api + encodeURIComponent(q.trim()) + '.json?' + options.join('&');
         // this.request.open('GET', this.api + encodeURIComponent(q.trim()) + '.json?' + options.join('&'), true);
     } else {
-        // console.log('Options: ', options);
         URLAutoComplete = this.api + encodeURIComponent(q.trim()) + '&key=' + accessToken + '&boundary.country=VNM';
     }
 
