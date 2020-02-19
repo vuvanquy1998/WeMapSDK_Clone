@@ -69,8 +69,8 @@ function fetchDirections() {
     // if (accessToken) options.push('access_token=' + accessToken);
     request.abort();
 
-    let formArea = document.getElementById('mapbox-directions-form-area');
-    formArea.dataset.query = query;
+    // let formArea = document.getElementById('mapbox-directions-form-area');
+    // formArea.dataset.query = query;
 
     let URLDirection = '';
     if (engine === 'mapbox') {

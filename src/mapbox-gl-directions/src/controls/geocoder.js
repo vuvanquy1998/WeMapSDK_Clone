@@ -128,7 +128,7 @@ export default class Geocoder {
 
           this._clearEl.classList.add('active');
         } else {
-          this._clearEl.classList.remove('active');
+          // this._clearEl.classList.remove('active');
           this._typeahead.selected = null;
         }
 

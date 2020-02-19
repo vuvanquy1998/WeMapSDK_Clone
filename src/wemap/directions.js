@@ -30,7 +30,8 @@ export default class WeDirections {
         this.options.api = this._apiEngine(this.options.engine);
         this._onRendered(this.options.mode);
         this.weDirection = this.render(this.options);
-        this._onChange(this.weDirection);
+        // this._onChangeInput(this.weDirection);
+        this._onReverseInput(this.weDirection);
         // return this.render(this.options);
         return this.weDirection;
     }
@@ -73,21 +74,57 @@ export default class WeDirections {
      * Check change value in input direction
      * @private
      */
-    _onChange(direction) {
+    _onChangeInput(direction) {
+        // window.addEventListener('DOMContentLoaded', function(){
+        //     // let origin = document.getElementById('mapbox-directions-origin-input');
+        //     // let destination = document.getElementById('mapbox-directions-destination-input');
+        //     let directionInput = document.getElementById('mapbox-directions-form-area');
+        //     let buttonCloseOrigin = document.querySelectorAll('button.geocoder-icon-close')[0];
+        //     let buttonCloseDestination = document.querySelectorAll('button.geocoder-icon-close')[1];
+        //
+        //     directionInput.addEventListener('change', () => {
+        //         let origin =  direction.getOrigin();
+        //         let destination =  direction.getDestination();
+        //
+        //         let originCoordinate =
+        //             [origin.geometry ? origin.geometry.coordinates[0] : 0,
+        //             origin.geometry ? origin.geometry.coordinates[1] : 0];
+        //         let destinationCoordinate =
+        //             [destination.geometry ? destination.geometry.coordinates[0] : 0,
+        //             destination.geometry ? destination.geometry.coordinates[1] : 0];
+        //
+        //         console.log('origin: ', originCoordinate);
+        //         console.log('destination: ', destinationCoordinate);
+        //
+        //         buttonCloseOrigin.classList.add("active");
+        //         buttonCloseDestination.classList.add("active");
+        //     });
+        // });
+    }
+
+    /**
+     * OnClick to reverse input
+     * @param direction
+     * @private
+     */
+    _onReverseInput(direction) {
         window.addEventListener('DOMContentLoaded', function(){
-            let origin = document.getElementById('mapbox-directions-origin-input');
-            let destination = document.getElementById('mapbox-directions-destination-input');
-
-            origin.addEventListener('change', () => {
-                console.log('origin: ', direction.getOrigin());
-            });
-
-            destination.addEventListener('change', () => {
-                console.log('destination: ', direction.getDestination());
+            let reverseButton = document.querySelectorAll('button.directions-reverse')[0];
+            reverseButton.addEventListener('click', () => {
+                let origin =  direction.getOrigin();
+                let destination =  direction.getDestination();
+                let originCoordinate =
+                    [origin.geometry ? origin.geometry.coordinates[0] : 0,
+                        origin.geometry ? origin.geometry.coordinates[1] : 0];
+                let destinationCoordinate =
+                    [destination.geometry ? destination.geometry.coordinates[0] : 0,
+                        destination.geometry ? destination.geometry.coordinates[1] : 0];
+                direction.actions.setOriginFromCoordinates(destinationCoordinate);
+                direction.actions.setDestinationFromCoordinates(originCoordinate);
+                direction.actions.reverse();
             });
         });
     }
-
     /**
      * Return API Engine
      * @returns {string}
