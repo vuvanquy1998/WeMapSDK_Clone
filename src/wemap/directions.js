@@ -178,19 +178,27 @@ export default class WeDirections {
 
             var start = document.getElementById('mapbox-directions-origin-input');
             var end = document.getElementById('mapbox-directions-destination-input');
+            var driving = document.getElementById('mapbox-directions-profile-driving');
+            var walking = document.getElementById('mapbox-directions-profile-walking');
+            var cycling = document.getElementById('mapbox-directions-profile-cycling');
+            // var lonlat = document.getElementById('mapbox-directions-form-area');
             let latlonStart = '';
             let latlonEnd = '';
-
             start.addEventListener('change', () => {
-                latlonStart = start.querySelectorAll('input')[0].value;
-                console.log('latlonStart: ', latlonStart);
+                var latlon = document.getElementById('mapbox-directions-form-area');
+                console.log('abc ',decodeURIComponent(latlon.dataset.query));
 
             });
+            if(document.getElementById('mapbox-directions-profile-driving-traffic').checked) {
+                var latlon = document.getElementById('mapbox-directions-form-area');
 
-            end.addEventListener('change', () => {
-                latlonEnd = end.querySelectorAll('input')[0].value;
-                console.log('latlonEnd: ', latlonEnd);
-            });
+            } else if(document.getElementById('mapbox-directions-profile-driving').checked){
+
+            } else if(document.getElementById('mapbox-directions-profile-walking').checked){
+
+            } else if(document.getElementById('mapbox-directions-profile-cycling').checked){
+
+            }
 
         });
     }
