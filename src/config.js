@@ -3,14 +3,7 @@ export const config = {
         "default" : "https://link-to-default-style",
         "streets" : "https://api.mapbox.com/styles/v1/mapbox/streets-v11?access_token="
     },
-    "reverse": "https://apis.wemap.asia/we-tools/reverse?key=",
-    "lookup": "http://apis.wemap.asia/we-tools/lookup?key=",
-    "lookupOsmIdOnly": "https://apis.wemap.asia/we-tools/lookup/",
-    "center": [
-        105.8550736,
-        21.0283243
-    ],
-    "zoom": 13,
+    "reverse" : "https://apis.wemap.asia/we-tools/reverse?key=",
     "direction" : {
         "engine" : {
             "default" : "https://apis.wemap.asia/direction-api/route/v1",

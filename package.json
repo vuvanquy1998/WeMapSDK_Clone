@@ -173,7 +173,7 @@
     "wemap-tran-directions-driving": "sed -i \"s/<label for='mapbox-directions-profile-driving'>Driving/<label for='mapbox-directions-profile-driving'>Ô tô/g\" src/mapbox-gl-directions/dist/mapbox-gl-directions.js",
     "wemap-tran-directions-walking": "sed -i \"s/<label for='mapbox-directions-profile-walking'>Walking/<label for='mapbox-directions-profile-walking'>Đi bộ/g\" src/mapbox-gl-directions/dist/mapbox-gl-directions.js",
     "wemap-tran-directions-cycling": "sed -i \"s/<label for='mapbox-directions-profile-cycling'>Cycling/<label for='mapbox-directions-profile-cycling'>Xe đạp/g\" src/mapbox-gl-directions/dist/mapbox-gl-directions.js",
-    "wemap-tran-directions": "yarn run wemap-tran-directions-trafic && yarn run wemap-tran-directions-driving && yarn run wemap-tran-directions-walking && yarn run wemap-tran-directions-cycling",
+    "wemap-tran-directions": "yarn run wemap-tran-directions-trafic && yarn run wemap-tran-directions-driving && yarn run wemap-tran-directions-walking && yarn run wemap-tran-directions-cycling && yarn run wemap-tran-directions-key",
     "wemap-tran-directions-key": "sed -i \"s|'access_token=' + accessToken|'key=' + accessToken|g\" src/mapbox-gl-directions/dist/mapbox-gl-directions.js",
     "wemap-directions-add-option": "sed -i \"/options.push('key=' + accessToken);/i options.push('&boundary.country=VNM'); \" src/mapbox-gl-directions/dist/mapbox-gl-directions.js",
     "wemap-directions-geocode": "sed -i \"s|this.api + encodeURIComponent(q.trim()) + '.json?'|'https://apis.wemap.asia/geocode-1/autocomplete?text='+ q.trim(),|g\" src/mapbox-gl-directions/dist/mapbox-gl-directions.js",

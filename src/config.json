@@ -5,28 +5,21 @@
     "dark": "https://apis.wemap.asia/vector-tiles/styles/osm-bright/style.json?key="
   },
   "reverse": "https://apis.wemap.asia/we-tools/reverse?key=",
-  "direction": {
-    "engine": {
-      "default": "https://apis.wemap.asia/direction-api/route/v1/",
-      "osrm": "https://apis.wemap.asia/direction-api/route/v1/",
-      "graphhopper": "https://apis.wemap.asia/route-api/route?",
-      "mapbox": "https://api.mapbox.com/directions/v5/"
+  "direction" : {
+    "engine" : {
+      "default" : "https://apis.wemap.asia/direction-api/route/v1",
+      "osrm" : "https://apis.wemap.asia/direction-api/route/v1",
+      "graphhopper" : "",
+      "mapbox" : "https://api.mapbox.com/directions/v5/"
     },
-    "geocoder": {
-      "default": "https://apis.wemap.asia/geocode-1/autocomplete?text=",
-      "pelias": "https://apis.wemap.asia/geocode-1/autocomplete?text=",
-      "mapbox": "https://api.mapbox.com/geocoding/v5/mapbox.places/"
+    "geocoder" : {
+      "default" : "https://apis.wemap.asia/geocode-1/autocomplete?text=",
+      "pelias" : "",
+      "mapbox" : "https://api.mapbox.com/geocoding/v5/mapbox.places"
     }
   },
-  "lookup": "http://apis.wemap.asia/we-tools/lookup?key=",
-  "lookupOsmIdOnly": "https://apis.wemap.asia/we-tools/lookup/",
-  "center": [
-    105.8550736,
-    21.0283243
-  ],
-  "zoom": 13,
-  "language": {
-    "vi": "vi-VN",
-    "en": "en-US"
+  "language" : {
+    "vi" : "vi-VN",
+    "en" : "en-US"
   }
 }

@@ -31,7 +31,7 @@ import { PerformanceUtils } from './util/performance';
 
 
 import WeMap from './wemap/map';
-import WeDirections from './wemap/directions';
+import WeDirections from './wemap/directions/directions';
 import WeGeocoder from './wemap/geocoder';
 import Reverse from './wemap/reverse';
 import RightClick from './wemap/rightclick';

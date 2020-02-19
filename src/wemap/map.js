@@ -7,6 +7,8 @@ import UrlController from './url';
 import { default as config } from '../config.json';
 import API from './api';
 
+// const config = require('../config.json');
+
 export default class WeMap {
     /**
      * WeMap class contructor
@@ -14,6 +16,7 @@ export default class WeMap {
      * Default options: {style: "bright", center: [105.8550736, 21.0283243], zoom: 13, reverse: false}
      */
     constructor(options) {
+        console.log(config);
         options = options || {};
         this.styleLinks = {
             "bright": config.style.bright,
@@ -134,9 +137,9 @@ export default class WeMap {
             });
         }
 
+        this.rightClick = new wemapgl.RightClick(this.map, true);
         if (this.options.reverse) {
-            wemapgl.rightClick = new RightClick(this.map, true);
-            wemapgl.reverse = new Reverse(this.map)
+            this.reverse = new Reverse(this.map);
         }
     }
 
