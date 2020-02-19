@@ -43,7 +43,6 @@ export default class WeDirections {
     render(options) {
         document.getElementById('start').style.display ="block";
         document.getElementById('end').style.display ="block";
-
         return  new MapboxDirections(options);
     }
 
@@ -105,23 +104,18 @@ export default class WeDirections {
         switch (engine) {
             case 'default':
             case 'osrm':
-                console.log('Engine osrm');
                 api = config.direction.engine.osrm;
                 break;
             case 'graphhopper':
-                console.log('Engine graphhopper');
                 api = config.direction.engine.graphhopper;
                 break;
             case 'mapbox':
-                console.log('Engine mapbox');
                 api = config.direction.engine.mapbox;
                 break;
             default:
-                console.log('Engine default');
                 api = config.direction.engine.osrm;
                 break;
         }
-
         return api;
     }
 
@@ -132,7 +126,6 @@ export default class WeDirections {
      * @private
      */
     _geocodeEngine(engine) {
-        // console.log('GeoCode Engine: ', engine)
         let geoEngine = '';
         switch (engine) {
             case 'default':
@@ -157,7 +150,6 @@ export default class WeDirections {
      * @private
      */
     _geocodeApi(engine, api) {
-        // console.log('GeoCode Engine: ', engine)
         let geoApi = '';
         switch (engine) {
             case 'default':
