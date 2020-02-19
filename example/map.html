@@ -28,7 +28,7 @@
 <body>
 <div id="map"></div>
 <script>
-    wemapgl.accessToken = "pk.eyJ1IjoicGh1b25naHgiLCJhIjoiY2s2N3IxMnNiMWdlbTNlcW8ybG5jaXU4MCJ9.CkMLijVJ1Lp2ZbaR0zDgrg";
+    // wemapgl.accessToken = "pk.eyJ1IjoicGh1b25naHgiLCJhIjoiY2s2N3IxMnNiMWdlbTNlcW8ybG5jaXU4MCJ9.CkMLijVJ1Lp2ZbaR0zDgrg";
     var map = new wemapgl.Map({
         container: 'map',
         style: 'https://apis.wemap.asia/vector-tiles/styles/osm-bright/style.json?key=vpstPRxkBBTLaZkOaCfAHlqXtCR',
@@ -50,7 +50,6 @@
         suggestion: {
             min_char: 4  // ko ghi = 4
         },
-        useFocusPoint: true,
         marker: {
             icon: iconMarkerEl,
             multiple: false
@@ -63,7 +62,7 @@
     // reverse.off_reverse()
 
     let wd =  new wemapgl.WeDirections({
-        mode: 'driving',
+        mode: 'walking',
         key: "vpstPRxkBBTLaZkOaCfAHlqXtCR",
         // key: "pk.eyJ1IjoicGh1b25naHgiLCJhIjoiY2s2N3IxMnNiMWdlbTNlcW8ybG5jaXU4MCJ9.CkMLijVJ1Lp2ZbaR0zDgrg",
         engine: 'osrm',
@@ -76,10 +75,10 @@
         }
     });
 
-    console.log(wd.render());
+    console.log(wd);
 
     map.addControl(
-        wd.render(),
+        wd,
         'top-left'
     );
 
