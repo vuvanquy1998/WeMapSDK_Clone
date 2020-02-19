@@ -11,6 +11,7 @@ export default class Reverse{
         this.init();
     }
     initView(){
+        console.log(this.map)
         // let showBottomDetail = document.createElement('div')
         // showBottomDetail.innerHTML = '<div id="place">'+
         //     '<div class="class-pl">'+
