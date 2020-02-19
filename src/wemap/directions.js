@@ -22,17 +22,17 @@ export default class WeDirections {
         this.options.placeholderOrigin = options.placeholderOrigin || 'Chọn điểm bắt đầu';
         this.options.placeholderDestination = options.placeholderDestination || 'Chọn điểm kết thúc';
         this.options.engine = ['default', 'osrm', 'graphhopper', 'mapbox'].includes(options.engine) ? options.engine : 'osrm';
-
         this.options.geocoder = options.geocoder || {};
         this.options.mode = options.mode || 'driving';
 
         this.options.geocoder.engine = this._geocodeEngine(this.options.geocoder.engine);
         this.options.geocoder.api = this._geocodeApi(this.options.geocoder.engine, this.options.geocoder.api);
         this.options.api = this._apiEngine(this.options.engine);
-
         this._onRendered(this.options.mode);
-        this._onChange(this.options.engine);
-        return this.render(this.options)
+        this.weDirection = this.render(this.options);
+        this._onChange(this.weDirection);
+        // return this.render(this.options);
+        return this.weDirection;
     }
 
     /**
@@ -73,24 +73,18 @@ export default class WeDirections {
      * Check change value in input direction
      * @private
      */
-    _onChange() {
+    _onChange(direction) {
         window.addEventListener('DOMContentLoaded', function(){
+            let origin = document.getElementById('mapbox-directions-origin-input');
+            let destination = document.getElementById('mapbox-directions-destination-input');
 
-            var start = document.getElementById('mapbox-directions-origin-input');
-            var end = document.getElementById('mapbox-directions-destination-input');
-            let latlonStart = '';
-            let latlonEnd = '';
-
-            start.addEventListener('change', () => {
-                latlonStart = start.querySelectorAll('input')[0].value;
-                console.log('latlonStart: ', latlonStart);
+            origin.addEventListener('change', () => {
+                console.log('origin: ', direction.getOrigin());
             });
 
-            end.addEventListener('change', () => {
-                latlonEnd = end.querySelectorAll('input')[0].value;
-                console.log('latlonEnd: ', latlonEnd);
+            destination.addEventListener('change', () => {
+                console.log('destination: ', direction.getDestination());
             });
-
         });
     }
 
