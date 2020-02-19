@@ -101,21 +101,19 @@ export default class Geocoder {
     });
 
     var engine = this.options.engine;
-      var accessToken = this.options.accessToken ? this.options.accessToken : mapboxgl.accessToken;
-      options.push('access_token=' + accessToken);
-      this.request.abort();
+    var accessToken = this.options.accessToken ? this.options.accessToken : mapboxgl.accessToken;
+    options.push('access_token=' + accessToken);
+    this.request.abort();
 
-      console.log('Engine: ', engine);
-      let URLAutoComplete = '';
+    let URLAutoComplete = '';
     if (engine === 'mapbox') {
         URLAutoComplete = this.api + encodeURIComponent(q.trim()) + '.json?' + options.join('&');
         // this.request.open('GET', this.api + encodeURIComponent(q.trim()) + '.json?' + options.join('&'), true);
     } else {
-        // console.log('Options: ', options);
         URLAutoComplete = this.api + encodeURIComponent(q.trim()) + '&key=' + accessToken + '&boundary.country=VNM';
     }
 
-      this.request.open('GET', URLAutoComplete , true);
+    this.request.open('GET', URLAutoComplete , true);
 
     this.request.onload = function() {
       this._loadingEl.classList.remove('active');
@@ -130,7 +128,7 @@ export default class Geocoder {
 
           this._clearEl.classList.add('active');
         } else {
-          this._clearEl.classList.remove('active');
+          // this._clearEl.classList.remove('active');
           this._typeahead.selected = null;
         }
 

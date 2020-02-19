@@ -3,320 +3,149 @@
 import { default as config } from '../config.json';
 
 // const config = require('../config.json');
-// const fs = require('fs');
-//
-// const { config } = JSON.parse(fs.readFileSync('../config.json', 'utf8'))
-// import {config} from '../../config.js'
 import MapboxDirections from '../mapbox-gl-directions/dist/mapbox-gl-directions';
 import UrlController from "./url";
-import {clearOrigin} from "../mapbox-gl-directions/src/actions";
-
-// import updateRouteParams from './url';
 
 /**
- * WeDirections show direction
- *
+ * WeDirections
  */
 export default class WeDirections {
 
     constructor(options) {
         options = options || {};
 
-        this.options = {};
+        this.options = options || {};
 
-        if (options.params) {
-            this.params = options.params;
-        }
+        this.options.accessToken = options.key || '';
+        this.options.placeholderOrigin = options.placeholderOrigin || 'Chọn điểm bắt đầu';
+        this.options.placeholderDestination = options.placeholderDestination || 'Chọn điểm kết thúc';
+        this.options.engine = ['default', 'osrm', 'graphhopper', 'mapbox'].includes(options.engine) ? options.engine : 'osrm';
+        this.options.geocoder = options.geocoder || {};
+        this.options.mode = options.mode || 'driving';
 
-
-        this.highlight = options.highlight || true;
-        this.key = options.key || '';
-
-        this.unit = options.unit || 'metric';
-
-        this.alternatives = options.alternatives || false;
-        this.congestion = options.congestion || false;
-        this.flyTo = options.flyTo || true;
-        this.placeholderOrigin = options.placeholderOrigin || 'Chọn điểm bắt đầu';
-        this.placeholderDestination = options.placeholderDestination || 'Chọn điểm kết thúc';
-        this.zoom = options.zoom || 16;
-        this.language = options.language || 'vi';
-        this.proximity = options.proximity || false;
-        this.styles = options.styles || [];
-        this.profileSwitcher = options.profileSwitcher || true;
-        this.inputs = options.inputs || true;
-        this.instructions = options.instructions || true;
-
-        this.engine = ['default', 'osrm', 'graphhopper', 'mapbox'].includes(options.engine) ? options.engine : 'osrm';
-
-        this.geocoder = options.geocoder || {};
-
-        this.geocoder.engine = this._geocodeEngine(options.geocoder.engine);
-        // this.geocoder.api = options.geocoder.api ? options.geocoder.api : config.direction.geocoder.pelias;
-        this.geocoder.api = this._geocodeApi(options.geocoder.engine, options.geocoder.api);
-
-        this.api = this._apiEngine();
-
-        // this.mode = options.mode || 'driving'; // traffic, driving, walking, cycling
-        this.mode = this._travelMode(options.mode);
-
-        console.log("API: ", this.api);
-        console.log("Mode: ", this.mode);
-        this.onClick(this.engine);
-        this.onChange(this.engine);
+        this.options.geocoder.engine = this._geocodeEngine(this.options.geocoder.engine);
+        this.options.geocoder.api = this._geocodeApi(this.options.geocoder.engine, this.options.geocoder.api);
+        this.options.api = this._apiEngine(this.options.engine);
+        this._onRendered(this.options.mode);
+        this.weDirection = this.render(this.options);
+        // this._onChangeInput(this.weDirection);
+        this._onReverseInput(this.weDirection);
+        // return this.render(this.options);
+        return this.weDirection;
     }
 
     /**
      * render function
-     * Render UI Input
+     * Render UI Direction
      * @returns {Object} origin
      */
-    render() {
-        // console.log('Directions Init: ', this.engine);
-        let directions =  new MapboxDirections({
-            accessToken: this.key,
-            unit: this.unit, // metric
-            // profile: 'mapbox/' + this.mode,
-            profile: this.mode,
-            key: this.key,
-            api: this.api, // https://api.mapbox.com/directions/v5/
-            engine: this.engine,
-
-            alternatives: this.alternatives, // false
-            congestion: this.congestion, // false
-            flyTo: this.flyTo, // true
-            placeholderOrigin: this.placeholderOrigin, // 'Chọn điểm bắt đầu'
-            placeholderDestination: this.placeholderDestination, // Chọn điểm kết thúc
-            zoom: this.zoom, // 16
-            language: this.language,
-            compile: null,
-            proximity: this.proximity, // false
-            styles: this.styles, // []
-
-            geocoder: this.geocoder,
-
-            // UI controls
-            controls: {
-                profileSwitcher: this.profileSwitcher, //true
-                inputs: this.inputs, //true
-                instructions: this.instructions // true
-            },
-        });
-        console.log('Directions Init: ', directions);
+    render(options) {
         document.getElementById('start').style.display ="block";
         document.getElementById('end').style.display ="block";
-
-        return directions;
+        return  new MapboxDirections(options);
     }
 
-    onClick(engine) {
+    /**
+     * Check active default drive mode
+     * @param mode
+     * @private
+     */
+    _onRendered(mode) {
         window.addEventListener('DOMContentLoaded', function(){
-            var traffic = document.getElementById('mapbox-directions-profile-driving-traffic');
-            var driving = document.getElementById('mapbox-directions-profile-driving');
-            var walking = document.getElementById('mapbox-directions-profile-walking');
-            var cycling = document.getElementById('mapbox-directions-profile-cycling');
-
-            traffic.addEventListener('click', () => {
-                if (engine === 'osrm') {
-                    traffic.value = 'driving';
-                }
-                if (engine === 'graphhopper') {
-                    traffic.value = 'car';
-                }
-                if (engine === 'mapbox') {
-                    traffic.value = 'mapbox/' + 'traffic';
-                }
-                // console.log(engine, traffic);
-            });
-
-            driving.addEventListener('click', () => {
-                if (engine === 'osrm') {
-                    driving.value = 'driving';
-                }
-                if (engine === 'graphhopper') {
-                    driving.value = 'car';
-                }
-                if (engine === 'mapbox') {
-                    driving.value = 'mapbox/' + 'driving';
-                }
-                // console.log(engine, driving);
-            });
-
-            walking.addEventListener('click', () => {
-                if (engine === 'osrm') {
-                    walking.value = 'walking';
-                }
-                if (engine === 'graphhopper') {
-                    walking.value = 'foot';
-                }
-                if (engine === 'mapbox') {
-                    walking.value = 'mapbox/' + 'walking';
-                }
-                // console.log(engine, walking);
-            });
-
-            cycling.addEventListener('click', () => {
-                if (engine === 'osrm') {
-                    cycling.value = 'cycling';
-                }
-                if (engine === 'graphhopper') {
-                    cycling.value = 'bike';
-                }
-                if (engine === 'mapbox') {
-                    cycling.value = 'mapbox/' + 'cycling';
-                }
-                // console.log(engine, cycling);
-            });
+            const traffic = document.getElementById('mapbox-directions-profile-driving-traffic');
+            const driving = document.getElementById('mapbox-directions-profile-driving');
+            const walking = document.getElementById('mapbox-directions-profile-walking');
+            const cycling = document.getElementById('mapbox-directions-profile-cycling');
+            if (mode === 'traffic') {
+                traffic.checked = true;
+            } else if (mode === 'driving') {
+                driving.checked = true;
+            } else if (mode === 'walking') {
+                walking.checked = true;
+            } else if (mode === 'cycling') {
+                cycling.checked = true;
+            }
         });
     }
 
     /**
-     *
+     * Check change value in input direction
+     * @private
      */
-    onChange(engine) {
-        window.addEventListener('DOMContentLoaded', function(){
-
-            var start = document.getElementById('mapbox-directions-origin-input');
-            var end = document.getElementById('mapbox-directions-destination-input');
-            var driving = document.getElementById('mapbox-directions-profile-driving');
-            var walking = document.getElementById('mapbox-directions-profile-walking');
-            var cycling = document.getElementById('mapbox-directions-profile-cycling');
-            // var lonlat = document.getElementById('mapbox-directions-form-area');
-            let latlonStart = '';
-            let latlonEnd = '';
-            start.addEventListener('change', () => {
-                var latlon = document.getElementById('mapbox-directions-form-area');
-                console.log('abc ',decodeURIComponent(latlon.dataset.query));
-
-            });
-            if(document.getElementById('mapbox-directions-profile-driving-traffic').checked) {
-                var latlon = document.getElementById('mapbox-directions-form-area');
-
-            } else if(document.getElementById('mapbox-directions-profile-driving').checked){
-
-            } else if(document.getElementById('mapbox-directions-profile-walking').checked){
-
-            } else if(document.getElementById('mapbox-directions-profile-cycling').checked){
-
-            }
-
-        });
+    _onChangeInput(direction) {
+        // window.addEventListener('DOMContentLoaded', function(){
+        //     // let origin = document.getElementById('mapbox-directions-origin-input');
+        //     // let destination = document.getElementById('mapbox-directions-destination-input');
+        //     let directionInput = document.getElementById('mapbox-directions-form-area');
+        //     let buttonCloseOrigin = document.querySelectorAll('button.geocoder-icon-close')[0];
+        //     let buttonCloseDestination = document.querySelectorAll('button.geocoder-icon-close')[1];
+        //
+        //     directionInput.addEventListener('change', () => {
+        //         let origin =  direction.getOrigin();
+        //         let destination =  direction.getDestination();
+        //
+        //         let originCoordinate =
+        //             [origin.geometry ? origin.geometry.coordinates[0] : 0,
+        //             origin.geometry ? origin.geometry.coordinates[1] : 0];
+        //         let destinationCoordinate =
+        //             [destination.geometry ? destination.geometry.coordinates[0] : 0,
+        //             destination.geometry ? destination.geometry.coordinates[1] : 0];
+        //
+        //         console.log('origin: ', originCoordinate);
+        //         console.log('destination: ', destinationCoordinate);
+        //
+        //         buttonCloseOrigin.classList.add("active");
+        //         buttonCloseDestination.classList.add("active");
+        //     });
+        // });
     }
 
+    /**
+     * OnClick to reverse input
+     * @param direction
+     * @private
+     */
+    _onReverseInput(direction) {
+        window.addEventListener('DOMContentLoaded', function(){
+            let reverseButton = document.querySelectorAll('button.directions-reverse')[0];
+            reverseButton.addEventListener('click', () => {
+                let origin =  direction.getOrigin();
+                let destination =  direction.getDestination();
+                let originCoordinate =
+                    [origin.geometry ? origin.geometry.coordinates[0] : 0,
+                        origin.geometry ? origin.geometry.coordinates[1] : 0];
+                let destinationCoordinate =
+                    [destination.geometry ? destination.geometry.coordinates[0] : 0,
+                        destination.geometry ? destination.geometry.coordinates[1] : 0];
+                direction.actions.setOriginFromCoordinates(destinationCoordinate);
+                direction.actions.setDestinationFromCoordinates(originCoordinate);
+                direction.actions.reverse();
+            });
+        });
+    }
     /**
      * Return API Engine
      * @returns {string}
      * @private
      */
-    _apiEngine() {
+    _apiEngine(engine) {
         let api = '';
-        switch (this.engine) {
+        switch (engine) {
             case 'default':
             case 'osrm':
-                console.log('Engine osrm');
                 api = config.direction.engine.osrm;
                 break;
             case 'graphhopper':
-                console.log('Engine graphhopper');
                 api = config.direction.engine.graphhopper;
                 break;
             case 'mapbox':
-                console.log('Engine mapbox');
                 api = config.direction.engine.mapbox;
                 break;
             default:
-                console.log('Engine default');
                 api = config.direction.engine.osrm;
+                break;
         }
-
         return api;
-    }
-
-    /**
-     * Return travel Mode
-     * @param modeDrive
-     * @returns {string}
-     * @private
-     */
-    _travelMode(modeDrive) {
-        console.log('modeDrive: ', modeDrive);
-        let mode = '';
-        switch (this.engine) {
-            case 'default':
-            case 'osrm':
-                console.log('Engine osrm');
-                switch (modeDrive) {
-                    case 'default':
-                    case 'driving':
-                        mode = 'driving';
-                        break;
-                    case 'walking':
-                        mode = 'walking';
-                        break;
-                    case 'cycling':
-                        mode = 'cycling';
-                        break;
-                    default:
-                        mode = 'driving';
-                        break;
-                }
-                break;
-            case 'graphhopper':
-                console.log('Engine graphhopper');
-                switch (modeDrive) {
-                    case 'default':
-                    case 'driving':
-                        mode = 'car';
-                        break;
-                    case 'walking':
-                        mode = 'foot';
-                        break;
-                    case 'cycling':
-                        mode = 'bike';
-                        break;
-                    default:
-                        mode = 'car';
-                        break;
-                }
-                break;
-            case 'mapbox':
-                console.log('Engine mapbox');
-                switch (modeDrive) {
-                    case 'default':
-                    case 'driving':
-                        mode = 'mapbox/' + 'driving';
-                        break;
-                    case 'walking':
-                        mode = 'mapbox/' + 'walking';
-                        break;
-                    case 'cycling':
-                        mode = 'mapbox/' + 'cycling';
-                        break;
-                    default:
-                        mode = 'mapbox/' + 'driving';
-                        break;
-                }
-                break;
-            default:
-                console.log('Engine default');
-                switch (modeDrive) {
-                    case 'default':
-                    case 'driving':
-                        mode = 'driving';
-                        break;
-                    case 'walking':
-                        mode = 'walking';
-                        break;
-                    case 'cycling':
-                        mode = 'cycling';
-                        break;
-                    default:
-                        mode = 'driving';
-                        break;
-                }
-        }
-
-        return mode;
     }
 
     /**
@@ -326,7 +155,6 @@ export default class WeDirections {
      * @private
      */
     _geocodeEngine(engine) {
-        // console.log('GeoCode Engine: ', engine)
         let geoEngine = '';
         switch (engine) {
             case 'default':
@@ -351,7 +179,6 @@ export default class WeDirections {
      * @private
      */
     _geocodeApi(engine, api) {
-        // console.log('GeoCode Engine: ', engine)
         let geoApi = '';
         switch (engine) {
             case 'default':
