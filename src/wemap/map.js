@@ -109,13 +109,7 @@ export default class WeMap {
                 });
             }
 
-            this.map.jumpTo({
-                center: [
-                    urlParams.x,
-                    urlParams.y
-                ],
-                zoom: urlParams.z
-            });
+            this.map.jumpTo({center: [urlParams.x, urlParams.y], zoom: urlParams.z});
 
             if(urlParams.ox != null && urlParams.oy != null && urlParams.dx != null && urlParams.dy != null) {
                 if(urlParams.vehicle == null) {
