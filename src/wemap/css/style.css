@@ -560,6 +560,13 @@ i {
   background-color: #d9e3f6;
   cursor: pointer; }
 
+.mapboxgl-control-container .pelias-ctrl.mapboxgl-ctrl {
+  position: relative;
+  z-index: 9; }
+  .mapboxgl-control-container .pelias-ctrl.mapboxgl-ctrl .pelias-ctrl-results {
+    position: absolute;
+    top: 60px; }
+
 .mapboxgl-control-container .mapbox-directions-instructions {
   overflow-x: hidden;
   outline-offset: -2px;

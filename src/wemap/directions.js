@@ -17,6 +17,7 @@ export default class WeDirections {
         this.options = options || {};
 
         this.options.accessToken = options.key || '';
+        this.options.unit = options.unit || 'metric';
         this.options.placeholderOrigin = options.placeholderOrigin || 'Chọn điểm bắt đầu';
         this.options.placeholderDestination = options.placeholderDestination || 'Chọn điểm kết thúc';
         this.options.engine = ['default', 'osrm', 'graphhopper', 'mapbox'].includes(options.engine) ? options.engine : 'osrm';

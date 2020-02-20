@@ -1,4 +1,18 @@
 .mapboxgl-control-container {
+
+    // Search
+    .pelias-ctrl.mapboxgl-ctrl {
+        position: relative;
+        z-index: 9;
+
+        .pelias-ctrl-results {
+            position: absolute;
+            top: 60px;
+        }
+    }
+
+    // Directions
+    // Instructions
     .mapbox-directions-instructions {
         overflow-x: hidden;
         outline-offset: -2px;
