@@ -11,7 +11,7 @@ import UrlController from "./url";
  */
 export default class WeDirections {
 
-    constructor(options) {
+    constructor(options, map) {
         options = options || {};
 
         this.options = options || {};
@@ -23,6 +23,7 @@ export default class WeDirections {
         this.options.engine = ['default', 'osrm', 'graphhopper', 'mapbox'].includes(options.engine) ? options.engine : 'osrm';
         this.options.geocoder = options.geocoder || {};
         this.options.mode = options.mode || 'driving';
+        this.options.interactive = options.interactive || false;
 
         this.options.geocoder.engine = this._geocodeEngine(this.options.geocoder.engine);
         this.options.geocoder.api = this._geocodeApi(this.options.geocoder.engine);
@@ -69,6 +70,7 @@ export default class WeDirections {
     }
 
     _addDirectionIcon() {
+        let self = this;
         window.addEventListener('DOMContentLoaded', function(){
             let peliasSelector =
                 document.querySelectorAll('div.pelias-ctrl.mapboxgl-ctrl')[0];
@@ -89,6 +91,8 @@ export default class WeDirections {
                     console.log('active direction');
                     directionSelector.classList.remove("hide");
                     peliasSelector.classList.add("hide");
+                    // interactive
+                    self.weDirection.interactive(true);
                 });
             }
 
@@ -99,9 +103,13 @@ export default class WeDirections {
                     'direction-icon-search';
                 directionInputSelector.appendChild(directionClose);
                 directionClose.addEventListener('click', () => {
-                    console.log('active direction');
+                    console.log('disable direction');
                     peliasSelector.classList.remove("hide");
                     directionSelector.classList.add("hide");
+                    // interactive
+                    self.weDirection.interactive(false);
+                    self.weDirection.removeRoutes();
+                    self.weDirection.removeWaypoint();
                 });
             }
         });
