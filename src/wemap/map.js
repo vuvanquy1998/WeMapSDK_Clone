@@ -31,14 +31,14 @@ export default class WeMap {
 
         // create mapbox options object
         var mapboxOptions = Object.assign({}, this.options);
-        
-        // WeMap style -> style link + key
-        mapboxOptions.style = config.style[this.options.style] + this.options.key;
-        
+
         // remove options copied from wemap option
         delete mapboxOptions.reverse;
         delete mapboxOptions.key;
         delete mapboxOptions.urlController;
+        
+        // WeMap style -> style link + key
+        mapboxOptions.style = config.style[this.options.style] + this.options.key;
 
         // disable attribution control by default
         mapboxOptions.attributionControl = false;
