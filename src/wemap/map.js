@@ -55,6 +55,7 @@ export default class WeMap {
         
         // url controller
         wemapgl.urlController = new UrlController();
+
         switch(this.options.urlController) {
             case true: case "true":
                 let urlParams = wemapgl.urlController.getParams();
