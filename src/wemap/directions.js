@@ -74,31 +74,24 @@ export default class WeDirections {
         window.addEventListener('DOMContentLoaded', function(){
             let peliasSelector =
                 document.querySelectorAll('div.pelias-ctrl.mapboxgl-ctrl')[0];
-
             let peliasInputSelector =
                 document.querySelectorAll('div.pelias-ctrl-input-actions-wrapper.pelias-ctrl-shadow')[0];
-
             let directionSelector =
                 document.querySelectorAll('div.mapboxgl-ctrl-directions.mapboxgl-ctrl')[0];
-
             let directionInputSelector = document.getElementById('mapbox-directions-form-area');
 
             if (peliasInputSelector) {
-                // Add Inner HTML
                 const directionOpen = document.createElement('span');
                 directionOpen.setAttribute("id", "direction-icon-open");
                 directionOpen.className =
                     'pelias-ctrl-action-icon pelias-ctrl-action-icon-directions pelias-ctrl-disabled';
-                // Append child
                 peliasInputSelector.appendChild(directionOpen);
-
                 // Add Event
                 directionOpen.addEventListener('click', () => {
                     console.log('active direction');
                     directionSelector.classList.remove("hide");
                     peliasSelector.classList.add("hide");
                 });
-
             }
 
             if (directionInputSelector) {
@@ -106,7 +99,6 @@ export default class WeDirections {
                 directionClose.setAttribute("id", "direction-icon-close");
                 directionClose.className =
                     'direction-icon-search';
-                // Append child
                 directionInputSelector.appendChild(directionClose);
                 directionClose.addEventListener('click', () => {
                     console.log('active direction');
