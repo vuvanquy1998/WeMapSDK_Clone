@@ -286,7 +286,7 @@ button {
 }
 
 #feature-img {
-  //background: url('../img/detail.jpg') no-repeat;
+  background: url('./../../src/wemap/img/detail.jpg') no-repeat;
   background-position: center center;
   height: 200px;
   opacity: 90%;
@@ -3684,6 +3684,6 @@ fieldset, label { margin: 0; padding: 0; }
 // /* .rating > input:checked ~ label:hover ~ label { color: #E7711B;  }  */
 
 // pelias-geocoder.css
-.pelias-ctrl-results-list{
-    z-index: 10000;
+.pelias-ctrl-attribution{
+    display: none;
 }

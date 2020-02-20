@@ -283,6 +283,7 @@ button {
           box-shadow: 5px 5px 10px #b9b9b9; }
 
 #feature-img {
+  background: url("./../../src/wemap/img/detail.jpg") no-repeat;
   background-position: center center;
   height: 200px;
   opacity: 90%; }
@@ -3055,8 +3056,8 @@ fieldset, label {
   float: right; }
 
 /***** CSS Magic to Highlight Stars on Hover *****/
-.pelias-ctrl-results-list {
-  z-index: 10000; }
+.pelias-ctrl-attribution {
+  display: none; }
 
 #place {
   z-index: 9998;
