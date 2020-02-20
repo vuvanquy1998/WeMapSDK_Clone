@@ -51,7 +51,6 @@ export default class WeMap {
             case true: case "true":
                 wemapgl.rightClick = new RightClick(this.map, this.options.key);
                 wemapgl.reverse = new Reverse(this.map, this.options.key);
-                break;
         }
         
         // url controller
@@ -73,7 +72,6 @@ export default class WeMap {
                         y: this.map.getCenter().lat,
                         z: this.map.getZoom() });
                 });
-                break;
         }
 
         // add WeMap attribution
