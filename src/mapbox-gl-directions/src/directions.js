@@ -71,7 +71,7 @@ export default class MapboxDirections {
     const { controls } = store.getState();
 
     var el = this.container = document.createElement('div');
-    el.className = 'mapboxgl-ctrl-directions mapboxgl-ctrl';
+    el.className = 'mapboxgl-ctrl-directions mapboxgl-ctrl hide';
 
     // Add controls to the page
     const inputEl = document.createElement('div');
