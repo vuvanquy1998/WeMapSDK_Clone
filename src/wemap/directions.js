@@ -42,8 +42,6 @@ export default class WeDirections {
      * @returns {Object} origin
      */
     render(options) {
-        document.getElementById('start').style.display ="block";
-        document.getElementById('end').style.display ="block";
         return  new MapboxDirections(options);
     }
 
