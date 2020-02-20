@@ -46,13 +46,34 @@ export default class WeMap {
         this.map = new wemapgl.Map(mapboxOptions);
 
         // reverse
-        if(this.options.reverse == true) {
-            wemapgl.rightClick = new RightClick(this.map, this.options.key);
-            wemapgl.reverse = new Reverse(this.map, this.options.key);
+        switch(this.options.reverse) {
+            case true: case "true":
+                wemapgl.rightClick = new RightClick(this.map, this.options.key);
+                wemapgl.reverse = new Reverse(this.map, this.options.key);
+                break;
         }
         
-        // TODO: implement Url features
-        
+        // url controller
+        wemapgl.urlController = new UrlController();
+        switch(this.options.urlController) {
+            case true: case "true":
+                let urlParams = wemapgl.urlController.getParams();
+                this.map.jumpTo({ center: [urlParams.x, urlParams.y], zoom: urlParams.z });
+                this.map.on("zoomend", () => {
+                    wemapgl.urlController.updateViewParams({
+                        x: this.map.getCenter().lng,
+                        y: this.map.getCenter().lat,
+                        z: this.map.getZoom()
+                    });
+                });
+                this.map.on("moveend", () => {
+                    wemapgl.urlController.updateViewParams({
+                        x: this.map.getCenter().lng,
+                        y: this.map.getCenter().lat,
+                        z: this.map.getZoom() });
+                });
+                break;
+        }
 
         // add WeMap attribution
         this.map.addControl(new wemapgl.AttributionControl({
