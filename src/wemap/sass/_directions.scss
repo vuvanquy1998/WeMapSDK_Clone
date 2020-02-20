@@ -1,12 +1,27 @@
 .mapboxgl-control-container {
     .mapbox-directions-instructions {
         overflow-x: hidden;
+        outline-offset: -2px;
+        overflow-y: hidden;
+
+        &:hover {
+            overflow-y: auto;
+        }
+    }
+
+    .directions-control.directions-control-directions {
+        border-radius: 7px;
+    }
+
+    li.mapbox-directions-step {
+        max-width: 230px;
     }
 }
 
 .mapboxgl-ctrl-top-left {
     .directions-control.directions-control-instructions {
-        padding-top: 8px;
-        padding-left: 10px;
+        position: relative;
+        left: 10px;
+        top: 10px;
     }
 }
