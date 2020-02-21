@@ -35,7 +35,57 @@ export default class WeDirections {
         this._onReverseInput(this.weDirection);
 
         this._addDirectionIcon();
+
+        this.weDirection.onClick = this._clickHandler();
         return this.weDirection;
+    }
+
+    _clickHandler() {
+        let self = this.weDirection;
+        window.addEventListener('DOMContentLoaded', function() {
+            var mapclick = self._map;
+            mapclick.on('click', function(e) {
+                let origin =  self.getOrigin();
+                let destination = self.getDestination();
+                let lng = e.lngLat.lng;
+                let lat = e.lngLat.lat;
+                const coords = [lng, lat];
+
+                if (!origin.geometry) {
+                    self.actions.setOriginFromCoordinates(coords);
+                } else {
+
+                    const features = mapclick.queryRenderedFeatures(e.point, {
+                        layers: [
+                            'directions-origin-point',
+                            'directions-destination-point',
+                            'directions-waypoint-point',
+                            'directions-route-line-alt'
+                        ]
+                    });
+
+                    if (features.length) {
+
+                        // Remove any waypoints
+                        features.forEach((f) => {
+                            if (f.layer.id === 'directions-waypoint-point') {
+                                self.actions.removeWaypoint(f);
+                            }
+                        });
+
+                        if (features[0].properties.route === 'alternate') {
+                            const index = features[0].properties['route-index'];
+                            self.actions.setRouteIndex(index);
+                        }
+                    } else if (!destination.geometry){
+                        self.actions.setDestinationFromCoordinates(coords);
+                        mapclick.flyTo({ center: coords });
+                    }
+                }
+            //     // console.log("toa do: ",this.weDirection.getOrigin());
+            });
+
+        });
     }
 
     /**

@@ -97,4 +97,5 @@ export default class RightClick {
             console.log(e.lngLat.lng, e.lngLat.lat)
         })
     }
+
 }
