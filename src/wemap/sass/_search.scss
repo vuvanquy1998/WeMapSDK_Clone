@@ -313,6 +313,7 @@ button {
   left: 380px;
   z-index: 10;
   cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .3);
 }
 
 .feature-control {
@@ -430,11 +431,20 @@ i {
 //pelias-geocoder.css
 .pelias-ctrl{
   min-width: 410px;
-  max-width: 420px;
   z-index: 2147483647;
   pointer-events: none;
   margin: 0;
   padding: 10px 0 0 10px;
+}
+// pelias-geocoder.css
+.pelias-ctrl-attribution{
+    display: none;
+}
+
+.mapboxgl-control-container {
+    .pelias-ctrl-results.pelias-ctrl-shadow {
+        max-width: 400px;
+    }
 }
 // result search
 /* css result-search */
@@ -3683,7 +3693,4 @@ fieldset, label { margin: 0; padding: 0; }
 // /* .rating > label:hover ~ input:checked ~ label, lighten current selection */
 // /* .rating > input:checked ~ label:hover ~ label { color: #E7711B;  }  */
 
-// pelias-geocoder.css
-.pelias-ctrl-attribution{
-    display: none;
-}
+

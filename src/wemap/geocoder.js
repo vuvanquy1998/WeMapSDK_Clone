@@ -8,14 +8,15 @@ export default class WeGeocoder {
             this.options.url = 'https://places.jawg.io/v1'
             delete this.options.key
             this.options.suggestion.min_chars |= 4
-            var iconMarkerEl = document.createElement("div")
-            iconMarkerEl.innerHTML = "<div class='marker-arrow'></div>" +
-                "<div class='marker-pulse'></div>"
-            this.options.marker.icon = iconMarkerEl
+            if(!this.options.marker){
+                this.options.marker = {}
+            }
+            this.options.marker.icon = this.initMarker()
             WeGeocoder.min_chars = this.options.suggestion.min_chars
             this.geocoder = this.init(this.options)
-            WeGeocoder.initMultiView()
+            this.initMultiView()
             this.initEvent()
+            this.updateInfoFromUrl()
             return this.geocoder
         }
 
@@ -41,6 +42,14 @@ export default class WeGeocoder {
             return new PeliasGeocoder(options);
         }
 
+        updateInfoFromUrl(){
+            let info = wemapgl.urlController.getParams()
+            if(info.lat){
+                let place = new PlaceDetail({name: info.name, type: info.type,
+                     lat: info.lat, lon: info.long,address: info.address ,osm_id: info.osmid, osm_type: info.osmtype});
+                place.showDetailFeature()
+            }
+        }
         /**
          * @returns standardized address
          */
@@ -73,13 +82,10 @@ export default class WeGeocoder {
                 + (this.params ? this.params : '')
                 + (this.opts.sources ? ('&sources=' + this.opts.sources) : '')
                 + (this.opts.useFocusPoint ? ('&focus.point.lat=' + this._map.getCenter().lat + '&focus.point.lon=' + this._map.getCenter().lng) : '');
-            console.log(url)
             this._sendXmlHttpRequest(url, callback);
         }
         overrideBuildInputHTMLElement(){
             let self = this
-            console.log('custome builInput')
-
             var inputEl = this._createElement({type: 'input'});
             inputEl.type = 'text';
             inputEl.placeholder = this.opts.placeholder;
@@ -173,12 +179,10 @@ export default class WeGeocoder {
                 var resultsListEl = originBuildResultsListHTMLElement.call(this)
                 resultsListEl.hideAll = function (){
                     resultsListEl.style.display= 'none';
-                    console.log('resultsListEL hide');
                 }
                 
                 resultsListEl.showAll = function (){
                     resultsListEl.style.display= 'block';
-                    console.log('resultsListEL show');
                 }
                 return resultsListEl
             }
@@ -262,6 +266,7 @@ export default class WeGeocoder {
                 let info = feature.properties
                 let osm_id = ''
                 let osm_type = ''
+                console.log(feature)
                 if(info.source == 'openstreetmap'){
                     var get_number = /[0-9]/g
                     osm_id = info.id.match(get_number).join('')
@@ -293,8 +298,8 @@ export default class WeGeocoder {
                 } else {
                     this._removePolygon();
                 }
+                // wemapgl.urlController.updatePlaceParams({ })
             }
-           
         }
 
         showResultsSearch(result) {
@@ -322,7 +327,7 @@ export default class WeGeocoder {
                   '<label class = "full" for="star1" title="Sucks big time - 1 star">' + '</label>' +
                   '</div>' +
                   '</span>' +
-                  '<span class="average1">' + ' ('+ Math.floor(Math.random()*255) + ')' + '</span>' +
+                  '<span class="average1">' + ' ('+ Math.floor(300+Math.random()*1000) + ')' + '</span>' +
                   '<div class="poicard-category_and_rating">' +
                   '<div class="poicard-category">' + feature.geometry.type +
                   '</div>' +
@@ -334,21 +339,12 @@ export default class WeGeocoder {
                   '</ul>' +
                   '</div>' +
                   '</li>';
-                  // let star = document.getElementsByClassName("full") ;
-                  // if(averageStar>1) star.style.color = 'red' ;
-                  
               }
             });
             let results = document.getElementById('results-list');
             results.innerHTML = resultFeatures;
             let resultList = results.querySelectorAll("li");
             resultList.forEach(function (result, index) {
-              // let val = Math.floor((Math.random()*5)*10)/10 ;
-          
-              // for (i=1; i< val; i++ ){
-              //   let id = '#star' +i
-              //   result.querySelector(id).style.color = 'red'
-              // }
           
               result.onclick = function (e) {
                 self._selectFeature(features[index]);
@@ -365,42 +361,21 @@ export default class WeGeocoder {
               }
           
               let rating = result.querySelectorAll('.full');
-              // let val = Math.floor((Math.random()*5)*10)/10;
-              
-              var averageStar = Math.floor((Math.random()*5)*10)/10 ;
-              
-              
-              console.log('averageStar')
-              
-              console.log(averageStar)
-          
-              
-          
+              let averageStar = Math.floor((Math.random()*5)*10)/10 ;
+
               for (let i=0; i< Math.floor(averageStar ); i++ ){
                 rating[4-i].style.color = '#E7711B'
               }
-              // averageStar = Math.floor(averageStar )
               let rating_number = result.querySelector('.average');
               rating_number.innerHTML = averageStar
-              // rating[4].style.color = 'red'
-              // console.log(rating)
-          
               rating.onclick = function (e) {
-                // alert('hihi')
                 if (!e) var e = window.event;
                 e.cancelBubble = true;
                 if (e.stopPropagation) e.stopPropagation();
-          
               }
-              
               let routing = result.querySelector('.f-control');
           
-              console.log(routing);
-              
-          
               routing.onclick = function (e) {
-                alert('hehe')
-                
                 if (!e) var e = window.event;
                 e.cancelBubble = true;
                 if (e.stopPropagation) e.stopPropagation();
@@ -415,7 +390,6 @@ export default class WeGeocoder {
                     + '&x2=' + coordinates.split(",")[0] + '&y2=' + coordinates.split(",")[1];
                   window.open(url, "_self");
                 });
-                
           
               }
               let star = result.querySelector('.stars');
@@ -426,10 +400,20 @@ export default class WeGeocoder {
               }
             })
           }
+        
+        /**
+         * init default marker
+         */  
+        initMarker(){
+            let iconMarkerEl = document.createElement("div")
+            iconMarkerEl.innerHTML = "<div class='marker-arrow'></div>" +
+                "<div class='marker-pulse'></div>"
+            return iconMarkerEl
+        }
         /**
          * init view detailFeature, result search
          */
-        static initMultiView(){
+        initMultiView(){
             let view = document.createElement('div')
             view.innerHTML = '<div id="no-result"\>'+
             '<p>Không tìm thấy kết quả</p>'+
@@ -483,11 +467,12 @@ export default class WeGeocoder {
         }
 
         static hideDetailFeatureFrame() {
-            // deleteAllUrlParams()
             let detail_feature = document.getElementById("detail-feature");
             if (detail_feature) {
               document.getElementById("detail-feature").style.display = "none";
             }
+            // deleteAllUrlParams()
+            wemapgl.urlController.deletePlaceParams()
         }
         static hideResultSearch() {
             document.getElementById("results-search").style.display = "none";

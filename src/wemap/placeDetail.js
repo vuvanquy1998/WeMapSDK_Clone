@@ -1,4 +1,5 @@
 import API from "./api";
+import WeGeocoder from "./geocoder";
 
 export default class PlaceDetail{
   // name, type, lat, long, address, osm_id, osm_type
@@ -31,27 +32,29 @@ export default class PlaceDetail{
     // // document.getElementById('place').style.display = 'none'
     document.getElementById("detail-feature").style.display = "block";
     let featureName = document.getElementById("feature-name");
-
+    let type = this.options.type
+    let lat = this.options.lat
+    let long = this.options.lon
     if(this.options.type != 'null'){
-        featureName.innerHTML =this.options.name+ "<br>" + "<div class='feature-type'>" + this.options.type + "</div>";
+        featureName.innerHTML =this.options.name+ "<br>" + "<div class='feature-type'>" + type + "</div>";
     }else{
         featureName.innerHTML =this.options.name;
     }
     let address = this.options.address
-    var address_result =""
+    var address_result = WeGeocoder.getAddess(address)
     // var address_result = PlaceDetail.getAddess(address);
-    var separator = "";
-    var i=0
-    for (i = 0; i < address.length; i++) {
-      address[i] = address[i] ? address[i] : "";
-      if (address[i]) {
-        address_result = address_result + separator + address[i];
-        separator = ", ";
-      }
-    }
+    // var separator = "";
+    // var i=0
+    // for (i = 0; i < address.length; i++) {
+    //   address[i] = address[i] ? address[i] : "";
+    //   if (address[i]) {
+    //     address_result = address_result + separator + address[i];
+    //     separator = ", ";
+    //   }
+    // }
     let featureCoordinates = document.getElementById("feature-coordinates");
     featureCoordinates.innerHTML =
-        '<i class="fa fa-compass"></i>  ' + this.options.lat + ", " + this.options.lon;
+        '<i class="fa fa-compass"></i>  ' + lat + ", " + long;
     let featureLocation = document.getElementById("feature-location");
     featureLocation.innerHTML = '<i class="fa fa-map"></i>  ' + address_result;
 
@@ -66,15 +69,16 @@ export default class PlaceDetail{
     // let featureDescription = document.getElementById("feature-description");
     // let featurePhone = document.getElementById("feature-phone");
 
-    let osm_id = this.options.osm_id
-    let osm_type = this.options.osm_type
+    let osmid = this.options.osmid
+    let osmtype = this.options.osmtype
     var key = 'vpstPRxkBBTLaZkOaCfAHlqXtCR'
-    if(osm_id){
-      console.log(osm_id)
-      API.lookup({osm_id, osm_type, key}, (data) => {
+    if(osmid){
+      console.log(osmid)
+      API.lookup({osmid, osm_type, key}, (data) => {
         console.log(data)
       });
     }
+    wemapgl.urlController.updatePlaceParams({name, type, lat, long, address, osmid, osmtype})
     // if (this.options.osm_id) {
     //     point_detail(this.options.osm_id, this.options.osm_type).then(detail => {
     //     detail = detail[0]
