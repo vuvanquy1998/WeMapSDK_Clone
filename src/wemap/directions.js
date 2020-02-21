@@ -7,7 +7,8 @@ import MapboxDirections from '../mapbox-gl-directions/dist/mapbox-gl-directions'
 import UrlController from "./url";
 
 /**
- * WeDirections
+ * WeDirections show direction
+ *
  */
 export default class WeDirections {
 
