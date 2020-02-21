@@ -19,6 +19,7 @@ export default class Reverse{
         this.getStyle();
         this.leftClick();
         this.clickPlace();
+        this.closeBottomCard();
     }
     /**
      * turn on reverse
@@ -65,7 +66,7 @@ export default class Reverse{
         })
     }
     /**
-     * get reverse data object
+     * get reverse data object by e.lngLat
      * @param {*} e 
      */
     getReverseData(e){
@@ -79,16 +80,27 @@ export default class Reverse{
             })
         })
     }
+    /**
+     * handle reverse event of left click
+     */
     leftClick(){
-        if(this.on){
-            this.map.on('click', (e) => {
+        this.map.on('click', (e) => {
+            if(this.on){
                 this.onClick(e)
-            })
-        }
+            }
+        })
     }
+    /**
+     * handle reverse event of right click
+     * @param {Object} e 
+     */
     rightClick(e){
         this.onClick(e)
     }
+    /**
+     * render UI based on type of layer clicked
+     * @param {Object} e 
+     */
     onClick(e){
         let features = this.map.queryRenderedFeatures(e.point);
         this.getReverseData(e).then(data => {
@@ -112,6 +124,10 @@ export default class Reverse{
         })
         .catch(err => console.log(err))
     }
+    /**
+     * render ui when clicked point is not an icon
+     * @param {Object} data 
+     */
     clickoutIcon(data){
         this.displayUI('detail-feature', 'none')                
         this.displayUI('place', 'block')    
@@ -136,10 +152,18 @@ export default class Reverse{
         document.getElementById('placelatlon').innerHTML = Number(data.geometry.coordinates[0]).toFixed(7)+' ,'+ Number(data.geometry.coordinates[1]).toFixed(7)    
         this.receivedData = data                          
     }
+    /**
+     * render ui when a icon is clicked
+     * @param {Object} data 
+     */
     clickonIcon(data){
         this.displayUI('place', 'none')
         this.showDetailFeatures(data)
     }
+    /**
+     * show UI of icon
+     * @param {Object} data 
+     */
     showDetailFeatures(data){     
         let place = new PlaceDetail({
             name: data.properties.name, 
@@ -158,12 +182,28 @@ export default class Reverse{
         });
         place.showDetailFeature()
     }
+    /**
+     * show feature detail when click reverse bottom card
+     */
     clickPlace(){
         document.getElementById('click-detail').addEventListener('click', (e) => {
             this.displayUI('place', 'none')
             this.showDetailFeatures(this.receivedData)
         })  
     }
+    /**
+     * close reverse bottom card
+     */
+    closeBottomCard(){
+        document.getElementById('placeclose').addEventListener('click', (e) => {
+            this.displayUI('place', 'none')
+        })
+    }
+    /**
+     * change style of html element by id
+     * @param {*} id 
+     * @param {*} text 
+     */
     displayUI(id, text){
         document.getElementById(id).style.display = text;
     }

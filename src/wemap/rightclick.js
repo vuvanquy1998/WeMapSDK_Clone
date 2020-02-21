@@ -1,13 +1,24 @@
 export default class RightClick {
+    /**
+     * Create right click
+     * @param {Object} map 
+     * @param {String} key 
+     */
     constructor(map, key) {
         this.map = map;
         this.key = key;
+        this.lat = 0;
+        this.lon = 0;
         this.clickedPoi = {};
         this.initView();
         this.showMenu();
         this.closeMenu();
         this.onReverse();
+        this.getLocation();
     }
+    /**
+     * render initial view: hidden right click menu and reverse bottom card
+     */
     initView() {
         let rightClick = document.createElement('div')
         rightClick.innerHTML = '<div id = "right-click-menu-container"' + "style = 'display: none'>" +
@@ -40,6 +51,9 @@ export default class RightClick {
             '</div>'
         document.body.appendChild(showBottomDetail)
     }
+    /**
+     * render right click menu
+     */
     showMenu() {
         this.map.on('contextmenu', (e) => {
             let mouseX = e.point.x;
@@ -66,20 +80,36 @@ export default class RightClick {
             this.clickedPoi = e;
         })
     }
+    /**
+     * close right click menu
+     */
     closeMenu(){
         this.map.on('click', (e) => {
             this.displayUI('right-click-menu-container', 'none')
         })
     }
+    /**
+     * reverse when click 'Đây là đâu?' option in right click menu
+     */
     onReverse(){
         document.getElementById('right-click-reverse').addEventListener('click', (event) => {
             this.displayUI('right-click-menu-container', 'none')
             wemapgl.reverse.rightClick(this.clickedPoi)
         })
     }
+    /**
+     * change style of html element by id
+     * @param {String} id 
+     * @param {String} text 
+     */
     displayUI(id, text){
         document.getElementById(id).style.display = text;
     }
+    /**
+     * add new option in right click menu
+     * @param {String} id 
+     * @param {String} text 
+     */
     static add(id, text){
         let newRightClickItem = document.createElement('div')
         newRightClickItem.setAttribute('id', id)
@@ -87,5 +117,14 @@ export default class RightClick {
         newRightClickItem.innerText = text
 
         document.getElementById('right-click-menu-container').appendChild(newRightClickItem)
+    }
+    /**
+     * update lat lon right click
+     */
+    getLocation(){
+        this.map.on('contextmenu', (e) => {
+            this.lat = e.lngLat.lat;
+            this.lon = e.lngLat.lng;
+        })
     }
 }
