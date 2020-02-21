@@ -11,7 +11,7 @@ import UrlController from "./url";
  */
 export default class WeDirections {
 
-    constructor(options, map) {
+    constructor(options) {
         options = options || {};
 
         this.options = options || {};
@@ -197,15 +197,12 @@ export default class WeDirections {
         switch (engine) {
             case 'default':
             case 'pelias':
-                // geoApi = api ? api : config.direction.geocoder.pelias;
                 geoApi = config.direction.geocoder.pelias;
                 break;
             case 'mapbox':
-                // geoApi = api ? api : config.direction.geocoder.mapbox;
                 geoApi = config.direction.geocoder.mapbox;
                 break;
             default:
-                // geoApi = api ? api : config.direction.geocoder.pelias;
                 geoApi = config.direction.geocoder.pelias;
                 break;
         }
