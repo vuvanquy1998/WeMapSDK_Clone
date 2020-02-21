@@ -59,7 +59,7 @@ export default class UrlController {
 
         search_params.delete("osmid");
         search_params.delete("osmtype");
-        
+
         url.search = search_params.toString();
         window.history.pushState("", "", url);
     }
@@ -95,14 +95,14 @@ export default class UrlController {
         search_params.delete("dx");
         search_params.delete("dy");
         search_params.delete("vehicle");
-        
+
         url.search = search_params.toString();
         window.history.pushState("", "", url);
     }
 
     /**
      * Returns string from Url with given parameter name
-     * @param {String} paramName 
+     * @param {String} paramName
      */
     parseParam(paramName) {
         let url = new URL(window.location);
