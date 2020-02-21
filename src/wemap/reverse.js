@@ -11,7 +11,7 @@ export default class Reverse{
         this.received_data = {};
   
         this.getStyle();
-        this.onClick();
+        this.leftClick();
     }   
     onReverse(){
         this.on = true;
@@ -56,33 +56,39 @@ export default class Reverse{
             })
         })
     }
-    onClick(){
+    leftClick(){
         if(this.on){
             this.map.on('click', (e) => {
-                let features = this.map.queryRenderedFeatures(e.point);
-                this.getReverseData(e).then(data => {
-
-                    if(features.length == 0){
-                        this.clickoutIcon(data.features[0])
-                    }else{
-                        let not_point_layer = 0
-    
-                        features.forEach((feature,index) => {
-                            if(this.point_layers.includes(feature.layer.id)){
-                                this.clickonIcon(data.features[0]);
-                                not_point_layer += 1
-                            }
-                        });
-
-                        if(not_point_layer == 0){
-                            this.clickoutIcon(data.features[0])
-                        }
-                    }
-
-                })
-                .catch(err => console.log(err))
+                this.onClick(e)
             })
         }
+    }
+    rightClick(e){
+        this.onClick(e)
+    }
+    onClick(e){
+        console.log(e)
+        let features = this.map.queryRenderedFeatures(e.point);
+        this.getReverseData(e).then(data => {
+
+            if(features.length == 0){
+                this.clickoutIcon(data.features[0])
+            }else{
+                let not_point_layer = 0
+
+                features.forEach((feature,index) => {
+                    if(this.point_layers.includes(feature.layer.id)){
+                        this.clickonIcon(data.features[0]);
+                        not_point_layer += 1
+                    }
+                });
+
+                if(not_point_layer == 0){
+                    this.clickoutIcon(data.features[0])
+                }
+            }
+        })
+        .catch(err => console.log(err))
     }
     clickoutIcon(data){
         this.display_ui('detail-feature', 'none')                
