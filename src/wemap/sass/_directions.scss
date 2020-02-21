@@ -107,10 +107,11 @@
     }
 
     li.mapbox-directions-step {
-        max-width: 230px;
+        max-width: 295px;
     }
 }
 
+// Direction control: top-left
 .mapboxgl-ctrl-top-left {
     .directions-control.directions-control-instructions {
         position: relative;
