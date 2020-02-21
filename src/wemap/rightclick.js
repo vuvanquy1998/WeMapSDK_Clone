@@ -1,13 +1,8 @@
-import { getJSON } from '../util/ajax'
-import { default as config } from '../config.json';
-import PlaceDetail from './placeDetail'
-import Reverse from './reverse'
-
 export default class RightClick {
     constructor(map, key) {
         this.map = map;
         this.key = key;
-        this.clicked_poi = {};
+        this.clickedPoi = {};
         this.initView();
         this.showMenu();
         this.closeMenu();
@@ -49,47 +44,48 @@ export default class RightClick {
         this.map.on('contextmenu', (e) => {
             let mouseX = e.point.x;
             let mouseY = e.point.y;
-            let max_width = window.innerWidth;
-            let max_height = window.innerHeight;
-            let context_menu_width = document.getElementById("right-click-menu-container").clientWidth;
-            let context_menu_height = document.getElementById("right-click-menu-container").clientHeight;
+            let maxWidth = window.innerWidth;
+            let maxHeight = window.innerHeight;
+            let contextMenuWidth = document.getElementById("right-click-menu-container").clientWidth;
+            let contextMenuHeight = document.getElementById("right-click-menu-container").clientHeight;
             let translateX = 0;
             let translateY = 0;
 
-            if (mouseX + context_menu_width > max_width) {
-                translateX = max_width - context_menu_width;
+            if (mouseX + contextMenuWidth > maxWidth) {
+                translateX = maxWidth - contextMenuWidth;
             } else {
                 translateX = mouseX;
             }
-            if (mouseY + context_menu_height > max_height) {
-                translateY = max_height - context_menu_height;
+            if (mouseY + contextMenuHeight > maxHeight) {
+                translateY = maxHeight - contextMenuHeight;
             } else {
                 translateY = mouseY;
             }
-            this.display_ui('right-click-menu-container', 'block')
+            this.displayUI('right-click-menu-container', 'block')
             document.getElementById("right-click-menu-container").style.transform = `translate(${translateX}px,${translateY}px)`
-            this.clicked_poi = e;
+            this.clickedPoi = e;
         })
     }
     closeMenu(){
         this.map.on('click', (e) => {
-            this.display_ui('right-click-menu-container', 'none')
+            this.displayUI('right-click-menu-container', 'none')
         })
     }
     onReverse(){
         document.getElementById('right-click-reverse').addEventListener('click', (event) => {
-           wemapgl.reverse.rightClick(this.clicked_poi)
+            this.displayUI('right-click-menu-container', 'none')
+            wemapgl.reverse.rightClick(this.clickedPoi)
         })
     }
-    display_ui(id, text){
+    displayUI(id, text){
         document.getElementById(id).style.display = text;
     }
     static add(id, text){
-        let new_right_click_item = document.createElement('div')
-        new_right_click_item.setAttribute('id', id)
-        new_right_click_item.setAttribute('class', 'right-click-menu-item')
-        new_right_click_item.innerText = text
+        let newRightClickItem = document.createElement('div')
+        newRightClickItem.setAttribute('id', id)
+        newRightClickItem.setAttribute('class', 'right-click-menu-item')
+        newRightClickItem.innerText = text
 
-        document.getElementById('right-click-menu-container').appendChild(new_right_click_item)
+        document.getElementById('right-click-menu-container').appendChild(newRightClickItem)
     }
 }
