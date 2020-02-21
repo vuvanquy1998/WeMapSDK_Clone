@@ -1,6 +1,7 @@
 import { getJSON } from '../util/ajax'
 import { default as config } from '../config.json'; 
 import PlaceDetail from './placeDetail'
+import RightClick from './rightclick'
 
 export default class Reverse{
     constructor(map, key) {
@@ -12,6 +13,7 @@ export default class Reverse{
   
         this.getStyle();
         this.leftClick();
+        this.clickPlace();
     }   
     onReverse(){
         this.on = true;
@@ -64,6 +66,7 @@ export default class Reverse{
         }
     }
     rightClick(e){
+        console.log('right click')
         this.onClick(e)
     }
     onClick(e){
@@ -111,11 +114,8 @@ export default class Reverse{
             }
         }
         document.getElementById('placeadd').innerHTML = second_line.join(', ')
-        document.getElementById('placelatlon').innerHTML = Number(data.geometry.coordinates[0]).toFixed(7)+' ,'+ Number(data.geometry.coordinates[1]).toFixed(7)       
-        document.getElementById('click-detail').addEventListener('click', (e) => {
-            this.display_ui('place', 'none')
-            this.showDetailFeatures(data)
-        })                         
+        document.getElementById('placelatlon').innerHTML = Number(data.geometry.coordinates[0]).toFixed(7)+' ,'+ Number(data.geometry.coordinates[1]).toFixed(7)    
+        this.received_data = data                          
     }
     clickonIcon(data){
         this.display_ui('place', 'none')
@@ -138,6 +138,12 @@ export default class Reverse{
             osm_type: data.properties.osm_type
         });
         place.showDetailFeature()
+    }
+    clickPlace(){
+        document.getElementById('click-detail').addEventListener('click', (e) => {
+            this.display_ui('place', 'none')
+            this.showDetailFeatures(this.received_data)
+        })  
     }
     display_ui(id, text){
         document.getElementById(id).style.display = text;

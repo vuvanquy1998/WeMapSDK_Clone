@@ -78,7 +78,7 @@ export default class RightClick {
     }
     onReverse(){
         document.getElementById('right-click-reverse').addEventListener('click', (event) => {
-           // wemapgl.reverse.rightClick(event)
+           wemapgl.reverse.rightClick(this.clicked_poi)
         })
     }
     display_ui(id, text){
@@ -91,10 +91,5 @@ export default class RightClick {
         new_right_click_item.innerText = text
 
         document.getElementById('right-click-menu-container').appendChild(new_right_click_item)
-    }
-    static rightClickCoordinates(){
-        map.on('contextmenu', (e) => {
-            console.log(e.lngLat.lng, e.lngLat.lat)
-        })
     }
 }
