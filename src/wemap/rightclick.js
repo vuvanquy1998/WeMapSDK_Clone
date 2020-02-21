@@ -178,4 +178,5 @@ export default class RightClick {
             })
         }
     }
+
 }
