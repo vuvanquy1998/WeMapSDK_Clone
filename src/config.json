@@ -18,13 +18,17 @@
       "mapbox": "https://api.mapbox.com/geocoding/v5/mapbox.places/"
     }
   },
-  "lookup": "http://apis.wemap.asia/we-tools/lookup?key=",
-  "lookupOsmIdOnly": "https://apis.wemap.asia/we-tools/lookup/",
-  "center": [
-    105.8550736,
-    21.0283243
-  ],
-  "zoom": 13,
+  "lookup": {
+    "osmTypeId": "http://apis.wemap.asia/we-tools/lookup?key=",
+    "osmId": "https://apis.wemap.asia/we-tools/lookup/"
+  },
+  "map": {
+    "center": [
+      105.8550736,
+      21.0283243
+    ],
+    "zoom": 10
+  },
   "language": {
     "vi": "vi-VN",
     "en": "en-US"
