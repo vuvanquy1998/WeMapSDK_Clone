@@ -266,46 +266,8 @@ export default class MapboxDirections {
     };
   }
 
-  // _onSingleClick(e) {
-  //   const { origin } = store.getState();
-  //   const { destination } = store.getState();
-  //   const coords = [e.lngLat.lng, e.lngLat.lat];
-
-  //   if (!origin.geometry) {
-  //     this.actions.setOriginFromCoordinates(coords);
-  //   } else {
-
-  //     const features = this._map.queryRenderedFeatures(e.point, {
-  //       layers: [
-  //         'directions-origin-point',
-  //         'directions-destination-point',
-  //         'directions-waypoint-point',
-  //         'directions-route-line-alt'
-  //       ]
-  //     });
-
-  //     if (features.length) {
-
-  //       // Remove any waypoints
-  //       features.forEach((f) => {
-  //         if (f.layer.id === 'directions-waypoint-point') {
-  //           this.actions.removeWaypoint(f);
-  //         }
-  //       });
-
-  //       if (features[0].properties.route === 'alternate') {
-  //         const index = features[0].properties['route-index'];
-  //         this.actions.setRouteIndex(index);
-  //       }
-  //     } else {
-  //       this.actions.setDestinationFromCoordinates(coords);
-  //       this._map.flyTo({ center: coords });
-  //     }
-  //   }
-  // }
   _onSingleClick(e) {
     const { origin } = store.getState();
-    const { destination } = store.getState();
     const coords = [e.lngLat.lng, e.lngLat.lat];
 
     if (!origin.geometry) {
@@ -334,7 +296,7 @@ export default class MapboxDirections {
           const index = features[0].properties['route-index'];
           this.actions.setRouteIndex(index);
         }
-      } else if (!destination.geometry){
+      } else {
         this.actions.setDestinationFromCoordinates(coords);
         this._map.flyTo({ center: coords });
       }
