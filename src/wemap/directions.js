@@ -35,7 +35,31 @@ export default class WeDirections {
         this._addDirectionIcon();
 
         this.weDirection.onClick = this._clickHandler();
+        this.weDirection.interactive = this._interactive();
         return this.weDirection;
+    }
+
+    _interactive(state) {
+        let self = this.weDirection;
+        window.addEventListener('DOMContentLoaded', function() {
+            if (state) {
+                self._map.on('touchstart', self.move);
+                self._map.on('touchstart', self.onDragDown);
+
+                self._map.on('mousedown', self.onDragDown);
+                self._map.on('mousemove', self.move);
+                // this._map.on('click', this.onClick);
+            } else {
+                self._map.off('touchstart', self.move);
+                this._map.off('touchstart', self.onDragDown);
+
+                self._map.off('mousedown', self.onDragDown);
+                self._map.off('mousemove', self.move);
+                // this._map.off('click', this.onClick);
+            }
+            return this;
+        });
+
     }
 
     _clickHandler() {
@@ -144,7 +168,7 @@ export default class WeDirections {
                     // interactive
                     // self.weDirection.interactive(true);
                     // console.log('Self: ', self);
-                    // self.interactive(true);
+                    self.interactive(true);
                     self._map._interactive = true;
                 });
             }
@@ -164,7 +188,7 @@ export default class WeDirections {
                     // self.weDirection.removeRoutes();
                     // self.weDirection.removeWaypoint();
                     // console.log('Self: ', self);
-                    // self.interactive(false);
+                    self.interactive(false);
                     self._map._interactive = false;
                     self.removeRoutes();
                     self.removeWaypoint();
