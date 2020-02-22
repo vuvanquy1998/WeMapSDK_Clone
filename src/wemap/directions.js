@@ -40,6 +40,7 @@ export default class WeDirections {
     }
 
     _interactive(state) {
+        // TODO: Re check interactive function
         let self = this.weDirection;
         window.addEventListener('DOMContentLoaded', function() {
             if (state) {
@@ -51,7 +52,7 @@ export default class WeDirections {
                 // this._map.on('click', this.onClick);
             } else {
                 self._map.off('touchstart', self.move);
-                this._map.off('touchstart', self.onDragDown);
+                self._map.off('touchstart', self.onDragDown);
 
                 self._map.off('mousedown', self.onDragDown);
                 self._map.off('mousemove', self.move);
