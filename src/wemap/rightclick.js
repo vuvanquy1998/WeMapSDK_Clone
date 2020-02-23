@@ -11,7 +11,12 @@ export default class RightClick {
         this.lon = 0;
         this.clickedPoi = {};
         this.initView();
+        this.addMenuItemStart();
+        this.addMenuItemEnd();
+        this.addMenuItemReverse();
         this.showMenu();
+        this.updateUrlStart();
+        this.updateUrlEnd();
         this.closeMenu();
         this.onReverse();
         this.getLocation();
@@ -22,9 +27,6 @@ export default class RightClick {
     initView() {
         let rightClick = document.createElement('div')
         rightClick.innerHTML = '<div id = "right-click-menu-container"' + "style = 'display: none'>" +
-            '<div class = "right-click-menu-item" id = "start" style = "display: none">Điểm bắt đầu</div>' +
-            '<div class = "right-click-menu-item" id = "end" style = "display: none">Điểm kết thúc</div>' +
-            '<div class = "right-click-menu-item" id ="right-click-reverse">Đây là đâu ?</div>' +
             '</div>'
         document.body.appendChild(rightClick)
         let showBottomDetail = document.createElement('div')
@@ -42,7 +44,9 @@ export default class RightClick {
             '<div class="placelatlon"><a href="#" id="placelatlon"></a></div>' +
             '</div>' +
             '<div class="image-direc">' +
+            '<a id="direction-icon">'+
             '<img src="http://maps.gstatic.com/tactile/reveal/directions-1x-20150909.png">' +
+            '</a>'+
             '</div>' +
             '<div class="close-place">' +
             '<div id="placeclose" style="color: black;"><i class="fa fa-times"></i></div>' +
@@ -110,13 +114,40 @@ export default class RightClick {
      * @param {String} id 
      * @param {String} text 
      */
-    static add(id, text){
+    addMenuItem(id, text){
         let newRightClickItem = document.createElement('div')
         newRightClickItem.setAttribute('id', id)
         newRightClickItem.setAttribute('class', 'right-click-menu-item')
         newRightClickItem.innerText = text
 
         document.getElementById('right-click-menu-container').appendChild(newRightClickItem)
+    }
+    addMenuItemStart(){
+        this.addMenuItem('right-click-start', 'Điểm bắt đầu')
+    }
+    addMenuItemEnd(){
+        this.addMenuItem('right-click-end', 'Điểm kết thúc')
+    }
+    addMenuItemReverse(){
+        this.addMenuItem('right-click-reverse', 'Đây là đâu ?')
+    }
+    updateUrlStart(){
+        document.getElementById('right-click-start').addEventListener('click', (e)=> {
+            wemapgl.reverse.updateDirectionUrl({
+                lat: this.clickedPoi.lngLat.lat,
+                lon: this.clickedPoi.lngLat.lng,
+                action:'direction'
+            })
+        })
+    }
+    updateUrlEnd(){
+        document.getElementById('right-click-end').addEventListener('click', (e)=> {
+            wemapgl.reverse.updateDirectionUrl({
+                lat: this.clickedPoi.lngLat.lat,
+                lon: this.clickedPoi.lngLat.lng,
+                action:'direction'
+            })
+        })
     }
     /**
      * update lat lon right click
