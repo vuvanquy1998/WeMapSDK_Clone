@@ -99,9 +99,19 @@ export default class WeGeocoder {
                     self._goToFeatureLocation(self._selectedFeature);
                     return;
                 }
-            
+                 if(self._results){
+                    console.log(self._results)
+                 }
+                //  if(self._results.features[0]){
+                //     console.log('self._results.features[0]')
+
+                //     console.log(self._results.features[0])
+                //  }
+                
+                
                 // Arrow down -> focus on the first result.
                 if (self._eventMatchKey(e, self._keys.arrowDown) && self._results && self._results.features[0]) {
+                    console.log('focus first child')
                     self._resultsListEl.firstChild.focus();
                     return;
                 }
@@ -134,8 +144,8 @@ export default class WeGeocoder {
                         return self._showError(err);
                     }
                     if (result) {
-                        // self._clearAll()
-                        // hideDetailFeatureFrame();
+                        self._clearAll()
+                        WeGeocoder.hideDetailFeatureFrame();
                         self.showResultsSearch(result)
                     }
                     }, 'search');
@@ -143,7 +153,7 @@ export default class WeGeocoder {
                     document.getElementById('results-search').style.display = 'inline-block';
                 }
             
-                if (!self._eventMatchKey(e, self._keys.enter)) {
+                if (!self._eventMatchKey(e, self._keys.enter)&&!self._eventMatchKey(e, self._keys.arrowUp)) {
                     if(this.value.length >= WeGeocoder.min_chars){
                         self.search({text: value}, function (err, result) {
                         if (err) {
@@ -266,7 +276,6 @@ export default class WeGeocoder {
                 let info = feature.properties
                 let osm_id = ''
                 let osm_type = ''
-                console.log(feature)
                 if(info.source == 'openstreetmap'){
                     var get_number = /[0-9]/g
                     osm_id = info.id.match(get_number).join('')
@@ -309,7 +318,7 @@ export default class WeGeocoder {
             features.forEach(function (feature, i) {
               if (i < features.length) {
                 resultFeatures = resultFeatures + '<li class="js-poicard poicard">' +
-                  '<div class="f-control" id="feature-directions">' +
+                  '<div class="f-control feature-directions">' +
                   '<i id="directions" class="fa fa-arrow-right"  class="routing-button">' + '</i>' +
                   '<div class="result-way">' + 'Đường đi' + '</div>' +
                   '</div>' +
@@ -345,20 +354,18 @@ export default class WeGeocoder {
             results.innerHTML = resultFeatures;
             let resultList = results.querySelectorAll("li");
             resultList.forEach(function (result, index) {
-          
-              result.onclick = function (e) {
-                self._selectFeature(features[index]);
-                self._goToFeatureLocation(features[index]);
-                WeGeocoder.hideResultSearch();
-                if (!e) var e = window.event;
-                e.cancelBubble = true;
-                if (e.stopPropagation) e.stopPropagation();
-              };
               result.onmouseover = function (e) {
                 self._selectFeature(features[index]);
                 self._goToFeatureLocation(features[index]);
                 WeGeocoder.hideDetailFeatureFrame();
               }
+              result.onclick = function (e) {
+                self._selectFeature(features[index]);
+                self._goToFeatureLocation(features[index]);
+                WeGeocoder.hideResultSearch();
+                console.log('father')
+                
+              };
           
               let rating = result.querySelectorAll('.full');
               let averageStar = Math.floor((Math.random()*5)*10)/10 ;
@@ -374,8 +381,9 @@ export default class WeGeocoder {
                 if (e.stopPropagation) e.stopPropagation();
               }
               let routing = result.querySelector('.f-control');
-          
+              console.log(routing)
               routing.onclick = function (e) {
+                console.log('direction success')
                 if (!e) var e = window.event;
                 e.cancelBubble = true;
                 if (e.stopPropagation) e.stopPropagation();

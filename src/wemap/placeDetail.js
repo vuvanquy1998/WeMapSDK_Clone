@@ -78,6 +78,10 @@ export default class PlaceDetail{
         console.log(data)
       });
     }
+    document.getElementById('feature-directions').onclick =  function(e){
+      console.log('direction')
+
+    }
     wemapgl.urlController.updatePlaceParams({name, type, lat, long, address, osmid, osmtype})
     // if (this.options.osm_id) {
     //     point_detail(this.options.osm_id, this.options.osm_type).then(detail => {
