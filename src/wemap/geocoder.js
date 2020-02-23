@@ -102,16 +102,9 @@ export default class WeGeocoder {
                  if(self._results){
                     console.log(self._results)
                  }
-                //  if(self._results.features[0]){
-                //     console.log('self._results.features[0]')
-
-                //     console.log(self._results.features[0])
-                //  }
-                
                 
                 // Arrow down -> focus on the first result.
                 if (self._eventMatchKey(e, self._keys.arrowDown) && self._results && self._results.features[0]) {
-                    console.log('focus first child')
                     self._resultsListEl.firstChild.focus();
                     return;
                 }
@@ -363,8 +356,6 @@ export default class WeGeocoder {
                 self._selectFeature(features[index]);
                 self._goToFeatureLocation(features[index]);
                 WeGeocoder.hideResultSearch();
-                console.log('father')
-                
               };
           
               let rating = result.querySelectorAll('.full');
@@ -381,9 +372,7 @@ export default class WeGeocoder {
                 if (e.stopPropagation) e.stopPropagation();
               }
               let routing = result.querySelector('.f-control');
-              console.log(routing)
               routing.onclick = function (e) {
-                console.log('direction success')
                 if (!e) var e = window.event;
                 e.cancelBubble = true;
                 if (e.stopPropagation) e.stopPropagation();
