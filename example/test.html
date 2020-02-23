@@ -23,11 +23,15 @@
             bottom: 0;
             width: 100%;
         }
+        img{
+            position: absolute;
+        }
     </style>
 </head>
 <body>
     <div id="map"></div>
     <div id=""></div>
+    
     <script>
         wemapgl.accessToken = "pk.eyJ1IjoicGh1b25naHgiLCJhIjoiY2s2N3IxMnNiMWdlbTNlcW8ybG5jaXU4MCJ9.CkMLijVJ1Lp2ZbaR0zDgrg";
         var map = new wemapgl.WeMap({
@@ -60,7 +64,7 @@
             }
         });
         map.addControl(wemapControl)
-        wemapgl.reverse.offReverse()
+        //wemapgl.reverse.offReverse()
     </script>
 </body>
 </html>

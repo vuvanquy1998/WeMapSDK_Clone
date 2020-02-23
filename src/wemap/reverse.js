@@ -18,7 +18,8 @@ export default class Reverse{
   
         this.getStyle();
         this.leftClick();
-        this.clickPlace();
+        this.clickBottomCard();
+        this.clickDirectionIcon()
         this.closeBottomCard();
     }
     /**
@@ -104,7 +105,6 @@ export default class Reverse{
     onClick(e){
         let features = this.map.queryRenderedFeatures(e.point);
         this.getReverseData(e).then(data => {
-
             if(features.length == 0){
                 this.clickoutIcon(data.features[0])
             }else{
@@ -121,6 +121,11 @@ export default class Reverse{
                     this.clickoutIcon(data.features[0])
                 }
             }
+            this.updateDirectionUrl({
+                lat: data.features[0].geometry.coordinates[1],
+                lon: data.features[0].geometry.coordinates[0],
+                action:''
+            })
         })
         .catch(err => console.log(err))
     }
@@ -185,7 +190,7 @@ export default class Reverse{
     /**
      * show feature detail when click reverse bottom card
      */
-    clickPlace(){
+    clickBottomCard(){
         document.getElementById('click-detail').addEventListener('click', (e) => {
             this.displayUI('place', 'none')
             this.showDetailFeatures(this.receivedData)
@@ -198,6 +203,26 @@ export default class Reverse{
         document.getElementById('placeclose').addEventListener('click', (e) => {
             this.displayUI('place', 'none')
         })
+    }/**
+     * update url of direction
+     * @param {*} params 
+     */
+    updateDirectionUrl(params){
+        let rootUrl = window.location.href.split("?")[0];
+        let newUrl = `${rootUrl}?x=${params.lon}&y=${params.lat}&action=${params.action}`
+        window.history.pushState("", "", newUrl);
+    }
+    /**
+     * change url when click direction icon
+     */
+    clickDirectionIcon(){
+        document.getElementById('direction-icon').addEventListener('click', (e) => {
+            this.updateDirectionUrl({
+                lon: this.receivedData.geometry.coordinates[0],
+                lat: this.receivedData.geometry.coordinates[1],
+                action: 'direction'
+            })
+        })
     }
     /**
      * change style of html element by id
@@ -207,5 +232,6 @@ export default class Reverse{
     displayUI(id, text){
         document.getElementById(id).style.display = text;
     }
+    
 
 }
