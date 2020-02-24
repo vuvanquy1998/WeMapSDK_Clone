@@ -158,4 +158,5 @@ export default class RightClick {
             this.lon = e.lngLat.lng;
         })
     }
+
 }

@@ -1,10 +1,8 @@
 // import * as json from '../../config.json';
 // const {config} = json;
-import { default as config } from '../config.json';
-
+import {default as config} from '../config.json';
 // const config = require('../config.json');
 import MapboxDirections from '../mapbox-gl-directions/dist/mapbox-gl-directions';
-import UrlController from "./url";
 
 /**
  * WeDirections show direction
@@ -35,7 +33,82 @@ export default class WeDirections {
         this._onReverseInput(this.weDirection);
 
         this._addDirectionIcon();
+
+        this.weDirection.onClick = this._clickHandler();
+        // this.weDirection.interactive = this.interactive();
         return this.weDirection;
+    }
+
+    interactive(state) {
+        // TODO: Re check interactive function
+        let self = this.weDirection;
+        window.addEventListener('DOMContentLoaded', function() {
+            if (state) {
+                self._map.on('touchstart', self.move);
+                self._map.on('touchstart', self.onDragDown);
+
+                self._map.on('mousedown', self.onDragDown);
+                self._map.on('mousemove', self.move);
+                // this._map.on('click', this.onClick);
+            } else {
+                self._map.off('touchstart', self.move);
+                self._map.off('touchstart', self.onDragDown);
+
+                self._map.off('mousedown', self.onDragDown);
+                self._map.off('mousemove', self.move);
+                // this._map.off('click', this.onClick);
+            }
+            return this;
+        });
+
+    }
+
+    _clickHandler() {
+        let self = this.weDirection;
+        let interactive = this.options.interactive;
+        window.addEventListener('DOMContentLoaded', function() {
+            let mapclick = self._map;
+            self._map._interactive = interactive;
+            mapclick.on('click', function(e) {
+                if (self._map._interactive) {
+                    let origin =  self.getOrigin();
+                    let destination = self.getDestination();
+                    let lng = e.lngLat.lng;
+                    let lat = e.lngLat.lat;
+                    const coords = [lng, lat];
+                    if (!origin.geometry) {
+                        self.actions.setOriginFromCoordinates(coords);
+                    } else {
+
+                        const features = mapclick.queryRenderedFeatures(e.point, {
+                            layers: [
+                                'directions-origin-point',
+                                'directions-destination-point',
+                                'directions-waypoint-point',
+                                'directions-route-line-alt'
+                            ]
+                        });
+
+                        if (features.length) {
+                            // Remove any waypoints
+                            features.forEach((f) => {
+                                if (f.layer.id === 'directions-waypoint-point') {
+                                    self.actions.removeWaypoint(f);
+                                }
+                            });
+
+                            if (features[0].properties.route === 'alternate') {
+                                const index = features[0].properties['route-index'];
+                                self.actions.setRouteIndex(index);
+                            }
+                        } else if (!destination.geometry){
+                            self.actions.setDestinationFromCoordinates(coords);
+                            mapclick.flyTo({ center: coords });
+                        }
+                    }
+                }
+            });
+        });
     }
 
     /**
@@ -71,7 +144,8 @@ export default class WeDirections {
     }
 
     _addDirectionIcon() {
-        let self = this;
+        let self = this.weDirection;
+        // let self = this;
         window.addEventListener('DOMContentLoaded', function(){
             let peliasSelector =
                 document.querySelectorAll('div.pelias-ctrl.mapboxgl-ctrl')[0];
@@ -89,11 +163,14 @@ export default class WeDirections {
                 peliasInputSelector.appendChild(directionOpen);
                 // Add Event
                 directionOpen.addEventListener('click', () => {
-                    console.log('active direction');
+                    console.log('Active direction');
                     directionSelector.classList.remove("hide");
                     peliasSelector.classList.add("hide");
                     // interactive
-                    self.weDirection.interactive(true);
+                    // self.weDirection.interactive(true);
+                    // console.log('Self: ', self);
+                    self.interactive(true);
+                    self._map._interactive = true;
                 });
             }
 
@@ -104,13 +181,18 @@ export default class WeDirections {
                     'direction-icon-search';
                 directionInputSelector.appendChild(directionClose);
                 directionClose.addEventListener('click', () => {
-                    console.log('disable direction');
+                    console.log('Deactive direction');
                     peliasSelector.classList.remove("hide");
                     directionSelector.classList.add("hide");
                     // interactive
-                    self.weDirection.interactive(false);
-                    self.weDirection.removeRoutes();
-                    self.weDirection.removeWaypoint();
+                    // self.weDirection.interactive(false);
+                    // self.weDirection.removeRoutes();
+                    // self.weDirection.removeWaypoint();
+                    // console.log('Self: ', self);
+                    self.interactive(false);
+                    self._map._interactive = false;
+                    self.removeRoutes();
+                    self.removeWaypoint();
                 });
             }
         });
