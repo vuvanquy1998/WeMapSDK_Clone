@@ -42,144 +42,124 @@ export default class PlaceDetail{
     }
     let address = this.options.address
     var address_result = WeGeocoder.getAddess(address)
-    // var address_result = PlaceDetail.getAddess(address);
-    // var separator = "";
-    // var i=0
-    // for (i = 0; i < address.length; i++) {
-    //   address[i] = address[i] ? address[i] : "";
-    //   if (address[i]) {
-    //     address_result = address_result + separator + address[i];
-    //     separator = ", ";
-    //   }
-    // }
     let featureCoordinates = document.getElementById("feature-coordinates");
     featureCoordinates.innerHTML =
         '<i class="fa fa-compass"></i>  ' + lat + ", " + long;
     let featureLocation = document.getElementById("feature-location");
     featureLocation.innerHTML = '<i class="fa fa-map"></i>  ' + address_result;
-
-
+    document.getElementById('feature-directions').onclick =  function(e){
+      console.log('direction')
+    }
     // document.getElementById("feature-website").innerHTML = '';
     // document.getElementById("feature-opening-hours").innerHTML = ''
     // document.getElementById("feature-description").innerHTML = ''
     // document.getElementById("feature-phone").innerHTML = ''
 
-    // let featureWebsite = document.getElementById("feature-website");
-    // let featureOpening_hours = document.getElementById("feature-opening-hours");
-    // let featureDescription = document.getElementById("feature-description");
-    // let featurePhone = document.getElementById("feature-phone");
+    let featureWebsite = document.getElementById("feature-website");
+    let featureOpening_hours = document.getElementById("feature-opening-hours");
+    let featureDescription = document.getElementById("feature-description");
+    let featurePhone = document.getElementById("feature-phone");
 
-    let osmid = this.options.osmid
-    let osmtype = this.options.osmtype
-    var key = 'vpstPRxkBBTLaZkOaCfAHlqXtCR'
+    let osmid = this.options.osm_id
+    let osmtype = this.options.osm_type
+    
     if(osmid){
-      console.log(osmid)
-      API.lookup({osmid, osm_type, key}, (data) => {
+      var key = 'vpstPRxkBBTLaZkOaCfAHlqXtCR'
+      API.lookup({osmId: osmid, osmType: osmtype, key: key}, (data) => {
         console.log(data)
       });
+
+
+    //     let website = detail.extratags.website;
+    //     let description = detail.extratags.description;
+    //     let phone = detail.extratags.phone;
+    //     let fax = detail.extratags.fax;
+    //     let email = detail.extratags.email
+    //     let level = detail.extratags.level
+    //     let smoking = detail.extratags.smoking
+    //     let stars = detail.extratags.stars
+    //     let opening_hours = detail.extratags.opening_hours;
+    //     let inrternet_access = detail.extratags.inrternet_access;
+    //     if (website) {
+    //         featureWebsite.innerHTML =
+    //         '<i class="fa fa-home"></i>' +
+    //         '<a href="{' +
+    //         website +
+    //         '}">' +
+    //         website +
+    //         " </a>";
+    //         featureWebsite.className = "detail-feature-element";
+    //     }
+    //     if (phone) {
+    //         featurePhone.innerHTML = '<i class="fa fa-phone"></i>' + phone;
+    //         featurePhone.className = "detail-feature-element";
+    //     }
+    //     if (inrternet_access) {
+    //         featureInternet_access.innerHTML = '<i class="fa fa-wifi"></i>' + inrternet_access;
+    //         featureInternet_access.className = "detail-feature-element";
+    //     }
+    //     if (fax) {
+    //         featureFax.innerHTML = '<i class="fa fa-fax"></i>' + fax;
+    //         featureFax.className = "detail-feature-element";
+    //     }
+    //     if (email) {
+    //         featureEmail.innerHTML = '<i class="fa fa-envelope"></i>' + email;
+    //         featureEmail.className = "detail-feature-element";
+    //     }
+    //     if (level) {
+    //         featureLevel.innerHTML = '<i class="fa fa-layer-group"></i>' + level;
+    //         featureLevel.className = "detail-feature-element";
+    //     }
+    //     if (smoking) {
+    //         featureSmoking.innerHTML = '<i class="fa fa-smoking-ban"></i>' + smoking;
+    //         featureSmoking.className = "detail-feature-element";
+    //     }
+    //     if (stars) {
+    //         featureStars.innerHTML = '<i class="fa fa-star"></i>' + stars;
+    //         featureStars.className = "detail-feature-element";
+    //     }
+    //     if (description) {
+    //         featureDescription.innerHTML = description;
+    //         featureDescription.style.borderBottom = "1px solid lightgray";
+    //         featureDescription.className = "detail-feature-element";
+    //         featureDescription.style.marginTop = "0px";
+    //     }
+    //     if (opening_hours) {
+    //         let opening_hour = opening_hours
+    //         .replace(/Th/gi, "Thứ 5")
+    //         .replace(/Mo/gi, "Thứ 2")
+    //         .replace(/Tu/gi, "Thứ 3")
+    //         .replace(/We/gi, "Thứ 4")
+    //         .replace(/Fr/gi, "Thứ 6")
+    //         .replace(/Sa/gi, "Thứ 7")
+    //         .replace(/Su/gi, "Chủ nhật")
+    //         .replace(/;/gi, "<br>");
+    //         featureOpening_hours.innerHTML =
+    //         '<i class="fa fa-hourglass-start"></i> <span>' +opening_hour +'</span>';
+    //         featureOpening_hours.className = "detail-feature-element";
+    //     }
+    // } else {
+    //     featureDescription.innerHTML = "";
+    //     featureDescription.classList.remove("detail-feature-element");
+    //     featureOpening_hours.innerHTML = "";
+    //     featureOpening_hours.classList.remove("detail-feature-element");
+    //     featurePhone.innerHTML = "";
+    //     featurePhone.classList.remove("detail-feature-element");
+    //     featureFax.innerHTML = "";
+    //     featureFax.classList.remove("detail-feature-element");
+    //     featureEmail.innerHTML = "";
+    //     featureEmail.classList.remove("detail-feature-element");
+    //     featureLevel.innerHTML = "";
+    //     featureLevel.classList.remove("detail-feature-element");
+    //     featureSmoking.innerHTML = "";
+    //     featureSmoking.classList.remove("detail-feature-element");
+    //     featureStars.innerHTML = "";
+    //     featureStars.classList.remove("detail-feature-element");
+    //     featureInternet_access.innerHTML = "";
+    //     featureInternet_access.classList.remove("detail-feature-element");
+    //     featureWebsite.innerHTML = "";
+    //     featureWebsite.classList.remove("detail-feature-element border-top");
     }
-    document.getElementById('feature-directions').onclick =  function(e){
-      console.log('direction')
-
-    }
-    wemapgl.urlController.updatePlaceParams({name, type, lat, long, address, osmid, osmtype})
-    // if (this.options.osm_id) {
-    //     point_detail(this.options.osm_id, this.options.osm_type).then(detail => {
-    //     detail = detail[0]
-
-    // //     let website = detail.extratags.website;
-    // //     let description = detail.extratags.description;
-    // //     let phone = detail.extratags.phone;
-    // //     let fax = detail.extratags.fax;
-    // //     let email = detail.extratags.email
-    // //     let level = detail.extratags.level
-    // //     let smoking = detail.extratags.smoking
-    // //     let stars = detail.extratags.stars
-    // //     let opening_hours = detail.extratags.opening_hours;
-    // //     let inrternet_access = detail.extratags.inrternet_access;
-    // //     if (website) {
-    // //         featureWebsite.innerHTML =
-    // //         '<i class="fa fa-home"></i>' +
-    // //         '<a href="{' +
-    // //         website +
-    // //         '}">' +
-    // //         website +
-    // //         " </a>";
-    // //         featureWebsite.className = "detail-feature-element";
-    // //     }
-    // //     if (phone) {
-    // //         featurePhone.innerHTML = '<i class="fa fa-phone"></i>' + phone;
-    // //         featurePhone.className = "detail-feature-element";
-    // //     }
-    // //     if (inrternet_access) {
-    // //         featureInternet_access.innerHTML = '<i class="fa fa-wifi"></i>' + inrternet_access;
-    // //         featureInternet_access.className = "detail-feature-element";
-    // //     }
-    // //     if (fax) {
-    // //         featureFax.innerHTML = '<i class="fa fa-fax"></i>' + fax;
-    // //         featureFax.className = "detail-feature-element";
-    // //     }
-    // //     if (email) {
-    // //         featureEmail.innerHTML = '<i class="fa fa-envelope"></i>' + email;
-    // //         featureEmail.className = "detail-feature-element";
-    // //     }
-    // //     if (level) {
-    // //         featureLevel.innerHTML = '<i class="fa fa-layer-group"></i>' + level;
-    // //         featureLevel.className = "detail-feature-element";
-    // //     }
-    // //     if (smoking) {
-    // //         featureSmoking.innerHTML = '<i class="fa fa-smoking-ban"></i>' + smoking;
-    // //         featureSmoking.className = "detail-feature-element";
-    // //     }
-    // //     if (stars) {
-    // //         featureStars.innerHTML = '<i class="fa fa-star"></i>' + stars;
-    // //         featureStars.className = "detail-feature-element";
-    // //     }
-    // //     if (description) {
-    // //         featureDescription.innerHTML = description;
-    // //         featureDescription.style.borderBottom = "1px solid lightgray";
-    // //         featureDescription.className = "detail-feature-element";
-    // //         featureDescription.style.marginTop = "0px";
-    // //     }
-    // //     if (opening_hours) {
-    // //         let opening_hour = opening_hours
-    // //         .replace(/Th/gi, "Thứ 5")
-    // //         .replace(/Mo/gi, "Thứ 2")
-    // //         .replace(/Tu/gi, "Thứ 3")
-    // //         .replace(/We/gi, "Thứ 4")
-    // //         .replace(/Fr/gi, "Thứ 6")
-    // //         .replace(/Sa/gi, "Thứ 7")
-    // //         .replace(/Su/gi, "Chủ nhật")
-    // //         .replace(/;/gi, "<br>");
-    // //         featureOpening_hours.innerHTML =
-    // //         '<i class="fa fa-hourglass-start"></i> <span>' +opening_hour +'</span>';
-    // //         featureOpening_hours.className = "detail-feature-element";
-    // //     }
-
-    // //     });
-    // // } else {
-    // //     featureDescription.innerHTML = "";
-    // //     featureDescription.classList.remove("detail-feature-element");
-    // //     featureOpening_hours.innerHTML = "";
-    // //     featureOpening_hours.classList.remove("detail-feature-element");
-    // //     featurePhone.innerHTML = "";
-    // //     featurePhone.classList.remove("detail-feature-element");
-    // //     featureFax.innerHTML = "";
-    // //     featureFax.classList.remove("detail-feature-element");
-    // //     featureEmail.innerHTML = "";
-    // //     featureEmail.classList.remove("detail-feature-element");
-    // //     featureLevel.innerHTML = "";
-    // //     featureLevel.classList.remove("detail-feature-element");
-    // //     featureSmoking.innerHTML = "";
-    // //     featureSmoking.classList.remove("detail-feature-element");
-    // //     featureStars.innerHTML = "";
-    // //     featureStars.classList.remove("detail-feature-element");
-    // //     featureInternet_access.innerHTML = "";
-    // //     featureInternet_access.classList.remove("detail-feature-element");
-    // //     featureWebsite.innerHTML = "";
-    // //     featureWebsite.classList.remove("detail-feature-element border-top");
-    // // }
-    // // updateDetailFeatureUrlParams(this.options.name, this.options.type, this.options.lat, this.options.long, this.options.address, this.options.osm_id, this.options.osm_type);
+    // wemapgl.urlController.updateParams("place", {name, type, lat, long, address, osmid, osmtype})
   }
-
 }
