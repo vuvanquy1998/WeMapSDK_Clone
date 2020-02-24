@@ -204,11 +204,13 @@ export default class WeDirections {
         history.pushState = _wr('pushState'), history.replaceState = _wr('replaceState');
 
         window.addEventListener('replaceState', function(e) {
-            console.warn('THEY DID IT AGAIN!');
+            console.log('replaceState!');
+            console.log('urlParams: ', urlParams);
         });
 
         window.addEventListener('pushState', function(e) {
             console.log('pushState!');
+            console.log('urlParams: ', urlParams);
         });
     }
 
@@ -217,7 +219,8 @@ export default class WeDirections {
      * @private
      */
     _addDirectionIcon() {
-        let self = this.weDirection;
+        let self = this;
+        let direction = self.weDirection;
         // let self = this;
         window.addEventListener('DOMContentLoaded', function(){
             let peliasSelector =
@@ -227,6 +230,14 @@ export default class WeDirections {
             let directionSelector =
                 document.querySelectorAll('div.mapboxgl-ctrl-directions.mapboxgl-ctrl')[0];
             let directionInputSelector = document.getElementById('mapbox-directions-form-area');
+
+            console.log(direction);
+            let container = direction._map._container.id;
+
+            if (container) {
+                let containerSelector = document.getElementById(container);
+                containerSelector.classList.add("wemap-direction");
+            }
 
             if (peliasInputSelector) {
                 const directionOpen = document.createElement('span');
@@ -242,8 +253,8 @@ export default class WeDirections {
                     // interactive
                     // self.weDirection.interactive(true);
                     // console.log('Self: ', self);
-                    self.interactive(true);
-                    self._map._interactive = true;
+                    direction.interactive(true);
+                    direction._map._interactive = true;
                 });
             }
 
@@ -262,10 +273,10 @@ export default class WeDirections {
                     // self.weDirection.removeRoutes();
                     // self.weDirection.removeWaypoint();
                     // console.log('Self: ', self);
-                    self.interactive(false);
-                    self._map._interactive = false;
-                    self.removeRoutes();
-                    self.removeWaypoint();
+                    direction.interactive(false);
+                    direction._map._interactive = false;
+                    direction.removeRoutes();
+                    direction.removeWaypoint();
                 });
             }
         });
