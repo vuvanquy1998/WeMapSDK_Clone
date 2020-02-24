@@ -133,19 +133,17 @@ export default class RightClick {
     }
     updateUrlStart(){
         document.getElementById('right-click-start').addEventListener('click', (e)=> {
-            wemapgl.reverse.updateDirectionUrl({
-                lat: this.clickedPoi.lngLat.lat,
-                lon: this.clickedPoi.lngLat.lng,
-                action:'direction'
+            wemapgl.urlController.updateRouteParams({
+                ox: this.clickedPoi.lngLat.lng,
+                oy: this.clickedPoi.lngLat.lat,
             })
         })
     }
     updateUrlEnd(){
         document.getElementById('right-click-end').addEventListener('click', (e)=> {
-            wemapgl.reverse.updateDirectionUrl({
-                lat: this.clickedPoi.lngLat.lat,
-                lon: this.clickedPoi.lngLat.lng,
-                action:'direction'
+            wemapgl.urlController.updateRouteParams({
+                dx: this.clickedPoi.lngLat.lng,
+                dy: this.clickedPoi.lngLat.lat,
             })
         })
     }
