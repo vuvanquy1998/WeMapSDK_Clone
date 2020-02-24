@@ -32,6 +32,7 @@ export default class WeDirections {
 
         this._onRendered(this.options.mode);
         this._onReverseInput(this.weDirection);
+        this._inputChange();
 
         this._addDirectionIcon();
 
@@ -105,7 +106,7 @@ export default class WeDirections {
                     if (!origin.geometry) {
                         self.actions.setOriginFromCoordinates(coords);
                         // Update route Origin
-                        wemapgl.urlController.updateRouteParams({ox: lng, oy: lat,});
+                        wemapgl.urlController.updateParams("route",{ox: coords[0], oy: coords[1],});
                     } else {
                         const features = mapclick.queryRenderedFeatures(e.point, {
                             layers: [
@@ -131,7 +132,7 @@ export default class WeDirections {
                             self.actions.setDestinationFromCoordinates(coords);
                             mapclick.flyTo({ center: coords });
                             // Update route Destination
-                            wemapgl.urlController.updateRouteParams({dx: lng, dy: lat,});
+                            wemapgl.urlController.updateParams("route", {dx: coords[0], dy: coords[1]});
                         }
                     }
                 }
@@ -181,6 +182,33 @@ export default class WeDirections {
         });
     }
 
+    _inputChange() {
+        let direction = this.weDirection;
+        window.addEventListener('DOMContentLoaded', function(){
+            let origin = document.getElementById('mapbox-directions-origin-input');
+            let destination = document.getElementById('mapbox-directions-destination-input');
+            origin.addEventListener('change', function(e) {
+                let originValue =  direction.getOrigin();
+                // console.log('originValue: ', originValue);
+                wemapgl.urlController.updateParams("route",
+                    {
+                        dx: originValue.geometry ? originValue.geometry.coordinates[0] : 0,
+                        dy: originValue.geometry ? originValue.geometry.coordinates[1] : 0
+                    });
+            });
+
+            destination.addEventListener('change', function(e) {
+                let destinationValue =  direction.getDestination();
+                // console.log('destinationValue: ', destinationValue);
+                wemapgl.urlController.updateParams("route",
+                    {
+                        dx: destinationValue.geometry ? destinationValue.geometry.coordinates[0] : 0,
+                        dy: destinationValue.geometry ? destinationValue.geometry.coordinates[1] : 0
+                    });
+            });
+        });
+    }
+
     /**
      * Check URL after page Rendered
      * @private
@@ -193,6 +221,7 @@ export default class WeDirections {
             const urlParams = wemapgl.urlController.getParams();
             if (urlParams.ox && urlParams.oy && urlParams.dx && urlParams.dy) {
                 self._activeDirections();
+                // console.log('urlParams: ', urlParams);
                 const originCoords = [urlParams.ox, urlParams.oy];
                 const destinationCoords = [urlParams.dx, urlParams.dy];
                 direction.actions.setOriginFromCoordinates(originCoords);
