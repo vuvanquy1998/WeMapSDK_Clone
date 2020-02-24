@@ -133,7 +133,7 @@ export default class RightClick {
     }
     updateUrlStart(){
         document.getElementById('right-click-start').addEventListener('click', (e)=> {
-            wemapgl.urlController.updateRouteParams({
+            wemapgl.urlController.updateParams("route", {
                 ox: this.clickedPoi.lngLat.lng,
                 oy: this.clickedPoi.lngLat.lat,
                 action: true
@@ -142,7 +142,7 @@ export default class RightClick {
     }
     updateUrlEnd(){
         document.getElementById('right-click-end').addEventListener('click', (e)=> {
-            wemapgl.urlController.updateRouteParams({
+            wemapgl.urlController.updateParams("route", {
                 dx: this.clickedPoi.lngLat.lng,
                 dy: this.clickedPoi.lngLat.lat,
                 action: true
