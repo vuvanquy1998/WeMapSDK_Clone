@@ -232,6 +232,4 @@ export default class Reverse{
     displayUI(id, text){
         document.getElementById(id).style.display = text;
     }
-    
-
 }
