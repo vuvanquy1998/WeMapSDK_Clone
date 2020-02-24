@@ -33,6 +33,7 @@ export default class Reverse{
      * turn off reverse
      */
     offReverse(){
+        this.displayUI("place", "none")
         this.on = false;
     }
     /**
@@ -205,7 +206,12 @@ export default class Reverse{
      */
     clickDirectionIcon(){
         document.getElementById('direction-icon').addEventListener('click', (e) => {
-            wemapgl.urlController.updateRouteParams({
+            // wemapgl.urlController.updateRouteParams({
+            //     dx: this.receivedData.geometry.coordinates[0],
+            //     dy: this.receivedData.geometry.coordinates[1],
+            //     action: true
+            // })
+            wemapgl.urlController.updateParams("route", {
                 dx: this.receivedData.geometry.coordinates[0],
                 dy: this.receivedData.geometry.coordinates[1],
                 action: true
