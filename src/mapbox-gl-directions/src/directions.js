@@ -411,14 +411,14 @@ export default class MapboxDirections {
 
       this._map.on('mousedown', this.onDragDown);
       this._map.on('mousemove', this.move);
-      this._map.on('click', this.onClick);
+      // this._map.on('click', this.onClick);
     } else {
       this._map.off('touchstart', this.move);
       this._map.off('touchstart', this.onDragDown);
 
       this._map.off('mousedown', this.onDragDown);
       this._map.off('mousemove', this.move);
-      this._map.off('click', this.onClick);
+      // this._map.off('click', this.onClick);
     }
 
     return this;

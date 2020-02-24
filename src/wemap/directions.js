@@ -35,11 +35,11 @@ export default class WeDirections {
         this._addDirectionIcon();
 
         this.weDirection.onClick = this._clickHandler();
-        this.weDirection.interactive = this._interactive();
+        // this.weDirection.interactive = this.interactive();
         return this.weDirection;
     }
 
-    _interactive(state) {
+    interactive(state) {
         // TODO: Re check interactive function
         let self = this.weDirection;
         window.addEventListener('DOMContentLoaded', function() {
