@@ -136,6 +136,7 @@ export default class RightClick {
             wemapgl.urlController.updateRouteParams({
                 ox: this.clickedPoi.lngLat.lng,
                 oy: this.clickedPoi.lngLat.lat,
+                action: true
             })
         })
     }
@@ -144,6 +145,7 @@ export default class RightClick {
             wemapgl.urlController.updateRouteParams({
                 dx: this.clickedPoi.lngLat.lng,
                 dy: this.clickedPoi.lngLat.lat,
+                action: true
             })
         })
     }

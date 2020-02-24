@@ -208,6 +208,7 @@ export default class Reverse{
             wemapgl.urlController.updateRouteParams({
                 dx: this.receivedData.geometry.coordinates[0],
                 dy: this.receivedData.geometry.coordinates[1],
+                action: true
             })
         })
     }
