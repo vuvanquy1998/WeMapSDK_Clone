@@ -54,6 +54,10 @@ export default class WeGeocoder {
          * @returns standardized address
          */
         static getAddess(address) {
+            if(!Array.isArray(address)){
+                address = address.split(',')
+            }
+
             let address_result = "";
             var separator = "";
             for (let i = 0; i < address.length; i++) {
@@ -137,8 +141,8 @@ export default class WeGeocoder {
                         return self._showError(err);
                     }
                     if (result) {
-                        self._clearAll()
-                        WeGeocoder.hideDetailFeatureFrame();
+                        // self._clearAll()
+                        WeGeocoder.hideDetailFeatureFrame()
                         self.showResultsSearch(result)
                     }
                     }, 'search');
@@ -469,7 +473,7 @@ export default class WeGeocoder {
               document.getElementById("detail-feature").style.display = "none";
             }
             // deleteAllUrlParams()
-            wemapgl.urlController.deletePlaceParams()
+            wemapgl.urlController.deleteParams("place")
         }
         static hideResultSearch() {
             document.getElementById("results-search").style.display = "none";

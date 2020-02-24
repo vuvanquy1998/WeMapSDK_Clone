@@ -32,7 +32,7 @@
   "url": {
     "view": ["x", "y", "z"],
     "route": ["ox", "oy", "dx", "dy", "vehicle", "action"],
-    "place": ["osmid", "osmtype"],
+    "place": ["osmid", "osmtype", "name", "lat", "long", "address", "type" ],
     "reverse": ["rx", "ry"]
   },
   "language": {
