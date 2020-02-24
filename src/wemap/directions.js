@@ -174,35 +174,57 @@ export default class WeDirections {
         let self = this;
         let direction = self.weDirection;
 
-        const _wr = function(type) {
-            let orig = history[type];
-            return function() {
-                let rv = orig.apply(this, arguments);
-                let e = new Event(type);
-                e.arguments = arguments;
-                window.dispatchEvent(e);
-                return rv;
-            };
-        };
-        history.pushState = _wr('pushState'), history.replaceState = _wr('replaceState');
-
-        window.addEventListener('replaceState', function(e) {
-            console.log('replaceState!');
-            let urlParams = wemapgl.urlController.getParams();
-            console.log('urlParams: ', urlParams);
-        });
-
-        window.addEventListener('pushState', function(e) {
-            console.log('pushState!');
-            let urlParams = wemapgl.urlController.getParams();
-            console.log('urlParams: ', urlParams);
-            if (urlParams.dx && urlParams.dy) {
+        // const _wr = function(type) {
+        //     let orig = history[type];
+        //     console.log('orig: ', orig);
+        //     return function() {
+        //         let rv = orig.apply(this, arguments);
+        //         let e = new Event(type);
+        //         e.arguments = arguments;
+        //         window.dispatchEvent(e);
+        //         return rv;
+        //     };
+        // };
+        // //
+        // history.pushState = _wr('pushState'), history.replaceState = _wr('replaceState');
+        //
+        // window.addEventListener('pushState', function(e) {
+        //     console.log('pushState!', e);
+        //     const urlParams = wemapgl.urlController.getParams();
+        //
+        //     if (urlParams.dx && urlParams.dy && urlParams.action) {
+        //         // self._activeDirections();
+        //         const coords = [urlParams.dx, urlParams.dy];
+        //         // direction.actions.setDestinationFromCoordinates(coords);
+        //         // wemapgl.reverse.offReverse();
+        //         // console.log('urlParams: ', urlParams.action);
+        //         // wemapgl.urlController.updateRouteParams({
+        //         //     dx: urlParams.dx,
+        //         //     dy: urlParams.dy,
+        //         //     action: false
+        //         // });
+        //         // window.history.pushState("", "", url);
+        //         let url = new URL(window.location);
+        //         let search_params = new URLSearchParams(url.search);
+        //         search_params.set('action', 'false');
+        //         // url.href.replace('action=true', 'action=false');
+        //         url.search = search_params.toString();
+        //         window.history.pushState("", "", url);
+        //     }
+        // });
+        window.addEventListener('DOMContentLoaded', function(){
+            const directionSelector = document.getElementById('direction-icon');
+            directionSelector.addEventListener('click', function(e) {
                 self._activeDirections();
-                const coords = [urlParams.dx, urlParams.dy]
-                direction.actions.setDestinationFromCoordinates(coords);
-                wemapgl.reverse.offReverse();
-            }
+                const urlParams = wemapgl.urlController.getParams();
+                if (urlParams.dx && urlParams.dy && urlParams.action) {
+                    const coords = [urlParams.dx, urlParams.dy];
+                    direction.actions.setDestinationFromCoordinates(coords);
+                    wemapgl.reverse.offReverse();
+                }
+            });
         });
+
     }
 
     /**
