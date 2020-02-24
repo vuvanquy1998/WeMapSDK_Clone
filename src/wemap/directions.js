@@ -35,10 +35,9 @@ export default class WeDirections {
 
         this._addDirectionIcon();
 
+        this.weDirection.onClick = this._clickHandler();
         this._urlPreChecking();
         this._urlCheckChange();
-
-        this.weDirection.onClick = this._clickHandler();
         // this.weDirection.interactive = this.interactive();
         return this.weDirection;
     }
@@ -74,6 +73,7 @@ export default class WeDirections {
             let mapclick = self._map;
             self._map._interactive = interactive;
             mapclick.on('click', function(e) {
+                console.log('Clicked', e);
                 if (self._map._interactive) {
                     let origin =  self.getOrigin();
                     let destination = self.getDestination();
@@ -82,8 +82,9 @@ export default class WeDirections {
                     const coords = [lng, lat];
                     if (!origin.geometry) {
                         self.actions.setOriginFromCoordinates(coords);
+                        // Update route Origin
+                        wemapgl.urlController.updateRouteParams({ox: lng, oy: lat,});
                     } else {
-
                         const features = mapclick.queryRenderedFeatures(e.point, {
                             layers: [
                                 'directions-origin-point',
@@ -108,6 +109,8 @@ export default class WeDirections {
                         } else if (!destination.geometry){
                             self.actions.setDestinationFromCoordinates(coords);
                             mapclick.flyTo({ center: coords });
+                            // Update route Destination
+                            wemapgl.urlController.updateRouteParams({dx: lng, dy: lat,});
                         }
                     }
                 }
@@ -158,12 +161,23 @@ export default class WeDirections {
     }
 
     /**
-     *
+     * Check URL after page Rendered
      * @private
      */
     _urlPreChecking() {
-        let urlParams = wemapgl.urlController.getParams();
-        console.log('urlParams: ', urlParams);
+        let self = this;
+        let direction = self.weDirection;
+        // let mapRender = self._map;
+        window.addEventListener('DOMContentLoaded', function(){
+            const urlParams = wemapgl.urlController.getParams();
+            if (urlParams.ox && urlParams.oy && urlParams.dx && urlParams.dy) {
+                self._activeDirections();
+                const originCoords = [urlParams.ox, urlParams.oy];
+                const destinationCoords = [urlParams.dx, urlParams.dy];
+                direction.actions.setOriginFromCoordinates(originCoords);
+                direction.actions.setDestinationFromCoordinates(destinationCoords);
+            }
+        });
     }
 
     /**
@@ -284,6 +298,7 @@ export default class WeDirections {
     _activeDirections() {
         let self = this;
         let direction = self.weDirection;
+        direction._map._interactive = true;
 
         let peliasSelector =
             document.querySelectorAll('div.pelias-ctrl.mapboxgl-ctrl')[0];
