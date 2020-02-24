@@ -28,8 +28,9 @@ export default class WeDirections {
         this.options.geocoder.api = this._geocodeApi(this.options.geocoder.engine);
         this.options.api = this._apiEngine(this.options.engine);
 
-        this._onRendered(this.options.mode);
         this.weDirection = this.render(this.options);
+
+        this._onRendered(this.options.mode);
         this._onReverseInput(this.weDirection);
 
         this._addDirectionIcon();
@@ -129,11 +130,21 @@ export default class WeDirections {
      * @private
      */
     _onRendered(mode) {
+        let direction = this.weDirection;
         window.addEventListener('DOMContentLoaded', function(){
             const traffic = document.getElementById('mapbox-directions-profile-driving-traffic');
             const driving = document.getElementById('mapbox-directions-profile-driving');
             const walking = document.getElementById('mapbox-directions-profile-walking');
             const cycling = document.getElementById('mapbox-directions-profile-cycling');
+
+            // Add class wemap-direction to container
+            let container = direction._map._container.id;
+            if (container) {
+                let containerSelector = document.getElementById(container);
+                containerSelector.classList.add("wemap-direction");
+            }
+
+            // Active traffic mode
             if (mode === 'traffic') {
                 traffic.checked = true;
             } else if (mode === 'driving') {
@@ -231,14 +242,6 @@ export default class WeDirections {
                 document.querySelectorAll('div.mapboxgl-ctrl-directions.mapboxgl-ctrl')[0];
             let directionInputSelector = document.getElementById('mapbox-directions-form-area');
 
-            console.log(direction);
-            let container = direction._map._container.id;
-
-            if (container) {
-                let containerSelector = document.getElementById(container);
-                containerSelector.classList.add("wemap-direction");
-            }
-
             if (peliasInputSelector) {
                 const directionOpen = document.createElement('span');
                 directionOpen.setAttribute("id", "direction-icon-open");
@@ -251,8 +254,6 @@ export default class WeDirections {
                     directionSelector.classList.remove("hide");
                     peliasSelector.classList.add("hide");
                     // interactive
-                    // self.weDirection.interactive(true);
-                    // console.log('Self: ', self);
                     direction.interactive(true);
                     direction._map._interactive = true;
                 });
@@ -269,10 +270,6 @@ export default class WeDirections {
                     peliasSelector.classList.remove("hide");
                     directionSelector.classList.add("hide");
                     // interactive
-                    // self.weDirection.interactive(false);
-                    // self.weDirection.removeRoutes();
-                    // self.weDirection.removeWaypoint();
-                    // console.log('Self: ', self);
                     direction.interactive(false);
                     direction._map._interactive = false;
                     direction.removeRoutes();
