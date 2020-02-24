@@ -29,6 +29,12 @@
     ],
     "zoom": 10
   },
+  "url": {
+    "view": ["x", "y", "z"],
+    "route": ["ox", "oy", "dx", "dy", "vehicle", "action"],
+    "place": ["osmid", "osmtype"],
+    "reverse": ["rx", "ry"]
+  },
   "language": {
     "vi": "vi-VN",
     "en": "en-US"

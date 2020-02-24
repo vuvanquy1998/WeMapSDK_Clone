@@ -61,18 +61,17 @@ export default class WeMap {
                 let urlParams = wemapgl.urlController.getParams();
                 this.map.jumpTo({ center: [urlParams.x, urlParams.y], zoom: urlParams.z });
                 this.map.on("zoomend", () => {
-                    wemapgl.urlController.updateViewParams({
-                        x: this.map.getCenter().lng,
-                        y: this.map.getCenter().lat,
+                    wemapgl.urlController.updateParams("view", {
                         z: this.map.getZoom()
                     });
                 });
                 this.map.on("moveend", () => {
-                    wemapgl.urlController.updateViewParams({
+                    wemapgl.urlController.updateParams("view", {
                         x: this.map.getCenter().lng,
                         y: this.map.getCenter().lat,
                         z: this.map.getZoom() });
                 });
+                
         }
 
         // add WeMap attribution
