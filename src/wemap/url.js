@@ -1,3 +1,5 @@
+import { default as config } from '../config.json';
+
 export default class UrlController {
 
     /**
@@ -5,15 +7,12 @@ export default class UrlController {
      * @returns {Object} all params in Url
      */
     getParams() {
-        let paramNames = [
-            "x", "y", "z",
-            "ox", "oy", "dx", "dy", "vehicle",
-            "osmid", "osmtype"
-        ];
         let allParams = {};
-        paramNames.forEach((element) => {
-            allParams[element] = this.parseParam(element);
-        });
+        for (const p in config.url) {
+            config.url[p].forEach((element) => {
+                allParams[element] = this.parseParam(element);
+            });
+        }
         return allParams;
     }
 
@@ -22,16 +21,7 @@ export default class UrlController {
      * @param {*} viewParams {x, y, z}
      */
     updateViewParams(viewParams) {
-        viewParams = viewParams || {};
-        let url = new URL(window.location);
-        let search_params = new URLSearchParams(url.search);
-
-        search_params.set("x", viewParams.x);
-        search_params.set("y", viewParams.y);
-        search_params.set("z", viewParams.z);
-
-        url.search = search_params.toString();
-        window.history.replaceState("", "", url);
+        this.updateParams("view", viewParams);
     }
 
     /**
@@ -39,29 +29,14 @@ export default class UrlController {
      * @param {*} placeParams {osmid, osmtype}
      */
     updatePlaceParams(placeParams) {
-        placeParams = placeParams || {};
-        let url = new URL(window.location);
-        let search_params = new URLSearchParams(url.search);
-
-        search_params.set("osmid", placeParams.osmid);
-        search_params.set("osmtype", placeParams.osmtype);
-
-        url.search = search_params.toString();
-        window.history.pushState("", "", url);
+        this.updateParams("place", placeParams);
     }
 
     /**
      * Deletes place parameters in Url
      */
     deletePlaceParams() {
-        let url = new URL(window.location);
-        let search_params = new URLSearchParams(url.search);
-
-        search_params.delete("osmid");
-        search_params.delete("osmtype");
-
-        url.search = search_params.toString();
-        window.history.pushState("", "", url);
+        this.deleteParams("place");
     }
 
     /**
@@ -69,33 +44,35 @@ export default class UrlController {
      * @param {*} placeParams {ox, oy, dx, dy, vehicle}
      */
     updateRouteParams(routeParams) {
-        routeParams = routeParams || {};
-        let url = new URL(window.location);
-        let search_params = new URLSearchParams(url.search);
-
-        search_params.set("ox", routeParams.ox);
-        search_params.set("oy", routeParams.oy);
-        search_params.set("dx", routeParams.dx);
-        search_params.set("dy", routeParams.dy);
-        search_params.set("vehicle", routeParams.vehicle);
-
-        url.search = search_params.toString();
-        window.history.pushState("", "", url);
+       this.updateParams("route", routeParams);
     }
 
     /**
      * Deletes route parameters in Url
      */
     deleteRouteParams() {
+        this.deleteParams("route");
+    }
+
+    updateParams(group, values) {
+        let paramValues = values || {};
         let url = new URL(window.location);
         let search_params = new URLSearchParams(url.search);
+        config.url[group].forEach((element) => {
+            if(paramValues[element] != null && paramValues[element] != "" && paramValues[element] != undefined) {
+                search_params.set(element, paramValues[element]);
+            }
+        });
+        url.search = search_params.toString();
+        window.history.pushState("", "", url);
+    }
 
-        search_params.delete("ox");
-        search_params.delete("oy");
-        search_params.delete("dx");
-        search_params.delete("dy");
-        search_params.delete("vehicle");
-
+    deleteParams(group) {
+        let url = new URL(window.location);
+        let search_params = new URLSearchParams(url.search);
+        config.url[group].forEach((element) => {
+            search_params.delete(element);
+        });
         url.search = search_params.toString();
         window.history.pushState("", "", url);
     }
