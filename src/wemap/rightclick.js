@@ -92,10 +92,9 @@ export default class RightClick {
 
         document.getElementById('right-click-menu-container').appendChild(new_right_click_item)
     }
-    rightClickCoordinates(){
+    static rightClickCoordinates(){
         map.on('contextmenu', (e) => {
-            const coords = [e.lngLat.lng, e.lngLat.lat]
-            return coords
+            console.log(e.lngLat.lng, e.lngLat.lat)
         })
     }
 }
