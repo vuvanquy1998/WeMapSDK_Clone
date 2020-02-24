@@ -171,38 +171,10 @@ export default class WeDirections {
      * @private
      */
     _urlCheckChange() {
-        let urlParams = wemapgl.urlController.getParams();
-        // console.log('urlParams: ', urlParams);
-        // window.addEventListener('locationchange', function(e){
-        //     console.log('location changed!');
-        //     urlParams = wemapgl.urlController.getParams();
-        //     console.log('urlParams: ', urlParams);
-        // });
-        //
-        // window.onhashchange = function(e) {
-        //     //code
-        //     console.log('hash changed: ', e)
-        // }
+        let self = this;
+        let direction = self.weDirection;
 
-        // window.addEventListener('popstate', function(e){console.log('url changed')});
-
-        // window.onpopstate = history.onpushstate = function(e) {
-        //     console.log('url changed')
-        // }
-
-        // window.addEventListener('DOMContentLoaded', function() {
-        //     window.addEventListener('pushState', function (e) {
-        //         console.warn('url changed!', e);
-        //     });
-        // });
-
-        // window.addEventListener('hashchange', function(e){
-        //     console.log('hash changed')
-        //     urlParams = wemapgl.urlController.getParams();
-        //     console.log('urlParams: ', urlParams);
-        // });
-
-        let _wr = function(type) {
+        const _wr = function(type) {
             let orig = history[type];
             return function() {
                 let rv = orig.apply(this, arguments);
@@ -216,12 +188,20 @@ export default class WeDirections {
 
         window.addEventListener('replaceState', function(e) {
             console.log('replaceState!');
+            let urlParams = wemapgl.urlController.getParams();
             console.log('urlParams: ', urlParams);
         });
 
         window.addEventListener('pushState', function(e) {
             console.log('pushState!');
+            let urlParams = wemapgl.urlController.getParams();
             console.log('urlParams: ', urlParams);
+            if (urlParams.dx && urlParams.dy) {
+                self._activeDirections();
+                const coords = [urlParams.dx, urlParams.dy]
+                direction.actions.setDestinationFromCoordinates(coords);
+                wemapgl.reverse.offReverse();
+            }
         });
     }
 
@@ -277,6 +257,22 @@ export default class WeDirections {
                 });
             }
         });
+    }
+
+    _activeDirections() {
+        let self = this;
+        let direction = self.weDirection;
+
+        let peliasSelector =
+            document.querySelectorAll('div.pelias-ctrl.mapboxgl-ctrl')[0];
+        let directionSelector =
+            document.querySelectorAll('div.mapboxgl-ctrl-directions.mapboxgl-ctrl')[0];
+
+        directionSelector.classList.remove("hide");
+        peliasSelector.classList.add("hide");
+        // interactive
+        direction.interactive(true);
+        direction._map._interactive = true;
     }
 
     /**
