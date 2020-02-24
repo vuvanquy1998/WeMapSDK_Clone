@@ -2,6 +2,7 @@ import { getJSON } from '../util/ajax'
 import { default as config } from '../config.json'; 
 import PlaceDetail from './placeDetail'
 import RightClick from './rightclick'
+import Url from './url.js'
 
 export default class Reverse{
     /**
@@ -121,11 +122,6 @@ export default class Reverse{
                     this.clickoutIcon(data.features[0])
                 }
             }
-            this.updateDirectionUrl({
-                lat: data.features[0].geometry.coordinates[1],
-                lon: data.features[0].geometry.coordinates[0],
-                action:''
-            })
         })
         .catch(err => console.log(err))
     }
@@ -203,24 +199,15 @@ export default class Reverse{
         document.getElementById('placeclose').addEventListener('click', (e) => {
             this.displayUI('place', 'none')
         })
-    }/**
-     * update url of direction
-     * @param {*} params 
-     */
-    updateDirectionUrl(params){
-        let rootUrl = window.location.href.split("?")[0];
-        let newUrl = `${rootUrl}?x=${params.lon}&y=${params.lat}&action=${params.action}`
-        window.history.pushState("", "", newUrl);
     }
     /**
      * change url when click direction icon
      */
     clickDirectionIcon(){
         document.getElementById('direction-icon').addEventListener('click', (e) => {
-            this.updateDirectionUrl({
-                lon: this.receivedData.geometry.coordinates[0],
-                lat: this.receivedData.geometry.coordinates[1],
-                action: 'direction'
+            wemapgl.urlController.updateRouteParams({
+                dx: this.receivedData.geometry.coordinates[0],
+                dy: this.receivedData.geometry.coordinates[1],
             })
         })
     }
