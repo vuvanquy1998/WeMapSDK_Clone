@@ -9,7 +9,7 @@ export default class UrlController {
     getParams() {
         let allParams = {};
         for (const p in config.url) {
-            config.url[p].forEach((element) => {
+            config.url[p].params.forEach((element) => {
                 allParams[element] = this.parseParam(element);
             });
         }
@@ -17,64 +17,43 @@ export default class UrlController {
     }
 
     /**
-     * Updates view parameters in Url (x: long, y: lat, z: zoom level)
-     * @param {*} viewParams {x, y, z}
+     * Update parameters in Url
+     * @param {*} group Example: "view" or "route" ...
+     * @param {*} values Object contain value
      */
-    updateViewParams(viewParams) {
-        this.updateParams("view", viewParams);
-    }
-
-    /**
-     * Updates place parameters in Url
-     * @param {*} placeParams {osmid, osmtype}
-     */
-    updatePlaceParams(placeParams) {
-        this.updateParams("place", placeParams);
-    }
-
-    /**
-     * Deletes place parameters in Url
-     */
-    deletePlaceParams() {
-        this.deleteParams("place");
-    }
-
-    /**
-     * Updates route parameters in Url (ox, oy: origin, dx, dy: destination, vehicle)
-     * @param {*} placeParams {ox, oy, dx, dy, vehicle}
-     */
-    updateRouteParams(routeParams) {
-       this.updateParams("route", routeParams);
-    }
-
-    /**
-     * Deletes route parameters in Url
-     */
-    deleteRouteParams() {
-        this.deleteParams("route");
-    }
-
     updateParams(group, values) {
         let paramValues = values || {};
         let url = new URL(window.location);
         let search_params = new URLSearchParams(url.search);
-        config.url[group].forEach((element) => {
+        config.url[group].params.forEach((element) => {
             if(paramValues[element] != null && paramValues[element] != "" && paramValues[element] != undefined) {
                 search_params.set(element, paramValues[element]);
             }
         });
         url.search = search_params.toString();
-        window.history.pushState("", "", url);
+        if(config.url[group].history) {
+            window.history.pushState("", "", url);
+        } else {
+            window.history.replaceState("", "", url);
+        }
     }
 
+    /**
+     * Delete parameters in Url
+     * @param {*} group Example: "view" or "route" ...
+     */
     deleteParams(group) {
         let url = new URL(window.location);
         let search_params = new URLSearchParams(url.search);
-        config.url[group].forEach((element) => {
+        config.url[group].params.forEach((element) => {
             search_params.delete(element);
         });
         url.search = search_params.toString();
-        window.history.pushState("", "", url);
+        if(config.url[group].history) {
+            window.history.pushState("", "", url);
+        } else {
+            window.history.replaceState("", "", url);
+        }
     }
 
     /**
