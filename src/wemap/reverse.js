@@ -1,5 +1,5 @@
 import { getJSON } from '../util/ajax'
-import { default as config } from '../config.json'; 
+import { default as config } from '../config.json';
 import PlaceDetail from './placeDetail'
 
 export default class Reverse{
@@ -9,10 +9,10 @@ export default class Reverse{
         this.on = true;
         this.point_layers = [];
         this.received_data = {};
-  
+
         this.getStyle();
         this.leftClick();
-    }   
+    }
     onReverse(){
         this.on = true;
     }
@@ -91,8 +91,8 @@ export default class Reverse{
         .catch(err => console.log(err))
     }
     clickoutIcon(data){
-        this.display_ui('detail-feature', 'none')                
-        this.display_ui('place', 'block')    
+        this.display_ui('detail-feature', 'none')
+        this.display_ui('place', 'block')
         let address = [data.properties.name, data.properties.street, data.properties.district, data.properties.city, data.properties.country]
         let second_line = []
         let last_i = 0
@@ -111,30 +111,30 @@ export default class Reverse{
             }
         }
         document.getElementById('placeadd').innerHTML = second_line.join(', ')
-        document.getElementById('placelatlon').innerHTML = Number(data.geometry.coordinates[0]).toFixed(7)+' ,'+ Number(data.geometry.coordinates[1]).toFixed(7)       
+        document.getElementById('placelatlon').innerHTML = Number(data.geometry.coordinates[0]).toFixed(7)+' ,'+ Number(data.geometry.coordinates[1]).toFixed(7)
         document.getElementById('click-detail').addEventListener('click', (e) => {
             this.display_ui('place', 'none')
             this.showDetailFeatures(data)
-        })                         
+        })
     }
     clickonIcon(data){
         this.display_ui('place', 'none')
         this.showDetailFeatures(data)
     }
-    showDetailFeatures(data){     
+    showDetailFeatures(data){
         let place = new PlaceDetail({
-            name: data.properties.name, 
-            type: data.type, 
-            lat: data.geometry.coordinates[1], 
+            name: data.properties.name,
+            type: data.type,
+            lat: data.geometry.coordinates[1],
             lon: data.geometry.coordinates[0],
             address: [
                 data.properties.housenumber,
-                data.properties.street, 
-                data.properties.district, 
-                data.properties.city, 
+                data.properties.street,
+                data.properties.district,
+                data.properties.city,
                 data.properties.country
             ],
-            osm_id: data.properties.osm_id, 
+            osm_id: data.properties.osm_id,
             osm_type: data.properties.osm_type
         });
         place.showDetailFeature()

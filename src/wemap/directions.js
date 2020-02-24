@@ -35,7 +35,29 @@ export default class WeDirections {
         this._addDirectionIcon();
 
         this.weDirection.onClick = this._clickHandler();
+        this.aRightClick();
         return this.weDirection;
+
+    }
+
+    aRightClick() {
+        let self = this.weDirection;
+        window.addEventListener('DOMContentLoaded', function() {
+            let mapclick = self._map;
+            mapclick.on('contextmenu', function(e){
+                const coords = [e.lngLat.lng, e.lngLat.lat];
+                const start = document.getElementById('start');
+                const end = document.getElementById('end');
+                start.addEventListener('click', function(e){
+                    self.actions.setOriginFromCoordinates(coords);
+                    document.getElementById('right-click-menu-container').style.display = "none";
+                });
+                end.addEventListener('click', function(e){
+                    self.actions.setDestinationFromCoordinates(coords);
+                    document.getElementById('right-click-menu-container').style.display = "none";
+                })
+            });
+        })
     }
 
     _clickHandler() {
@@ -54,7 +76,6 @@ export default class WeDirections {
                     if (!origin.geometry) {
                         self.actions.setOriginFromCoordinates(coords);
                     } else {
-
                         const features = mapclick.queryRenderedFeatures(e.point, {
                             layers: [
                                 'directions-origin-point',
@@ -63,7 +84,6 @@ export default class WeDirections {
                                 'directions-route-line-alt'
                             ]
                         });
-
                         if (features.length) {
                             // Remove any waypoints
                             features.forEach((f) => {
