@@ -34,6 +34,9 @@ export default class WeDirections {
 
         this._addDirectionIcon();
 
+        this._urlPreChecking();
+        this._urlCheckChange();
+
         this.weDirection.onClick = this._clickHandler();
         // this.weDirection.interactive = this.interactive();
         return this.weDirection;
@@ -143,6 +146,76 @@ export default class WeDirections {
         });
     }
 
+    /**
+     *
+     * @private
+     */
+    _urlPreChecking() {
+        let urlParams = wemapgl.urlController.getParams();
+        console.log('urlParams: ', urlParams);
+    }
+
+    /**
+     *
+     * @private
+     */
+    _urlCheckChange() {
+        let urlParams = wemapgl.urlController.getParams();
+        // console.log('urlParams: ', urlParams);
+        // window.addEventListener('locationchange', function(e){
+        //     console.log('location changed!');
+        //     urlParams = wemapgl.urlController.getParams();
+        //     console.log('urlParams: ', urlParams);
+        // });
+        //
+        // window.onhashchange = function(e) {
+        //     //code
+        //     console.log('hash changed: ', e)
+        // }
+
+        // window.addEventListener('popstate', function(e){console.log('url changed')});
+
+        // window.onpopstate = history.onpushstate = function(e) {
+        //     console.log('url changed')
+        // }
+
+        // window.addEventListener('DOMContentLoaded', function() {
+        //     window.addEventListener('pushState', function (e) {
+        //         console.warn('url changed!', e);
+        //     });
+        // });
+
+        // window.addEventListener('hashchange', function(e){
+        //     console.log('hash changed')
+        //     urlParams = wemapgl.urlController.getParams();
+        //     console.log('urlParams: ', urlParams);
+        // });
+
+        let _wr = function(type) {
+            let orig = history[type];
+            return function() {
+                let rv = orig.apply(this, arguments);
+                let e = new Event(type);
+                e.arguments = arguments;
+                window.dispatchEvent(e);
+                return rv;
+            };
+        };
+        history.pushState = _wr('pushState'), history.replaceState = _wr('replaceState');
+
+        window.addEventListener('replaceState', function(e) {
+            console.warn('THEY DID IT AGAIN!');
+        });
+
+        window.addEventListener('pushState', function(e) {
+            console.log('pushState!');
+        });
+    }
+
+    /**
+     *
+     * @private
+     */
     _addDirectionIcon() {
         let self = this.weDirection;
         // let self = this;
