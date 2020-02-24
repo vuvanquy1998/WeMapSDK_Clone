@@ -39,30 +39,30 @@ export default class WeDirections {
         this._urlPreChecking();
         this._urlCheckChange();
         // this.weDirection.interactive = this.interactive();
-        this.aRightClick();
+        // this.aRightClick();
         return this.weDirection;
 
     }
 
-    aRightClick() {
-        let self = this.weDirection;
-        window.addEventListener('DOMContentLoaded', function() {
-            let mapclick = self._map;
-            mapclick.on('contextmenu', function(e){
-                const coords = [e.lngLat.lng, e.lngLat.lat];
-                const start = document.getElementById('start');
-                const end = document.getElementById('end');
-                start.addEventListener('click', function(e){
-                    self.actions.setOriginFromCoordinates(coords);
-                    document.getElementById('right-click-menu-container').style.display = "none";
-                });
-                end.addEventListener('click', function(e){
-                    self.actions.setDestinationFromCoordinates(coords);
-                    document.getElementById('right-click-menu-container').style.display = "none";
-                })
-            });
-        })
-    }
+    // aRightClick() {
+    //     let self = this.weDirection;
+    //     window.addEventListener('DOMContentLoaded', function() {
+    //         let mapclick = self._map;
+    //         mapclick.on('contextmenu', function(e){
+    //             const coords = [e.lngLat.lng, e.lngLat.lat];
+    //             const start = document.getElementById('start');
+    //             const end = document.getElementById('end');
+    //             start.addEventListener('click', function(e){
+    //                 self.actions.setOriginFromCoordinates(coords);
+    //                 document.getElementById('right-click-menu-container').style.display = "none";
+    //             });
+    //             end.addEventListener('click', function(e){
+    //                 self.actions.setDestinationFromCoordinates(coords);
+    //                 document.getElementById('right-click-menu-container').style.display = "none";
+    //             })
+    //         });
+    //     })
+    // }
 
     interactive(state) {
         // TODO: Re check interactive function
@@ -95,7 +95,7 @@ export default class WeDirections {
             let mapclick = self._map;
             self._map._interactive = interactive;
             mapclick.on('click', function(e) {
-                console.log('Clicked', e);
+                // console.log('Clicked', e);
                 if (self._map._interactive) {
                     let origin =  self.getOrigin();
                     let destination = self.getDestination();
