@@ -21,16 +21,21 @@ export default class WeDirections {
         this.options.mode = options.mode || 'driving';
         this.options.interactive = options.interactive || false;
 
-        this.options.geocoder.engine = this._geocodeEngine(this.options.geocoder.engine);
-        this.options.geocoder.api = this._geocodeApi(this.options.geocoder.engine);
-        this.options.api = this._apiEngine(this.options.engine);
+        this._updateOptions();
+
+        this._activeDefaultDriveMode();
 
         this.weDirection = this.render(this.options);
         this.weDirection.onClick = this._clickHandler();
         this._onRendered();
-        // this.weDirection.interactive = this.interactive();
-        // this.aRightClick();
         return this.weDirection;
+    }
+
+    _updateOptions() {
+        this.options.api = this._apiEngine(this.options.engine);
+
+        this.options.geocoder.engine = this._geocodeEngine(this.options.geocoder.engine);
+        this.options.geocoder.api = this._geocodeApi(this.options.geocoder.engine);
     }
 
     /**
@@ -50,32 +55,12 @@ export default class WeDirections {
         this._addClass2Container();
         this._checkActiveGeocode();
         this._addDirectionIcon();
-        this._activeDefaultDriveMode();
+        this._rightClickHandler();
         this._onReverseInput();
         this._inputChange();
         this._urlPreChecking();
         this._urlCheckChange();
     }
-
-    // aRightClick() {
-    //     let self = this.weDirection;
-    //     window.addEventListener('DOMContentLoaded', function() {
-    //         let mapclick = self._map;
-    //         mapclick.on('contextmenu', function(e){
-    //             const coords = [e.lngLat.lng, e.lngLat.lat];
-    //             const start = document.getElementById('start');
-    //             const end = document.getElementById('end');
-    //             start.addEventListener('click', function(e){
-    //                 self.actions.setOriginFromCoordinates(coords);
-    //                 document.getElementById('right-click-menu-container').style.display = "none";
-    //             });
-    //             end.addEventListener('click', function(e){
-    //                 self.actions.setDestinationFromCoordinates(coords);
-    //                 document.getElementById('right-click-menu-container').style.display = "none";
-    //             })
-    //         });
-    //     })
-    // }
 
     /**
      * Overwrite Handler click of MapboxGL Directions
@@ -136,6 +121,36 @@ export default class WeDirections {
     }
 
     /**
+     * Handler right click start here and and here
+     * @private
+     */
+    _rightClickHandler() {
+        let self = this;
+        let direction = self.weDirection;
+        window.addEventListener('DOMContentLoaded', function(){
+            const startHere = document.getElementById('right-click-start');
+            const endHere = document.getElementById('right-click-end');
+
+            startHere.addEventListener('click', function(e) {
+                self.activeDirections();
+                const urlParams = wemapgl.urlController.getParams();
+                if (urlParams.ox && urlParams.oy) {
+                    const coords = [urlParams.ox, urlParams.oy];
+                    direction.actions.setOriginFromCoordinates(coords);
+                }
+            });
+            endHere.addEventListener('click', function(e) {
+                self.activeDirections();
+                const urlParams = wemapgl.urlController.getParams();
+                if (urlParams.dx && urlParams.dy) {
+                    const coords = [urlParams.dx, urlParams.dy];
+                    direction.actions.setDestinationFromCoordinates(coords);
+                }
+            });
+        });
+    }
+
+    /**
      * Add class wemap-direction to container when page loaded
      * @private
      */
@@ -168,17 +183,17 @@ export default class WeDirections {
 
     /**
      * Set Default active drive mode when page loaded
-     * @param mode
      * @private
      */
     _activeDefaultDriveMode() {
+        let self = this;
         let mode = this.options.mode;
+        self.optionProfile = mode;
         window.addEventListener('DOMContentLoaded', function(){
             const traffic = document.getElementById('mapbox-directions-profile-driving-traffic');
             const driving = document.getElementById('mapbox-directions-profile-driving');
             const walking = document.getElementById('mapbox-directions-profile-walking');
             const cycling = document.getElementById('mapbox-directions-profile-cycling');
-
             // Active traffic mode
             if (mode === 'traffic') {
                 traffic.checked = true;
@@ -190,6 +205,19 @@ export default class WeDirections {
                 cycling.checked = true;
             }
         });
+    }
+
+    /**
+     * Update option profile
+     * @param profile
+     */
+    set optionProfile(profile) {
+        let engine = this.options.engine;
+        if (engine === 'mapbox') {
+            this.options.profile = 'mapbox' + '/' + profile;
+        } else {
+            this.options.profile = profile;
+        }
     }
 
     /**
@@ -270,14 +298,13 @@ export default class WeDirections {
             directionSelector.addEventListener('click', function(e) {
                 self.activeDirections();
                 const urlParams = wemapgl.urlController.getParams();
-                if (urlParams.dx && urlParams.dy && urlParams.action) {
+                if (urlParams.dx && urlParams.dy) {
                     const coords = [urlParams.dx, urlParams.dy];
                     direction.actions.setDestinationFromCoordinates(coords);
                     wemapgl.reverse.offReverse();
                 }
             });
         });
-
     }
 
     /**
@@ -328,7 +355,7 @@ export default class WeDirections {
         let self = this;
         let direction = self.weDirection;
         direction._map._interactive = true;
-        wemapgl.reverse.offReverse()
+        wemapgl.reverse.offReverse(); // Off reverse when direction active
 
         let peliasSelector =
             document.querySelectorAll('div.pelias-ctrl.mapboxgl-ctrl')[0];
@@ -349,7 +376,7 @@ export default class WeDirections {
         let self = this;
         let direction = self.weDirection;
         direction._map._interactive = true;
-        wemapgl.reverse.onReverse()
+        wemapgl.reverse.onReverse(); // Active reverse when direction off
 
         let peliasSelector =
             document.querySelectorAll('div.pelias-ctrl.mapboxgl-ctrl')[0];
@@ -368,7 +395,6 @@ export default class WeDirections {
 
     /**
      * OnClick to reverse input
-     * @param direction
      * @private
      */
     _onReverseInput() {
@@ -390,6 +416,7 @@ export default class WeDirections {
             });
         });
     }
+
     /**
      * Return API Engine
      * @returns {string}

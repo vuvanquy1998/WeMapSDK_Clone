@@ -80,14 +80,16 @@ function fetchDirections() {
     } else if (engine === 'osrm' || engine === 'default') {
         if (accessToken) options.push('key=' + accessToken);
         let profileOSRM = '';
-        if (profile === 'mapbox/driving-traffic') {
+        if (profile === 'mapbox/driving-traffic' || profile === 'driving-traffic') {
             profileOSRM = 'driving';
-        } else if (profile === 'mapbox/driving') {
+        } else if (profile === 'mapbox/driving' || profile === 'driving') {
             profileOSRM = 'driving';
-        } else if (profile === 'mapbox/walking') {
+        } else if (profile === 'mapbox/walking' || profile === 'walking') {
             profileOSRM = 'walking';
-        } else if (profile === 'mapbox/cycling') {
+        } else if (profile === 'mapbox/cycling' || profile === 'cycling') {
             profileOSRM = 'cycling';
+        } else {
+            profileOSRM = 'driving';
         }
         // URLDirection = `${api}${profile}/${query}?${options.join('&')}`;
         URLDirection = `${api}${profileOSRM}/${query}?${options.join('&')}`;
