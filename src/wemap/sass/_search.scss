@@ -313,6 +313,7 @@ button {
   left: 380px;
   z-index: 10;
   cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .3);
 }
 
 .feature-control {
@@ -394,24 +395,21 @@ i {
 .scrollbar::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   background-color: #fcfcfc;
-  display: none;
 }
 
 .scrollbar::-webkit-scrollbar {
   width: 5px;
   background-color: #fcfcfc;
-  display: none;
 }
 
 .scrollbar::-webkit-scrollbar-thumb {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
   background-color: #b9b9b9;
-  display: none;
 }
 
-.scrollbar::-webkit-scrollbar {
-  display: none;
-}
+// .scrollbar::-webkit-scrollbar {
+//   display: none;
+// }
 
 
 #results-search{
@@ -430,11 +428,20 @@ i {
 //pelias-geocoder.css
 .pelias-ctrl{
   min-width: 410px;
-  max-width: 420px;
   z-index: 2147483647;
   pointer-events: none;
   margin: 0;
   padding: 10px 0 0 10px;
+}
+// pelias-geocoder.css
+.pelias-ctrl-attribution{
+    display: none;
+}
+
+.mapboxgl-control-container {
+    .pelias-ctrl-results.pelias-ctrl-shadow {
+        max-width: 400px;
+    }
 }
 // result search
 /* css result-search */
@@ -2082,9 +2089,10 @@ textarea.form-text_input {
     min-height: 80px
 }
 
-.poicard-info.w_rating {
-    position: relative;
+.results .js-poicard .poicard-info {
+    position: static;
 }
+
 
 .poicard-title {
     position: relative;
@@ -2193,10 +2201,10 @@ textarea.form-text_input {
     bottom: 0;
     margin-left: 20px;
     margin-top: 71px;
+    margin-bottom: 30px;
     width: 400px;
     font-weight: 300;
     z-index: 2;
-    background: #fff
 }
 
 .results.no_results {
@@ -3528,7 +3536,7 @@ textarea.form-text_input {
     text-align: center;
     vertical-align: middle;
     user-select: none;
-    float:right;
+    float: right;
 }
 
 .result-way{
@@ -3545,23 +3553,32 @@ textarea.form-text_input {
 }
 
 #results-list {
-    overflow-y: scroll;
-    height: 100%;
+    overflow-y: auto;
+    max-height: 100%;
+    box-shadow: 3px 4px 4px rgba(1,1,0,.2), 2px -2px 3px rgba(0,0,0,.02);
 }
-
-#results-list::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(197, 195, 195, 0.3);
-    background-color: #F5F5F5;
+#results-list:hover{
+    overflow-y: auto;
 }
+#results-list:hover::-webkit-scrollbar {
+    visibility: visible;
+}
+// #results-list::-webkit-scrollbar-track {
+//     -webkit-box-shadow: inset 0 0 6px rgba(197, 195, 195, 0.3);
+//     background-color: #F5F5F5;
+// }
 
 #results-list::-webkit-scrollbar {
     width: 5px;
     background-color: #F5F5F5;
+    display: none;
+    // visibility: hidden;
 }
 
-#results-list::-webkit-scrollbar-thumb {
-    background-color: #b1aeae;
-}
+// #results-list::-webkit-scrollbar-thumb {
+//     background-color: #b1aeae;
+//     display: none;
+// }
 
 #lat-log {
     padding-top: 2px;
@@ -3683,7 +3700,4 @@ fieldset, label { margin: 0; padding: 0; }
 // /* .rating > label:hover ~ input:checked ~ label, lighten current selection */
 // /* .rating > input:checked ~ label:hover ~ label { color: #E7711B;  }  */
 
-// pelias-geocoder.css
-.pelias-ctrl-attribution{
-    display: none;
-}
+
