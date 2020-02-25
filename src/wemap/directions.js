@@ -31,11 +31,88 @@ export default class WeDirections {
         return this.weDirection;
     }
 
+    /**
+     * Update option config
+     * @private
+     */
     _updateOptions() {
-        this.options.api = this._apiEngine(this.options.engine);
+        this._apiEngine = this.options.engine;
 
-        this.options.geocoder.engine = this._geocodeEngine(this.options.geocoder.engine);
-        this.options.geocoder.api = this._geocodeApi(this.options.geocoder.engine);
+        this._geocodeEngine = this.options.geocoder.engine;
+
+        this._geocodeApi = this.options.geocoder.engine;
+    }
+
+    /**
+     * Setter update API correct engine option
+     * @param engine
+     * @private
+     */
+    set _apiEngine(engine) {
+        let api = '';
+        switch (engine) {
+            case 'default':
+            case 'osrm':
+                api = config.direction.engine.osrm;
+                break;
+            case 'graphhopper':
+                api = config.direction.engine.graphhopper;
+                break;
+            case 'mapbox':
+                api = config.direction.engine.mapbox;
+                break;
+            default:
+                api = config.direction.engine.osrm;
+                break;
+        }
+        // return api;
+        this.options.api = api;
+    }
+
+    /**
+     * Setter update Geocode Engine
+     * @param engine
+     * @private
+     */
+    set _geocodeEngine(engine) {
+        let geoEngine = '';
+        switch (engine) {
+            case 'default':
+            case 'pelias':
+                geoEngine = 'pelias';
+                break;
+            case 'mapbox':
+                geoEngine = 'mapbox';
+                break;
+            default:
+                geoEngine = 'pelias';
+                break;
+        }
+        // return geoEngine;
+        this.options.geocoder.engine = geoEngine;
+    }
+
+    /**
+     * Setter update Geocode Api
+     * @param engine
+     * @private
+     */
+    set _geocodeApi(engine) {
+        let geoApi = '';
+        switch (engine) {
+            case 'default':
+            case 'pelias':
+                geoApi = config.direction.geocoder.pelias;
+                break;
+            case 'mapbox':
+                geoApi = config.direction.geocoder.mapbox;
+                break;
+            default:
+                geoApi = config.direction.geocoder.pelias;
+                break;
+        }
+        // return geoApi;
+        this.options.geocoder.api = geoApi;
     }
 
     /**
@@ -415,76 +492,5 @@ export default class WeDirections {
                 direction.actions.reverse();
             });
         });
-    }
-
-    /**
-     * Return API Engine
-     * @returns {string}
-     * @private
-     */
-    _apiEngine(engine) {
-        let api = '';
-        switch (engine) {
-            case 'default':
-            case 'osrm':
-                api = config.direction.engine.osrm;
-                break;
-            case 'graphhopper':
-                api = config.direction.engine.graphhopper;
-                break;
-            case 'mapbox':
-                api = config.direction.engine.mapbox;
-                break;
-            default:
-                api = config.direction.engine.osrm;
-                break;
-        }
-        return api;
-    }
-
-    /**
-     * Return Geocode Engine
-     * @param engine
-     * @returns {string}
-     * @private
-     */
-    _geocodeEngine(engine) {
-        let geoEngine = '';
-        switch (engine) {
-            case 'default':
-            case 'pelias':
-                geoEngine = 'pelias';
-                break;
-            case 'mapbox':
-                geoEngine = 'mapbox';
-                break;
-            default:
-                geoEngine = 'pelias';
-                break;
-        }
-        return geoEngine;
-    }
-
-    /**
-     * Return Geocode Api
-     * @param engine
-     * @returns {string}
-     * @private
-     */
-    _geocodeApi(engine) {
-        let geoApi = '';
-        switch (engine) {
-            case 'default':
-            case 'pelias':
-                geoApi = config.direction.geocoder.pelias;
-                break;
-            case 'mapbox':
-                geoApi = config.direction.geocoder.mapbox;
-                break;
-            default:
-                geoApi = config.direction.geocoder.pelias;
-                break;
-        }
-        return geoApi;
     }
 }
