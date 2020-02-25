@@ -4,12 +4,14 @@ import PlaceDetail from './placeDetail'
 import RightClick from './rightclick'
 import Url from './url.js'
 
+/**
+ * create new class
+ * @param {Object} map
+ * @param {String} key
+ *
+ */
 export default class Reverse{
-    /**
-     * create new class
-     * @param {Object} map 
-     * @param {String} key 
-     */
+
     constructor(map, key) {
         this.map = map;
         this.key = key;

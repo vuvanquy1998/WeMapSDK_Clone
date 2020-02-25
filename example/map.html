@@ -37,7 +37,8 @@
     token = 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7';
     var wemapControl = new wemapgl.WeGeocoder({
         flyTo: 'hybrid',
-        key: token,
+        // key: token,
+        key: 'vpstPRxkBBTLaZkOaCfAHlqXtCR',
         engine: 'default',  //ko biết
         suggestion: {
             min_char: 4  // ko ghi = 4
@@ -48,7 +49,7 @@
     map.addControl(wemapControl);
 
     let wd =  new wemapgl.WeDirections({
-        mode: 'walking',
+        // mode: 'walking',
         key: "vpstPRxkBBTLaZkOaCfAHlqXtCR",
         // key: "pk.eyJ1IjoicGh1b25naHgiLCJhIjoiY2s2N3IxMnNiMWdlbTNlcW8ybG5jaXU4MCJ9.CkMLijVJ1Lp2ZbaR0zDgrg",
         engine: 'osrm',

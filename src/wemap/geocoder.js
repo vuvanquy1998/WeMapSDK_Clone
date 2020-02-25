@@ -4,8 +4,9 @@ export default class WeGeocoder {
         constructor(options) {
             options = options || {}
             this.options = options
-            this.options.params = {'access-token': this.options.key}
-            this.options.url = 'https://places.jawg.io/v1'
+            this.options.params = {'key': this.options.key}
+            // this.options.url = 'https://places.jawg.io/v1'
+            this.options.url = 'https://apis.wemap.asia/geocode-1'
             delete this.options.key
             this.options.suggestion.min_chars |= 4
             var iconMarkerEl = document.createElement("div")
