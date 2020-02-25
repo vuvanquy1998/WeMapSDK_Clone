@@ -39,7 +39,7 @@
       "history": true
     },
     "place": {
-      "params": ["osmid", "osmtype"],
+      "place": ["osmid", "osmtype", "name", "lat", "long", "address", "type" ],
       "history":  true
     },
     "reverse": {
