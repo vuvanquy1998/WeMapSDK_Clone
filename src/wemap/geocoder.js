@@ -15,6 +15,7 @@ export default class WeGeocoder {
             this.options.marker.icon = this.initMarker()
             WeGeocoder.min_chars = this.options.suggestion.min_chars
             this.geocoder = this.init(this.options)
+            this.resultAutocompele = null
             this.initMultiView()
             this.initEvent()
             this.updateInfoFromUrl()
@@ -52,6 +53,19 @@ export default class WeGeocoder {
                 });
                 place.showDetailFeature()
             }
+        }
+        updateListMarker(){
+            let self = this.geocoder
+            let resuls = self._results
+            
+            console.log(this.geocoder._results)
+            if(resuls){
+                let features = self._removeDuplicates(resuls.features);
+                if (self.opts.marker && self.opts.marker.multiple) {
+                    self._updateMarkers(features);
+                }
+            }
+            
         }
         /**
          * @returns standardized address
@@ -98,6 +112,7 @@ export default class WeGeocoder {
             inputEl.placeholder = this.opts.placeholder;
             inputEl.addEventListener("focus", function(e){
                 self._resultsListEl.showAll();
+                WeGeocoder.hideDetailFeatureFrame()
             })
             inputEl.addEventListener("keyup", function (e) {
                 // Enter -> go to feature location.
@@ -139,14 +154,23 @@ export default class WeGeocoder {
                     clearTimeout(this._timeoutId);
                 }
                 if (self._eventMatchKey(e, self._keys.enter)) {
-                    self.search({text: value}, function (err, result) {
+                    self.search({text: value}, function (err, results) {
                     if (err) {
                         return self._showError(err);
                     }
-                    if (result) {
-                        // self._clearAll()
+                    if (results) {
+                        self._clearAll()
                         WeGeocoder.hideDetailFeatureFrame()
-                        self.showResultsSearch(result)
+                        self.showResultsSearch(results)
+                        
+                        // create list marker
+                        
+                        self._results = results;
+                        let features = self._removeDuplicates(results.features);
+                        if (self.opts.marker && self.opts.marker.multiple) {
+                            self._updateMarkers(features);
+                        }
+
                     }
                     }, 'search');
                     self._resultsListEl.hideAll();
@@ -208,7 +232,9 @@ export default class WeGeocoder {
          * init event close detail frame
          */
         initEventCloseDetailFrame(){
+            let self = this
             document.getElementById('close-detail-button').addEventListener('click', function(){
+                self.updateListMarker()
                 WeGeocoder.hideDetailFeatureFrame()
             })
         }
@@ -221,6 +247,7 @@ export default class WeGeocoder {
                 return
             }
             var originBuildAndGetResult = this.geocoder._buildAndGetResult
+            let wegeocoder = this
             this.geocoder._buildAndGetResult = function(feature, index){
                 let self = this
                 let resultEl = originBuildAndGetResult.call(this, feature, index)
@@ -258,6 +285,8 @@ export default class WeGeocoder {
                   });
                   resultEl.addEventListener("click", function () {
                     self._goToFeatureLocation(feature, true);
+                    self._removeMarkers()
+                    self._updateMarkers(feature)
                   });
                 return resultEl
             }
@@ -268,6 +297,7 @@ export default class WeGeocoder {
             this.initEventCloseDetailFrame()
             var originGoToFeatureLocation = this.geocoder._goToFeatureLocation
             this.geocoder._goToFeatureLocation = function(feature, viewDetail){
+                console.log(this._results)
                 let info = feature.properties
                 let osm_id = ''
                 let osm_type = ''
@@ -289,7 +319,7 @@ export default class WeGeocoder {
                 }
                 // default goToFeature
                 //*********** */
-                this._results = undefined;
+                // this._results = undefined;
                 var cameraOpts = {
                     center: feature.geometry.coordinates,
                     zoom: this._getBestZoom(feature)
@@ -310,9 +340,24 @@ export default class WeGeocoder {
         }
 
         showResultsSearch(result) {
+            console.log(result)
+            console.log(result.features)
+            let self = this
+            let results = document.getElementById('results-list');
+            if(result.features == false){
+                console.log('no result')
+                results.innerHTML = '<p class="js-poicard poicard no-result">Không có kết quả tìm kiếm'+
+                '<span class="fa fa-times" id= "icon-cross-noresult"></span>'
+                '<p>'
+                document.getElementById('icon-cross-noresult').addEventListener('click', function(e){
+                    WeGeocoder.hideNoResult()
+                })
+                return 
+            }   
+
+
             let features = result.features;
             let resultFeatures = '';
-            let self = this
             features.forEach(function (feature, i) {
               if (i < features.length) {
                 resultFeatures = resultFeatures + '<li class="js-poicard poicard">' +
@@ -348,7 +393,7 @@ export default class WeGeocoder {
                   '</li>';
               }
             });
-            let results = document.getElementById('results-list');
+            
             results.innerHTML = resultFeatures;
             let resultList = results.querySelectorAll("li");
             resultList.forEach(function (result, index) {
@@ -363,7 +408,7 @@ export default class WeGeocoder {
               };
           
               let rating = result.querySelectorAll('.full');
-              let averageStar = Math.floor((Math.random()*5)*10)/10 ;
+              let averageStar = 2 + Math.floor((Math.random()*3)*10)/10 ;
 
               for (let i=0; i< Math.floor(averageStar ); i++ ){
                 rating[4-i].style.color = '#E7711B'
@@ -416,10 +461,8 @@ export default class WeGeocoder {
          */
         initMultiView(){
             let view = document.createElement('div')
-            view.innerHTML = '<div id="no-result"\>'+
-            '<p>Không tìm thấy kết quả</p>'+
-            '</div>'+
-            '<div id="results-search">'+
+            view.setAttribute("id", "wemap-results-search");
+            view.innerHTML = '<div id="results-search">'+
                 '<section class="results with_ads">'+
                 '    <ul id="results-list"></ul>'+
                 '</section>'+
@@ -466,7 +509,9 @@ export default class WeGeocoder {
             '</div>'
             document.body.appendChild(view)
         }
-
+        static hideNoResult(){
+            document.getElementById('results-list').style.display = 'none'
+        }
         static hideDetailFeatureFrame() {
             let detail_feature = document.getElementById("detail-feature");
             if (detail_feature) {

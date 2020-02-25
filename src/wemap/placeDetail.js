@@ -13,7 +13,7 @@ export default class PlaceDetail{
   */
   showDetailFeature(){
     // // addMarker(this.options.lat, this.options.long);
-    document.getElementById('no-result').style.display = 'none';
+    // document.getElementById('no-result').style.display = 'none';
     // // document.getElementById('place').style.display = 'none'
     document.getElementById("detail-feature").style.display = "block";
     let featureName = document.getElementById("feature-name");

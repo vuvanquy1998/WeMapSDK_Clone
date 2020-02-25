@@ -421,10 +421,6 @@ i {
   padding-top: 15px;
 }
 
-
-#no-result{
-  display: none;
-}
 //pelias-geocoder.css
 .pelias-ctrl{
   min-width: 410px;
@@ -445,6 +441,13 @@ i {
 }
 // result search
 /* css result-search */
+
+#results-list p.no-result{
+    color: black;
+}
+#icon-cross-noresult {
+    float: right;
+}
 
 @charset "utf-8";
 .ads-context-item-s, .cl:after, .clear, .clearfix:after, .filters-heading:after, .poi-feedback-links:after, .radio:after {
@@ -3586,7 +3589,6 @@ textarea.form-text_input {
 }
 
 #no-result {
-    display: none;
     height: 30px;
     width: 400px;
     position: absolute;
