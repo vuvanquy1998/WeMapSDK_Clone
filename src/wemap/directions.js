@@ -21,16 +21,98 @@ export default class WeDirections {
         this.options.mode = options.mode || 'driving';
         this.options.interactive = options.interactive || false;
 
-        this.options.geocoder.engine = this._geocodeEngine(this.options.geocoder.engine);
-        this.options.geocoder.api = this._geocodeApi(this.options.geocoder.engine);
-        this.options.api = this._apiEngine(this.options.engine);
+        this._updateOptions();
+
+        this._activeDefaultDriveMode();
 
         this.weDirection = this.render(this.options);
         this.weDirection.onClick = this._clickHandler();
         this._onRendered();
-        // this.weDirection.interactive = this.interactive();
-        // this.aRightClick();
         return this.weDirection;
+    }
+
+    /**
+     * Update option config
+     * @private
+     */
+    _updateOptions() {
+        this._apiEngine = this.options.engine;
+
+        this._geocodeEngine = this.options.geocoder.engine;
+
+        this._geocodeApi = this.options.geocoder.engine;
+    }
+
+    /**
+     * Setter update API correct engine option
+     * @param engine
+     * @private
+     */
+    set _apiEngine(engine) {
+        let api = '';
+        switch (engine) {
+            case 'default':
+            case 'osrm':
+                api = config.direction.engine.osrm;
+                break;
+            case 'graphhopper':
+                api = config.direction.engine.graphhopper;
+                break;
+            case 'mapbox':
+                api = config.direction.engine.mapbox;
+                break;
+            default:
+                api = config.direction.engine.osrm;
+                break;
+        }
+        // return api;
+        this.options.api = api;
+    }
+
+    /**
+     * Setter update Geocode Engine
+     * @param engine
+     * @private
+     */
+    set _geocodeEngine(engine) {
+        let geoEngine = '';
+        switch (engine) {
+            case 'default':
+            case 'pelias':
+                geoEngine = 'pelias';
+                break;
+            case 'mapbox':
+                geoEngine = 'mapbox';
+                break;
+            default:
+                geoEngine = 'pelias';
+                break;
+        }
+        // return geoEngine;
+        this.options.geocoder.engine = geoEngine;
+    }
+
+    /**
+     * Setter update Geocode Api
+     * @param engine
+     * @private
+     */
+    set _geocodeApi(engine) {
+        let geoApi = '';
+        switch (engine) {
+            case 'default':
+            case 'pelias':
+                geoApi = config.direction.geocoder.pelias;
+                break;
+            case 'mapbox':
+                geoApi = config.direction.geocoder.mapbox;
+                break;
+            default:
+                geoApi = config.direction.geocoder.pelias;
+                break;
+        }
+        // return geoApi;
+        this.options.geocoder.api = geoApi;
     }
 
     /**
@@ -48,57 +130,19 @@ export default class WeDirections {
      */
     _onRendered() {
         this._addClass2Container();
+        this._checkActiveGeocode();
         this._addDirectionIcon();
-        this._activeDefaultDriveMode();
+        this._rightClickHandler();
         this._onReverseInput();
         this._inputChange();
         this._urlPreChecking();
         this._urlCheckChange();
     }
 
-    // aRightClick() {
-    //     let self = this.weDirection;
-    //     window.addEventListener('DOMContentLoaded', function() {
-    //         let mapclick = self._map;
-    //         mapclick.on('contextmenu', function(e){
-    //             const coords = [e.lngLat.lng, e.lngLat.lat];
-    //             const start = document.getElementById('start');
-    //             const end = document.getElementById('end');
-    //             start.addEventListener('click', function(e){
-    //                 self.actions.setOriginFromCoordinates(coords);
-    //                 document.getElementById('right-click-menu-container').style.display = "none";
-    //             });
-    //             end.addEventListener('click', function(e){
-    //                 self.actions.setDestinationFromCoordinates(coords);
-    //                 document.getElementById('right-click-menu-container').style.display = "none";
-    //             })
-    //         });
-    //     })
-    // }
-
-    interactive(state) {
-        // TODO: Re check interactive function
-        let self = this.weDirection;
-        window.addEventListener('DOMContentLoaded', function() {
-            if (state) {
-                self._map.on('touchstart', self.move);
-                self._map.on('touchstart', self.onDragDown);
-
-                self._map.on('mousedown', self.onDragDown);
-                self._map.on('mousemove', self.move);
-                // this._map.on('click', this.onClick);
-            } else {
-                self._map.off('touchstart', self.move);
-                self._map.off('touchstart', self.onDragDown);
-
-                self._map.off('mousedown', self.onDragDown);
-                self._map.off('mousemove', self.move);
-                // this._map.off('click', this.onClick);
-            }
-            return this;
-        });
-    }
-
+    /**
+     * Overwrite Handler click of MapboxGL Directions
+     * @private
+     */
     _clickHandler() {
         let self = this.weDirection;
         let interactive = this.options.interactive;
@@ -106,7 +150,14 @@ export default class WeDirections {
             let mapclick = self._map;
             self._map._interactive = interactive;
             mapclick.on('click', function(e) {
-                // console.log('Clicked', e);
+                // let origin = document.querySelectorAll('#mapbox-directions-origin-input input')[0];
+                // let destination = document.querySelectorAll('#mapbox-directions-destination-input input')[0];
+                // if (origin.value && destination.value) {
+                //     wemapgl.reverse.onReverse();
+                // } else {
+                //     wemapgl.reverse.offReverse();
+                // }
+
                 if (self._map._interactive) {
                     let origin =  self.getOrigin();
                     let destination = self.getDestination();
@@ -115,8 +166,6 @@ export default class WeDirections {
                     const coords = [lng, lat];
                     if (!origin.geometry) {
                         self.actions.setOriginFromCoordinates(coords);
-                        // Update route Origin
-                        wemapgl.urlController.updateParams("route",{ox: coords[0], oy: coords[1]});
                     } else {
                         const features = mapclick.queryRenderedFeatures(e.point, {
                             layers: [
@@ -141,10 +190,38 @@ export default class WeDirections {
                         } else if (!destination.geometry){
                             self.actions.setDestinationFromCoordinates(coords);
                             mapclick.flyTo({ center: coords });
-                            // Update route Destination
-                            wemapgl.urlController.updateParams("route", {dx: coords[0], dy: coords[1]});
                         }
                     }
+                }
+            });
+        });
+    }
+
+    /**
+     * Handler right click start here and and here
+     * @private
+     */
+    _rightClickHandler() {
+        let self = this;
+        let direction = self.weDirection;
+        window.addEventListener('DOMContentLoaded', function(){
+            const startHere = document.getElementById('right-click-start');
+            const endHere = document.getElementById('right-click-end');
+
+            startHere.addEventListener('click', function(e) {
+                self.activeDirections();
+                const urlParams = wemapgl.urlController.getParams();
+                if (urlParams.ox && urlParams.oy) {
+                    const coords = [urlParams.ox, urlParams.oy];
+                    direction.actions.setOriginFromCoordinates(coords);
+                }
+            });
+            endHere.addEventListener('click', function(e) {
+                self.activeDirections();
+                const urlParams = wemapgl.urlController.getParams();
+                if (urlParams.dx && urlParams.dy) {
+                    const coords = [urlParams.dx, urlParams.dy];
+                    direction.actions.setDestinationFromCoordinates(coords);
                 }
             });
         });
@@ -166,18 +243,34 @@ export default class WeDirections {
     }
 
     /**
+     * Check Geocode Active, if Geocode not activated always show Directions
+     * @private
+     */
+    _checkActiveGeocode() {
+        window.addEventListener('DOMContentLoaded', function() {
+            let peliasSelector =
+                document.querySelectorAll('div.pelias-ctrl.mapboxgl-ctrl')[0];
+            if (!peliasSelector) {
+                let directionSelector =
+                    document.querySelectorAll('.mapboxgl-control-container .mapboxgl-ctrl-directions.mapboxgl-ctrl')[0];
+                directionSelector.classList.remove("hide");
+            }
+        });
+    }
+
+    /**
      * Set Default active drive mode when page loaded
-     * @param mode
      * @private
      */
     _activeDefaultDriveMode() {
+        let self = this;
         let mode = this.options.mode;
+        self.optionProfile = mode;
         window.addEventListener('DOMContentLoaded', function(){
             const traffic = document.getElementById('mapbox-directions-profile-driving-traffic');
             const driving = document.getElementById('mapbox-directions-profile-driving');
             const walking = document.getElementById('mapbox-directions-profile-walking');
             const cycling = document.getElementById('mapbox-directions-profile-cycling');
-
             // Active traffic mode
             if (mode === 'traffic') {
                 traffic.checked = true;
@@ -191,6 +284,18 @@ export default class WeDirections {
         });
     }
 
+    /**
+     * Update option profile
+     * @param profile
+     */
+    set optionProfile(profile) {
+        let engine = this.options.engine;
+        if (engine === 'mapbox') {
+            this.options.profile = 'mapbox' + '/' + profile;
+        } else {
+            this.options.profile = profile;
+        }
+    }
 
     /**
      * Check input origin, destination changed and update URL
@@ -199,11 +304,25 @@ export default class WeDirections {
     _inputChange() {
         let direction = this.weDirection;
         window.addEventListener('DOMContentLoaded', function(){
+            let directionSelector = document.getElementById('mapbox-directions-form-area');
             let origin = document.getElementById('mapbox-directions-origin-input');
             let destination = document.getElementById('mapbox-directions-destination-input');
+            let originValue = {};
+            let destinationValue = {};
+
+            directionSelector.addEventListener('change', function(e) {
+                let o = document.querySelectorAll('#mapbox-directions-origin-input input')[0];
+                let d = document.querySelectorAll('#mapbox-directions-destination-input input')[0];
+                if (o.value && d.value) {
+                    wemapgl.reverse.onReverse();
+                } else {
+                    wemapgl.reverse.offReverse();
+                }
+            });
+
+
             origin.addEventListener('change', function(e) {
-                let originValue =  direction.getOrigin();
-                // console.log('originValue: ', originValue);
+                originValue =  direction.getOrigin();
                 wemapgl.urlController.updateParams("route",
                     {
                         dx: originValue.geometry ? originValue.geometry.coordinates[0] : 0,
@@ -212,8 +331,7 @@ export default class WeDirections {
             });
 
             destination.addEventListener('change', function(e) {
-                let destinationValue =  direction.getDestination();
-                // console.log('destinationValue: ', destinationValue);
+                destinationValue =  direction.getDestination();
                 wemapgl.urlController.updateParams("route",
                     {
                         dx: destinationValue.geometry ? destinationValue.geometry.coordinates[0] : 0,
@@ -230,14 +348,13 @@ export default class WeDirections {
     _urlPreChecking() {
         let self = this;
         let direction = self.weDirection;
-
         window.addEventListener('DOMContentLoaded', function(){
             const urlParams = wemapgl.urlController.getParams();
             if (urlParams.ox && urlParams.oy && urlParams.dx && urlParams.dy) {
-                self._activeDirections();
-                const originCoords = [urlParams.ox, urlParams.oy];
-                const destinationCoords = [urlParams.dx, urlParams.dy];
+                self.activeDirections();
                 direction._map.on('load', function () {
+                    const originCoords = [urlParams.ox, urlParams.oy];
+                    const destinationCoords = [urlParams.dx, urlParams.dy];
                     direction.actions.setOriginFromCoordinates(originCoords);
                     direction.actions.setDestinationFromCoordinates(destinationCoords);
                 });
@@ -256,33 +373,28 @@ export default class WeDirections {
         window.addEventListener('DOMContentLoaded', function(){
             const directionSelector = document.getElementById('direction-icon');
             directionSelector.addEventListener('click', function(e) {
-                self._activeDirections();
+                self.activeDirections();
                 const urlParams = wemapgl.urlController.getParams();
-                if (urlParams.dx && urlParams.dy && urlParams.action) {
+                if (urlParams.dx && urlParams.dy) {
                     const coords = [urlParams.dx, urlParams.dy];
                     direction.actions.setDestinationFromCoordinates(coords);
                     wemapgl.reverse.offReverse();
                 }
             });
         });
-
     }
 
     /**
-     *
+     * Add Direction Icon when Geocode active
      * @private
      */
     _addDirectionIcon() {
         let self = this;
-        let direction = self.weDirection;
-        // let self = this;
         window.addEventListener('DOMContentLoaded', function(){
             let peliasSelector =
                 document.querySelectorAll('div.pelias-ctrl.mapboxgl-ctrl')[0];
             let peliasInputSelector =
                 document.querySelectorAll('div.pelias-ctrl-input-actions-wrapper.pelias-ctrl-shadow')[0];
-            let directionSelector =
-                document.querySelectorAll('div.mapboxgl-ctrl-directions.mapboxgl-ctrl')[0];
             let directionInputSelector = document.getElementById('mapbox-directions-form-area');
 
             if (peliasInputSelector) {
@@ -291,41 +403,36 @@ export default class WeDirections {
                 directionOpen.className =
                     'pelias-ctrl-action-icon pelias-ctrl-action-icon-directions pelias-ctrl-disabled';
                 peliasInputSelector.appendChild(directionOpen);
-                // Add Event
                 directionOpen.addEventListener('click', () => {
                     console.log('Active direction');
-                    directionSelector.classList.remove("hide");
-                    peliasSelector.classList.add("hide");
-                    // interactive
-                    direction.interactive(true);
-                    direction._map._interactive = true;
+                    self.activeDirections();
                 });
             }
 
-            if (directionInputSelector) {
-                const directionClose = document.createElement('span');
-                directionClose.setAttribute("id", "direction-icon-close");
-                directionClose.className =
-                    'direction-icon-search';
-                directionInputSelector.appendChild(directionClose);
-                directionClose.addEventListener('click', () => {
-                    console.log('Deactive direction');
-                    peliasSelector.classList.remove("hide");
-                    directionSelector.classList.add("hide");
-                    // interactive
-                    direction.interactive(false);
-                    direction._map._interactive = false;
-                    direction.removeRoutes();
-                    direction.removeWaypoint();
-                });
+            if (peliasSelector) {
+                if (directionInputSelector) {
+                    const directionClose = document.createElement('span');
+                    directionClose.setAttribute("id", "direction-icon-close");
+                    directionClose.className =
+                        'direction-icon-search';
+                    directionInputSelector.appendChild(directionClose);
+                    directionClose.addEventListener('click', () => {
+                        console.log('Deactive direction');
+                        self.deactiveDirections();
+                    });
+                }
             }
         });
     }
 
-    _activeDirections() {
+    /**
+     * Handle action when active Directions
+     */
+    activeDirections() {
         let self = this;
         let direction = self.weDirection;
         direction._map._interactive = true;
+        wemapgl.reverse.offReverse(); // Off reverse when direction active
 
         let peliasSelector =
             document.querySelectorAll('div.pelias-ctrl.mapboxgl-ctrl')[0];
@@ -340,8 +447,31 @@ export default class WeDirections {
     }
 
     /**
+     * Handle action when deactive Directions
+     */
+    deactiveDirections() {
+        let self = this;
+        let direction = self.weDirection;
+        direction._map._interactive = true;
+        wemapgl.reverse.onReverse(); // Active reverse when direction off
+
+        let peliasSelector =
+            document.querySelectorAll('div.pelias-ctrl.mapboxgl-ctrl')[0];
+        let directionSelector =
+            document.querySelectorAll('div.mapboxgl-ctrl-directions.mapboxgl-ctrl')[0];
+
+        peliasSelector.classList.remove("hide");
+        directionSelector.classList.add("hide");
+        // interactive
+        direction.interactive(false);
+        direction._map._interactive = false;
+        direction.removeRoutes();
+        direction.removeWaypoint();
+        wemapgl.urlController.deleteParams("route");
+    }
+
+    /**
      * OnClick to reverse input
-     * @param direction
      * @private
      */
     _onReverseInput() {
@@ -362,75 +492,5 @@ export default class WeDirections {
                 direction.actions.reverse();
             });
         });
-    }
-    /**
-     * Return API Engine
-     * @returns {string}
-     * @private
-     */
-    _apiEngine(engine) {
-        let api = '';
-        switch (engine) {
-            case 'default':
-            case 'osrm':
-                api = config.direction.engine.osrm;
-                break;
-            case 'graphhopper':
-                api = config.direction.engine.graphhopper;
-                break;
-            case 'mapbox':
-                api = config.direction.engine.mapbox;
-                break;
-            default:
-                api = config.direction.engine.osrm;
-                break;
-        }
-        return api;
-    }
-
-    /**
-     * Return Geocode Engine
-     * @param engine
-     * @returns {string}
-     * @private
-     */
-    _geocodeEngine(engine) {
-        let geoEngine = '';
-        switch (engine) {
-            case 'default':
-            case 'pelias':
-                geoEngine = 'pelias';
-                break;
-            case 'mapbox':
-                geoEngine = 'mapbox';
-                break;
-            default:
-                geoEngine = 'pelias';
-                break;
-        }
-        return geoEngine;
-    }
-
-    /**
-     * Return Geocode Api
-     * @param engine
-     * @returns {string}
-     * @private
-     */
-    _geocodeApi(engine) {
-        let geoApi = '';
-        switch (engine) {
-            case 'default':
-            case 'pelias':
-                geoApi = config.direction.geocoder.pelias;
-                break;
-            case 'mapbox':
-                geoApi = config.direction.geocoder.mapbox;
-                break;
-            default:
-                geoApi = config.direction.geocoder.pelias;
-                break;
-        }
-        return geoApi;
     }
 }
