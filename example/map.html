@@ -61,6 +61,16 @@
 
     map.addControl(wd, 'top-left');
 
+    map.addControl(new wemapgl.NavigationControl(), 'bottom-right');
+
+    map.addControl(new wemapgl.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true
+            },
+            trackUserLocation: true
+        }),
+        'bottom-right');
+
 </script>
 </body>
 </html>
