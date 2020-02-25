@@ -2,11 +2,9 @@ export default class RightClick {
     /**
      * Create right click
      * @param {Object} map 
-     * @param {String} key 
      */
-    constructor(map, key) {
+    constructor(map) {
         this.map = map;
-        this.key = key;
         this.lat = 0;
         this.lon = 0;
         this.clickedPoi = {};

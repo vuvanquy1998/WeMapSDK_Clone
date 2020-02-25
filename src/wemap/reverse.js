@@ -7,12 +7,12 @@ import Url from './url.js'
 export default class Reverse{
     /**
      * create new class
-     * @param {Object} map 
-     * @param {String} key 
+     * @param {Object} options
      */
-    constructor(map, key) {
-        this.map = map;
-        this.key = key;
+    constructor(options) {
+        this.options = options;
+        this.map = this.options.map;
+        this.key = this.options.key;
         this.on = true;
         this.pointLayers = [];
         this.receivedData = {};
@@ -20,7 +20,7 @@ export default class Reverse{
         this.getStyle();
         this.leftClick();
         this.clickBottomCard();
-        this.clickDirectionIcon()
+        this.clickDirectionIcon();
         this.closeBottomCard();
     }
     /**
@@ -107,20 +107,24 @@ export default class Reverse{
     onClick(e){
         let features = this.map.queryRenderedFeatures(e.point);
         this.getReverseData(e).then(data => {
-            if(features.length == 0){
-                this.clickoutIcon(data.features[0])
+            if(data.features.length == 0){
+                this.showUiNoData(e.lngLat.lat, e.lngLat.lng)
             }else{
-                let notPointLayer = 0
-
-                features.forEach((feature,index) => {
-                    if(this.pointLayers.includes(feature.layer.id)){
-                        this.clickonIcon(data.features[0]);
-                        notPointLayer += 1
-                    }
-                });
-
-                if(notPointLayer == 0){
+                if(features.length == 0){
                     this.clickoutIcon(data.features[0])
+                }else{
+                    let notPointLayer = 0
+    
+                    features.forEach((feature,index) => {
+                        if(this.pointLayers.includes(feature.layer.id)){
+                            this.clickonIcon(data.features[0]);
+                            notPointLayer += 1
+                        }
+                    });
+    
+                    if(notPointLayer == 0){
+                        this.clickoutIcon(data.features[0])
+                    }
                 }
             }
         })
@@ -183,6 +187,19 @@ export default class Reverse{
             osm_type: data.properties.osm_type
         });
         place.showDetailFeature()
+    }
+
+    /**
+     * render UI when point has no data
+     */
+
+    showUiNoData(lat, lon){
+        this.displayUI('detail-feature', 'none')                
+        this.displayUI('place', 'block')   
+        
+        document.getElementById('placename').innerHTML = "Không có thông tin"
+        document.getElementById('placeadd').innerHTML = "Không có thông tin"
+        document.getElementById('placelatlon').innerHTML = Number(lon).toFixed(7)+' ,'+ Number(lat).toFixed(7)    
     }
     /**
      * show feature detail when click reverse bottom card
