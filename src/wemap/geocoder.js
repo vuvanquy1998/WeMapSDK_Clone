@@ -45,9 +45,11 @@ export default class WeGeocoder {
 
         updateInfoFromUrl(){
             let info = wemapgl.urlController.getParams()
-            if(info.lat){
-                let place = new PlaceDetail({name: info.name, type: info.type,
-                     lat: info.lat, lon: info.long,address: info.address ,osm_id: info.osmid, osm_type: info.osmtype});
+            if (info.lat) {
+                let place = new PlaceDetail({
+                    name: info.name, type: info.type,
+                    lat: info.lat, lon: info.long, address: info.address, osm_id: info.osmid, osm_type: info.osmtype
+                });
                 place.showDetailFeature()
             }
         }
