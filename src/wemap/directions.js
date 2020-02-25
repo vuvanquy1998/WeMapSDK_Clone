@@ -255,7 +255,7 @@ export default class WeDirections {
         window.addEventListener('DOMContentLoaded', function(){
             const urlParams = wemapgl.urlController.getParams();
             if (urlParams.ox && urlParams.oy && urlParams.dx && urlParams.dy) {
-                self._activeDirections();
+                self.activeDirections();
                 const originCoords = [urlParams.ox, urlParams.oy];
                 const destinationCoords = [urlParams.dx, urlParams.dy];
                 direction._map.on('load', function () {
@@ -277,7 +277,7 @@ export default class WeDirections {
         window.addEventListener('DOMContentLoaded', function(){
             const directionSelector = document.getElementById('direction-icon');
             directionSelector.addEventListener('click', function(e) {
-                self._activeDirections();
+                self.activeDirections();
                 const urlParams = wemapgl.urlController.getParams();
                 if (urlParams.dx && urlParams.dy && urlParams.action) {
                     const coords = [urlParams.dx, urlParams.dy];
@@ -315,11 +315,13 @@ export default class WeDirections {
                 // Add Event
                 directionOpen.addEventListener('click', () => {
                     console.log('Active direction');
-                    directionSelector.classList.remove("hide");
-                    peliasSelector.classList.add("hide");
-                    // interactive
-                    direction.interactive(true);
-                    direction._map._interactive = true;
+                    // directionSelector.classList.remove("hide");
+                    // peliasSelector.classList.add("hide");
+                    // // interactive
+                    // direction.interactive(true);
+                    // direction._map._interactive = true;
+
+                    self.activeDirections();
                 });
             }
 
@@ -332,13 +334,14 @@ export default class WeDirections {
                     directionInputSelector.appendChild(directionClose);
                     directionClose.addEventListener('click', () => {
                         console.log('Deactive direction');
-                        peliasSelector.classList.remove("hide");
-                        directionSelector.classList.add("hide");
-                        // interactive
-                        direction.interactive(false);
-                        direction._map._interactive = false;
-                        direction.removeRoutes();
-                        direction.removeWaypoint();
+                        // peliasSelector.classList.remove("hide");
+                        // directionSelector.classList.add("hide");
+                        // // interactive
+                        // direction.interactive(false);
+                        // direction._map._interactive = false;
+                        // direction.removeRoutes();
+                        // direction.removeWaypoint();
+                        self.deactiveDirections();
                     });
                 }
             }
@@ -346,7 +349,10 @@ export default class WeDirections {
         });
     }
 
-    _activeDirections() {
+    /**
+     * Handle action when active Directions
+     */
+    activeDirections() {
         let self = this;
         let direction = self.weDirection;
         direction._map._interactive = true;
@@ -361,6 +367,28 @@ export default class WeDirections {
         // interactive
         direction.interactive(true);
         direction._map._interactive = true;
+    }
+
+    /**
+     * Handle action when deactive Directions
+     */
+    deactiveDirections() {
+        let self = this;
+        let direction = self.weDirection;
+        direction._map._interactive = true;
+
+        let peliasSelector =
+            document.querySelectorAll('div.pelias-ctrl.mapboxgl-ctrl')[0];
+        let directionSelector =
+            document.querySelectorAll('div.mapboxgl-ctrl-directions.mapboxgl-ctrl')[0];
+
+        peliasSelector.classList.remove("hide");
+        directionSelector.classList.add("hide");
+        // interactive
+        direction.interactive(false);
+        direction._map._interactive = false;
+        direction.removeRoutes();
+        direction.removeWaypoint();
     }
 
     /**
