@@ -31,9 +31,10 @@
 
     <script>
         wemapgl.accessToken = "pk.eyJ1IjoicGh1b25naHgiLCJhIjoiY2s2N3IxMnNiMWdlbTNlcW8ybG5jaXU4MCJ9.CkMLijVJ1Lp2ZbaR0zDgrg";
-        var map = new wemapgl.Map({
+        var map = new wemapgl.WeMap({
+            key: 'vpstPRxkBBTLaZkOaCfAHlqXtCR',
             container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v11',
+            style: 'bright',
             center: [105.781187, 21.036902],
             zoom: 7 
         });
@@ -43,16 +44,10 @@
         var wemapControl = new wemapgl.WeGeocoder({
             flyTo: 'hybrid',
             key: token,
-            wof: true,
-            useFocusPoint: true,
             engine: 'default',  //ko biết
             suggestion: {
                 min_chars: 4  // ko ghi = 4
             },
-            useFocusPoint: true,
-            marker: {
-                multiple: false
-            }
         });
         map.addControl(wemapControl)
     </script>

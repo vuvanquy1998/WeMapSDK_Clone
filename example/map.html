@@ -29,13 +29,16 @@
         key: 'vpstPRxkBBTLaZkOaCfAHlqXtCR',
         style: 'dark',
         center: [105.84370246986344, 21.003961186227826],
-        zoom: 13
+        zoom: 13,
+        urlController: "true",
+        reverse: "true"
     });
 
     token = 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7';
     var wemapControl = new wemapgl.WeGeocoder({
         flyTo: 'hybrid',
-        key: token,
+        // key: token,
+        key: 'vpstPRxkBBTLaZkOaCfAHlqXtCR',
         engine: 'default',  //ko biết
         suggestion: {
             min_char: 4  // ko ghi = 4
@@ -44,11 +47,9 @@
         }
     });
     map.addControl(wemapControl);
-    new wemapgl.RightClick(map, true, 'vpstPRxkBBTLaZkOaCfAHlqXtCR');
-    new wemapgl.Reverse(map, 'vpstPRxkBBTLaZkOaCfAHlqXtCR');
 
     let wd =  new wemapgl.WeDirections({
-        mode: 'walking',
+        mode: 'cycling',
         key: "vpstPRxkBBTLaZkOaCfAHlqXtCR",
         // key: "pk.eyJ1IjoicGh1b25naHgiLCJhIjoiY2s2N3IxMnNiMWdlbTNlcW8ybG5jaXU4MCJ9.CkMLijVJ1Lp2ZbaR0zDgrg",
         engine: 'osrm',
@@ -59,6 +60,16 @@
     });
 
     map.addControl(wd, 'top-left');
+
+    map.addControl(new wemapgl.NavigationControl(), 'bottom-right');
+
+    map.addControl(new wemapgl.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true
+            },
+            trackUserLocation: true
+        }),
+        'bottom-right');
 
 </script>
 </body>

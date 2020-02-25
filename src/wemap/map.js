@@ -59,7 +59,9 @@ export default class WeMap {
         switch(this.options.urlController) {
             case true: case "true":
                 let urlParams = wemapgl.urlController.getParams();
-                this.map.jumpTo({ center: [urlParams.x, urlParams.y], zoom: urlParams.z });
+                if(urlParams.x != null && urlParams.y != null && urlParams.z != null) {
+                    this.map.jumpTo({ center: [urlParams.x, urlParams.y], zoom: urlParams.z });
+                }
                 this.map.on("zoomend", () => {
                     wemapgl.urlController.updateParams("view", {
                         z: this.map.getZoom()

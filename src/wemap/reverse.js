@@ -115,14 +115,14 @@ export default class Reverse{
                     this.clickoutIcon(data.features[0])
                 }else{
                     let notPointLayer = 0
-    
+
                     features.forEach((feature,index) => {
                         if(this.pointLayers.includes(feature.layer.id)){
                             this.clickonIcon(data.features[0]);
                             notPointLayer += 1
                         }
                     });
-    
+
                     if(notPointLayer == 0){
                         this.clickoutIcon(data.features[0])
                     }
@@ -196,12 +196,12 @@ export default class Reverse{
      */
 
     showUiNoData(lat, lon){
-        this.displayUI('detail-feature', 'none')                
-        this.displayUI('place', 'block')   
-        
+        this.displayUI('detail-feature', 'none')
+        this.displayUI('place', 'block')
+
         document.getElementById('placename').innerHTML = "Không có thông tin"
         document.getElementById('placeadd').innerHTML = "Không có thông tin"
-        document.getElementById('placelatlon').innerHTML = Number(lon).toFixed(7)+' ,'+ Number(lat).toFixed(7)    
+        document.getElementById('placelatlon').innerHTML = Number(lon).toFixed(7)+' ,'+ Number(lat).toFixed(7)
     }
     /**
      * 

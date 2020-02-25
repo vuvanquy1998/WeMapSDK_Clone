@@ -30,10 +30,22 @@
     "zoom": 10
   },
   "url": {
-    "view": ["x", "y", "z"],
-    "route": ["ox", "oy", "dx", "dy", "vehicle", "action"],
-    "place": ["osmid", "osmtype"],
-    "reverse": ["rx", "ry"]
+    "view": {
+      "params": ["x", "y", "z"],
+      "history": false
+    },
+    "route": {
+      "params": ["ox", "oy", "dx", "dy", "vehicle", "action"],
+      "history": true
+    },
+    "place": {
+      "params": ["osmid", "osmtype", "name", "lat", "long", "address", "type" ],
+      "history":  true
+    },
+    "reverse": {
+      "params": ["rx", "ry"],
+      "history":  false
+    }
   },
   "language": {
     "vi": "vi-VN",
