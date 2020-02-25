@@ -9,21 +9,6 @@ export default class PlaceDetail{
     // self=this
   }
   /**
-   * format address
-  */
-  static getAddess(address) {
-    address_result = "";
-    var separator = "";
-    for (i = 0; i < address.length; i++) {
-      address[i] = address[i] ? address[i] : "";
-      if (address[i]) {
-        address_result = address_result + separator + address[i];
-        separator = ", ";
-      }
-    }
-    return address_result;
-  }
-  /**
    * show detail Feature
   */
   showDetailFeature(){
@@ -42,7 +27,7 @@ export default class PlaceDetail{
         featureName.innerHTML = name;
     }
     let address = this.options.address
-    var address_result = WeGeocoder.getAddess(address)
+    var address_result = WeGeocoder.getAddress(address)
     let featureCoordinates = document.getElementById("feature-coordinates");
     featureCoordinates.innerHTML =
         '<i class="fa fa-compass"></i>  ' + lat + ", " + long;
