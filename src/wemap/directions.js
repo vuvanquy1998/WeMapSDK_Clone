@@ -1,12 +1,9 @@
-// import * as json from '../../config.json';
-// const {config} = json;
 import {default as config} from '../config.json';
-// const config = require('../config.json');
 import MapboxDirections from '../mapbox-gl-directions/dist/mapbox-gl-directions';
 
 /**
  * WeDirections show direction
- *
+ * Class WeDirections
  */
 export default class WeDirections {
 
@@ -29,20 +26,34 @@ export default class WeDirections {
         this.options.api = this._apiEngine(this.options.engine);
 
         this.weDirection = this.render(this.options);
-
-        this._onRendered(this.options.mode);
-        this._onReverseInput(this.weDirection);
-        this._inputChange();
-
-        this._addDirectionIcon();
-
         this.weDirection.onClick = this._clickHandler();
-        this._urlPreChecking();
-        this._urlCheckChange();
+        this._onRendered();
         // this.weDirection.interactive = this.interactive();
         // this.aRightClick();
         return this.weDirection;
+    }
 
+    /**
+     * render function
+     * Render UI Direction
+     * @returns {Object} origin
+     */
+    render(options) {
+        return  new MapboxDirections(options);
+    }
+
+    /**
+     * OnRendered
+     * @private
+     */
+    _onRendered() {
+        this._addClass2Container();
+        this._addDirectionIcon();
+        this._activeDefaultDriveMode();
+        this._onReverseInput();
+        this._inputChange();
+        this._urlPreChecking();
+        this._urlCheckChange();
     }
 
     // aRightClick() {
@@ -86,7 +97,6 @@ export default class WeDirections {
             }
             return this;
         });
-
     }
 
     _clickHandler() {
@@ -106,7 +116,7 @@ export default class WeDirections {
                     if (!origin.geometry) {
                         self.actions.setOriginFromCoordinates(coords);
                         // Update route Origin
-                        wemapgl.urlController.updateParams("route",{ox: coords[0], oy: coords[1],});
+                        wemapgl.urlController.updateParams("route",{ox: coords[0], oy: coords[1]});
                     } else {
                         const features = mapclick.queryRenderedFeatures(e.point, {
                             layers: [
@@ -141,33 +151,32 @@ export default class WeDirections {
     }
 
     /**
-     * render function
-     * Render UI Direction
-     * @returns {Object} origin
-     */
-    render(options) {
-        return  new MapboxDirections(options);
-    }
-
-    /**
-     * Check active default drive mode
-     * @param mode
+     * Add class wemap-direction to container when page loaded
      * @private
      */
-    _onRendered(mode) {
+    _addClass2Container() {
         let direction = this.weDirection;
         window.addEventListener('DOMContentLoaded', function(){
-            const traffic = document.getElementById('mapbox-directions-profile-driving-traffic');
-            const driving = document.getElementById('mapbox-directions-profile-driving');
-            const walking = document.getElementById('mapbox-directions-profile-walking');
-            const cycling = document.getElementById('mapbox-directions-profile-cycling');
-
-            // Add class wemap-direction to container
             let container = direction._map._container.id;
             if (container) {
                 let containerSelector = document.getElementById(container);
                 containerSelector.classList.add("wemap-direction");
             }
+        });
+    }
+
+    /**
+     * Set Default active drive mode when page loaded
+     * @param mode
+     * @private
+     */
+    _activeDefaultDriveMode() {
+        let mode = this.options.mode;
+        window.addEventListener('DOMContentLoaded', function(){
+            const traffic = document.getElementById('mapbox-directions-profile-driving-traffic');
+            const driving = document.getElementById('mapbox-directions-profile-driving');
+            const walking = document.getElementById('mapbox-directions-profile-walking');
+            const cycling = document.getElementById('mapbox-directions-profile-cycling');
 
             // Active traffic mode
             if (mode === 'traffic') {
@@ -182,6 +191,11 @@ export default class WeDirections {
         });
     }
 
+
+    /**
+     * Check input origin, destination changed and update URL
+     * @private
+     */
     _inputChange() {
         let direction = this.weDirection;
         window.addEventListener('DOMContentLoaded', function(){
@@ -210,72 +224,35 @@ export default class WeDirections {
     }
 
     /**
-     * Check URL after page Rendered
+     * Check URL after page Rendered and render direction
      * @private
      */
     _urlPreChecking() {
         let self = this;
         let direction = self.weDirection;
-        // let mapRender = self._map;
+
         window.addEventListener('DOMContentLoaded', function(){
             const urlParams = wemapgl.urlController.getParams();
             if (urlParams.ox && urlParams.oy && urlParams.dx && urlParams.dy) {
                 self._activeDirections();
-                // console.log('urlParams: ', urlParams);
                 const originCoords = [urlParams.ox, urlParams.oy];
                 const destinationCoords = [urlParams.dx, urlParams.dy];
-                direction.actions.setOriginFromCoordinates(originCoords);
-                direction.actions.setDestinationFromCoordinates(destinationCoords);
+                direction._map.on('load', function () {
+                    direction.actions.setOriginFromCoordinates(originCoords);
+                    direction.actions.setDestinationFromCoordinates(destinationCoords);
+                });
             }
         });
     }
 
     /**
-     *
+     * Check click action to direction icon and set destination coordinate
      * @private
      */
     _urlCheckChange() {
         let self = this;
         let direction = self.weDirection;
 
-        // const _wr = function(type) {
-        //     let orig = history[type];
-        //     console.log('orig: ', orig);
-        //     return function() {
-        //         let rv = orig.apply(this, arguments);
-        //         let e = new Event(type);
-        //         e.arguments = arguments;
-        //         window.dispatchEvent(e);
-        //         return rv;
-        //     };
-        // };
-        // //
-        // history.pushState = _wr('pushState'), history.replaceState = _wr('replaceState');
-        //
-        // window.addEventListener('pushState', function(e) {
-        //     console.log('pushState!', e);
-        //     const urlParams = wemapgl.urlController.getParams();
-        //
-        //     if (urlParams.dx && urlParams.dy && urlParams.action) {
-        //         // self._activeDirections();
-        //         const coords = [urlParams.dx, urlParams.dy];
-        //         // direction.actions.setDestinationFromCoordinates(coords);
-        //         // wemapgl.reverse.offReverse();
-        //         // console.log('urlParams: ', urlParams.action);
-        //         // wemapgl.urlController.updateRouteParams({
-        //         //     dx: urlParams.dx,
-        //         //     dy: urlParams.dy,
-        //         //     action: false
-        //         // });
-        //         // window.history.pushState("", "", url);
-        //         let url = new URL(window.location);
-        //         let search_params = new URLSearchParams(url.search);
-        //         search_params.set('action', 'false');
-        //         // url.href.replace('action=true', 'action=false');
-        //         url.search = search_params.toString();
-        //         window.history.pushState("", "", url);
-        //     }
-        // });
         window.addEventListener('DOMContentLoaded', function(){
             const directionSelector = document.getElementById('direction-icon');
             directionSelector.addEventListener('click', function(e) {
@@ -367,7 +344,8 @@ export default class WeDirections {
      * @param direction
      * @private
      */
-    _onReverseInput(direction) {
+    _onReverseInput() {
+        let direction = self.weDirection;
         window.addEventListener('DOMContentLoaded', function(){
             let reverseButton = document.querySelectorAll('button.directions-reverse')[0];
             reverseButton.addEventListener('click', () => {
