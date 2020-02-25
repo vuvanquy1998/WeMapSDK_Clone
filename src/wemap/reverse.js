@@ -16,6 +16,7 @@ export default class Reverse{
         this.on = true;
         this.pointLayers = [];
         this.receivedData = {};
+        this.marker;
   
         this.getStyle();
         this.leftClick();
@@ -127,6 +128,7 @@ export default class Reverse{
                     }
                 }
             }
+            this.addMarker(e.lngLat.lng, e.lngLat.lat)
         })
         .catch(err => console.log(err))
     }
@@ -200,6 +202,20 @@ export default class Reverse{
         document.getElementById('placename').innerHTML = "Không có thông tin"
         document.getElementById('placeadd').innerHTML = "Không có thông tin"
         document.getElementById('placelatlon').innerHTML = Number(lon).toFixed(7)+' ,'+ Number(lat).toFixed(7)    
+    }
+    /**
+     * 
+     * @param {Number} lon 
+     * @param {Number} lat 
+     */
+    addMarker(lon, lat){
+        if(this.marker){
+            this.marker.remove();
+        }
+        let iconMarkerEl = document.createElement("div");
+        iconMarkerEl.innerHTML = "<div class='marker-arrow'></div>"
+                    + "<div class='marker-pulse'></div>";
+        this.marker = new mapboxgl.Marker(iconMarkerEl).setLngLat([lon, lat]).addTo(this.map);            
     }
     /**
      * show feature detail when click reverse bottom card

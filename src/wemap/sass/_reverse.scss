@@ -117,3 +117,20 @@
 .click-detail a:hover, .click-detail a:focus {
     color: blue;
 }
+.marker-arrow {
+    width: 30px;
+    height: 30px;
+    border-radius: 50% 50% 50% 0;
+    background-color: #2999fd;
+    transform: rotate(-45deg);
+    margin: -36px 0 0 0;
+}
+.marker-arrow::after {
+    content: '';
+    width: 14px;
+    height: 14px;
+    margin: 8px 0 0 8px;
+    background-color: #fff;
+    position: absolute;
+    border-radius: 50%;
+}
