@@ -48,6 +48,7 @@ export default class WeDirections {
      */
     _onRendered() {
         this._addClass2Container();
+        this._checkActiveGeocode();
         this._addDirectionIcon();
         this._activeDefaultDriveMode();
         this._onReverseInput();
@@ -99,6 +100,10 @@ export default class WeDirections {
         });
     }
 
+    /**
+     * Overwrite Handler click of MapboxGL Directions
+     * @private
+     */
     _clickHandler() {
         let self = this.weDirection;
         let interactive = this.options.interactive;
@@ -161,6 +166,22 @@ export default class WeDirections {
             if (container) {
                 let containerSelector = document.getElementById(container);
                 containerSelector.classList.add("wemap-direction");
+            }
+        });
+    }
+
+    /**
+     * Check Geocode Active, if Geocode not activated always show Directions
+     * @private
+     */
+    _checkActiveGeocode() {
+        window.addEventListener('DOMContentLoaded', function() {
+            let peliasSelector =
+                document.querySelectorAll('div.pelias-ctrl.mapboxgl-ctrl')[0];
+            if (!peliasSelector) {
+                let directionSelector =
+                    document.querySelectorAll('.mapboxgl-control-container .mapboxgl-ctrl-directions.mapboxgl-ctrl')[0];
+                directionSelector.classList.remove("hide");
             }
         });
     }
@@ -302,23 +323,26 @@ export default class WeDirections {
                 });
             }
 
-            if (directionInputSelector) {
-                const directionClose = document.createElement('span');
-                directionClose.setAttribute("id", "direction-icon-close");
-                directionClose.className =
-                    'direction-icon-search';
-                directionInputSelector.appendChild(directionClose);
-                directionClose.addEventListener('click', () => {
-                    console.log('Deactive direction');
-                    peliasSelector.classList.remove("hide");
-                    directionSelector.classList.add("hide");
-                    // interactive
-                    direction.interactive(false);
-                    direction._map._interactive = false;
-                    direction.removeRoutes();
-                    direction.removeWaypoint();
-                });
+            if (peliasSelector) {
+                if (directionInputSelector) {
+                    const directionClose = document.createElement('span');
+                    directionClose.setAttribute("id", "direction-icon-close");
+                    directionClose.className =
+                        'direction-icon-search';
+                    directionInputSelector.appendChild(directionClose);
+                    directionClose.addEventListener('click', () => {
+                        console.log('Deactive direction');
+                        peliasSelector.classList.remove("hide");
+                        directionSelector.classList.add("hide");
+                        // interactive
+                        direction.interactive(false);
+                        direction._map._interactive = false;
+                        direction.removeRoutes();
+                        direction.removeWaypoint();
+                    });
+                }
             }
+
         });
     }
 
