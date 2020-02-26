@@ -203,6 +203,7 @@ export default class WeDirections {
 
         startHere.addEventListener('click', function() {
             self.activeDirections();
+            wemapgl.rightClick.closeMenuUI();
             const urlParams = wemapgl.urlController.getParams();
             if (urlParams.ox && urlParams.oy) {
                 const coords = [urlParams.ox, urlParams.oy];
@@ -211,6 +212,7 @@ export default class WeDirections {
         });
         endHere.addEventListener('click', function() {
             self.activeDirections();
+            wemapgl.rightClick.closeMenuUI();
             const urlParams = wemapgl.urlController.getParams();
             if (urlParams.dx && urlParams.dy) {
                 const coords = [urlParams.dx, urlParams.dy];
