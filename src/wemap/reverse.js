@@ -108,6 +108,8 @@ export default class Reverse{
     onClick(e){
         let features = this.map.queryRenderedFeatures(e.point);
         this.getReverseData(e).then(data => {
+            console.log(data)
+            console.log(e.lngLat)
             if(data.features.length == 0){
                 this.showUiNoData(e.lngLat.lat, e.lngLat.lng)
             }else{
@@ -128,7 +130,7 @@ export default class Reverse{
                     }
                 }
             }
-            this.addMarker(e.lngLat.lng, e.lngLat.lat)
+            // this.addMarker(e.lngLat.lng, e.lngLat.lat)
         })
         .catch(err => console.log(err))
     }
@@ -208,15 +210,15 @@ export default class Reverse{
      * @param {Number} lon 
      * @param {Number} lat 
      */
-    addMarker(lon, lat){
-        if(this.marker){
-            this.marker.remove();
-        }
-        let iconMarkerEl = document.createElement("div");
-        iconMarkerEl.innerHTML = "<div class='marker-arrow'></div>"
-                    + "<div class='marker-pulse'></div>";
-        this.marker = new mapboxgl.Marker(iconMarkerEl).setLngLat([lon, lat]).addTo(this.map);            
-    }
+    // addMarker(lon, lat){
+    //     if(this.marker){
+    //         this.marker.remove();
+    //     }
+    //     let iconMarkerEl = document.createElement("div");
+    //     iconMarkerEl.innerHTML = "<div class='marker-arrow'></div>"
+    //                 + "<div class='marker-pulse'></div>";
+    //     this.marker = new mapboxgl.Marker(iconMarkerEl).setLngLat([lon, lat]).addTo(this.map);            
+    // }
     /**
      * show feature detail when click reverse bottom card
      */
@@ -259,6 +261,23 @@ export default class Reverse{
     displayUI(id, text){
         document.getElementById(id).style.display = text;
     }
-    
+    /**
+     * calculate distance between 2 points
+     */
+    // getDistance(p1, p2){
+    //     var R = 6378137; // Earth’s mean radius in meter
+    //     var dLat = rad(p2.lat - p1.lat);
+    //     var dLong = rad(p2.lng() - p1.lng());
+    //     var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    //         Math.cos(rad(p1.lat())) * Math.cos(rad(p2.lat())) *
+    //         Math.sin(dLong / 2) * Math.sin(dLong / 2);
+    //     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    //     var d = R * c;
+    //     return d; // returns the distance in meter
+
+    //     function rad(x){
+    //         return x * Math.PI /180;
+    //     }
+    // }
 
 }
