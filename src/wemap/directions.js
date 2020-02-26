@@ -253,11 +253,18 @@ export default class WeDirections {
      * @private
      */
     _activeDefaultDriveMode() {
-        const mode = this.options.mode;
+        let mode = this.options.mode;
+        const urlParams = wemapgl.urlController.getParams();
+        if (urlParams.vehicle) {
+            this.options.profile = urlParams.vehicle;
+            mode = urlParams.vehicle;
+        }
+
         const traffic = document.getElementById('mapbox-directions-profile-driving-traffic');
         const driving = document.getElementById('mapbox-directions-profile-driving');
         const walking = document.getElementById('mapbox-directions-profile-walking');
         const cycling = document.getElementById('mapbox-directions-profile-cycling');
+
         // Active traffic mode
         if (mode === 'traffic') {
             traffic.checked = true;
@@ -276,11 +283,26 @@ export default class WeDirections {
      */
     set _optionProfile(profile) {
         const engine = this.options.engine;
-        if (engine === 'mapbox') {
+        const urlParams = wemapgl.urlController.getParams();
+        if (urlParams.vehicle) {
+            this.options.profile = urlParams.vehicle;
+        } else if (engine === 'mapbox') {
             this.options.profile = 'mapbox' + '/' + profile;
         } else {
             this.options.profile = profile;
         }
+    }
+
+    _activeProfile() {
+        let checked = '';
+        let inputs = document.querySelectorAll('.mapbox-directions-inputs .mapbox-directions-profile input');
+        inputs.forEach(element => {
+            if (element.checked === true) {
+                checked = element.value;
+                checked = checked.replace("mapbox/", "");
+            }
+        });
+        return checked;
     }
 
     /**
@@ -288,13 +310,16 @@ export default class WeDirections {
      * @private
      */
     _inputChange() {
-        const direction = this.weDirection;
+        const self = this;
+        const direction = self.weDirection;
         const directionSelector = document.getElementById('mapbox-directions-form-area');
+
+        const directionSelectorAll = document.querySelectorAll('.mapboxgl-ctrl-directions.mapboxgl-ctrl .mapbox-directions-component.mapbox-directions-inputs')[0];
 
         let originValue = {};
         let destinationValue = {};
 
-        directionSelector.addEventListener('change', function() {
+        directionSelectorAll.addEventListener('change', function() {
             let o = document.querySelectorAll('#mapbox-directions-origin-input input')[0];
             let d = document.querySelectorAll('#mapbox-directions-destination-input input')[0];
             if (o.value && d.value) {
@@ -306,12 +331,15 @@ export default class WeDirections {
             originValue =  direction.getOrigin();
             destinationValue =  direction.getDestination();
 
+            let vehicle = self._activeProfile();
+
             wemapgl.urlController.updateParams("route",
                 {
                     ox: originValue.geometry ? originValue.geometry.coordinates[0] : 0,
                     oy: originValue.geometry ? originValue.geometry.coordinates[1] : 0,
                     dx: destinationValue.geometry ? destinationValue.geometry.coordinates[0] : 0,
-                    dy: destinationValue.geometry ? destinationValue.geometry.coordinates[1] : 0
+                    dy: destinationValue.geometry ? destinationValue.geometry.coordinates[1] : 0,
+                    vehicle: vehicle
                 });
         });
     }
