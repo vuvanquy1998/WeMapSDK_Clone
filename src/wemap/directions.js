@@ -478,6 +478,7 @@ export default class WeDirections {
         direction._map._interactive = false;
         direction.removeRoutes();
         direction.removeWaypoint();
+        direction.actions.hoverMarker();
         wemapgl.urlController.deleteParams("route");
     }
 
