@@ -23,7 +23,7 @@ export default class WeDirections {
 
         this._updateOptions();
 
-        this._activeDefaultDriveMode();
+        // this._activeDefaultDriveMode();
 
         this.weDirection = this.render(this.options);
         this.weDirection.onClick = this._clickHandler();
@@ -41,6 +41,8 @@ export default class WeDirections {
         this._geocodeEngine = this.options.geocoder.engine;
 
         this._geocodeApi = this.options.geocoder.engine;
+
+        this._optionProfile = this.options.mode;
     }
 
     /**
@@ -65,7 +67,6 @@ export default class WeDirections {
                 api = config.direction.engine.osrm;
                 break;
         }
-        // return api;
         this.options.api = api;
     }
 
@@ -88,7 +89,6 @@ export default class WeDirections {
                 geoEngine = 'pelias';
                 break;
         }
-        // return geoEngine;
         this.options.geocoder.engine = geoEngine;
     }
 
@@ -111,7 +111,6 @@ export default class WeDirections {
                 geoApi = config.direction.geocoder.pelias;
                 break;
         }
-        // return geoApi;
         this.options.geocoder.api = geoApi;
     }
 
@@ -135,19 +134,12 @@ export default class WeDirections {
             self._checkActiveGeocode();
             self._addDirectionIcon();
             self._rightClickHandler();
+            self._activeDefaultDriveMode();
             self._onReverseInput();
             self._inputChange();
             self._urlPreChecking();
             self._urlCheckChange();
         });
-        // this._addClass2Container();
-        // this._checkActiveGeocode();
-        // this._addDirectionIcon();
-        // this._rightClickHandler();
-        // this._onReverseInput();
-        // this._inputChange();
-        // this._urlPreChecking();
-        // this._urlCheckChange();
     }
 
     /**
@@ -215,28 +207,6 @@ export default class WeDirections {
     _rightClickHandler() {
         let self = this;
         let direction = self.weDirection;
-        // window.addEventListener('DOMContentLoaded', function(){
-        //     const startHere = document.getElementById('right-click-start');
-        //     const endHere = document.getElementById('right-click-end');
-        //
-        //     startHere.addEventListener('click', function(e) {
-        //         self.activeDirections();
-        //         const urlParams = wemapgl.urlController.getParams();
-        //         if (urlParams.ox && urlParams.oy) {
-        //             const coords = [urlParams.ox, urlParams.oy];
-        //             direction.actions.setOriginFromCoordinates(coords);
-        //         }
-        //     });
-        //     endHere.addEventListener('click', function(e) {
-        //         self.activeDirections();
-        //         const urlParams = wemapgl.urlController.getParams();
-        //         if (urlParams.dx && urlParams.dy) {
-        //             const coords = [urlParams.dx, urlParams.dy];
-        //             direction.actions.setDestinationFromCoordinates(coords);
-        //         }
-        //     });
-        // });
-
         const startHere = document.getElementById('right-click-start');
         const endHere = document.getElementById('right-click-end');
 
@@ -263,16 +233,8 @@ export default class WeDirections {
      * @private
      */
     _addClass2Container() {
-        let direction = this.weDirection;
-        // window.addEventListener('DOMContentLoaded', function(){
-        //     let container = direction._map._container.id;
-        //     if (container) {
-        //         let containerSelector = document.getElementById(container);
-        //         containerSelector.classList.add("wemap-direction");
-        //     }
-        // });
-
-        let container = direction._map._container.id;
+        const direction = this.weDirection;
+        const container = direction._map._container.id;
         if (container) {
             let containerSelector = document.getElementById(container);
             containerSelector.classList.add("wemap-direction");
@@ -284,16 +246,6 @@ export default class WeDirections {
      * @private
      */
     _checkActiveGeocode() {
-        // window.addEventListener('DOMContentLoaded', function() {
-        //     let peliasSelector =
-        //         document.querySelectorAll('div.pelias-ctrl.mapboxgl-ctrl')[0];
-        //     if (!peliasSelector) {
-        //         let directionSelector =
-        //             document.querySelectorAll('.mapboxgl-control-container .mapboxgl-ctrl-directions.mapboxgl-ctrl')[0];
-        //         directionSelector.classList.remove("hide");
-        //     }
-        // });
-
         let peliasSelector =
             document.querySelectorAll('div.pelias-ctrl.mapboxgl-ctrl')[0];
         if (!peliasSelector) {
@@ -308,32 +260,47 @@ export default class WeDirections {
      * @private
      */
     _activeDefaultDriveMode() {
-        let self = this;
+        // let self = this;
         let mode = this.options.mode;
-        self.optionProfile = mode;
-        window.addEventListener('DOMContentLoaded', function(){
-            const traffic = document.getElementById('mapbox-directions-profile-driving-traffic');
-            const driving = document.getElementById('mapbox-directions-profile-driving');
-            const walking = document.getElementById('mapbox-directions-profile-walking');
-            const cycling = document.getElementById('mapbox-directions-profile-cycling');
-            // Active traffic mode
-            if (mode === 'traffic') {
-                traffic.checked = true;
-            } else if (mode === 'driving') {
-                driving.checked = true;
-            } else if (mode === 'walking') {
-                walking.checked = true;
-            } else if (mode === 'cycling') {
-                cycling.checked = true;
-            }
-        });
+        // self.optionProfile = mode;
+        // window.addEventListener('DOMContentLoaded', function(){
+        //     const traffic = document.getElementById('mapbox-directions-profile-driving-traffic');
+        //     const driving = document.getElementById('mapbox-directions-profile-driving');
+        //     const walking = document.getElementById('mapbox-directions-profile-walking');
+        //     const cycling = document.getElementById('mapbox-directions-profile-cycling');
+        //     // Active traffic mode
+        //     if (mode === 'traffic') {
+        //         traffic.checked = true;
+        //     } else if (mode === 'driving') {
+        //         driving.checked = true;
+        //     } else if (mode === 'walking') {
+        //         walking.checked = true;
+        //     } else if (mode === 'cycling') {
+        //         cycling.checked = true;
+        //     }
+        // });
+
+        const traffic = document.getElementById('mapbox-directions-profile-driving-traffic');
+        const driving = document.getElementById('mapbox-directions-profile-driving');
+        const walking = document.getElementById('mapbox-directions-profile-walking');
+        const cycling = document.getElementById('mapbox-directions-profile-cycling');
+        // Active traffic mode
+        if (mode === 'traffic') {
+            traffic.checked = true;
+        } else if (mode === 'driving') {
+            driving.checked = true;
+        } else if (mode === 'walking') {
+            walking.checked = true;
+        } else if (mode === 'cycling') {
+            cycling.checked = true;
+        }
     }
 
     /**
      * Update option profile
      * @param profile
      */
-    set optionProfile(profile) {
+    set _optionProfile(profile) {
         let engine = this.options.engine;
         if (engine === 'mapbox') {
             this.options.profile = 'mapbox' + '/' + profile;
@@ -503,39 +470,6 @@ export default class WeDirections {
      */
     _addDirectionIcon() {
         let self = this;
-        // window.addEventListener('DOMContentLoaded', function(){
-        //     let peliasSelector =
-        //         document.querySelectorAll('div.pelias-ctrl.mapboxgl-ctrl')[0];
-        //     let peliasInputSelector =
-        //         document.querySelectorAll('div.pelias-ctrl-input-actions-wrapper.pelias-ctrl-shadow')[0];
-        //     let directionInputSelector = document.getElementById('mapbox-directions-form-area');
-        //
-        //     if (peliasInputSelector) {
-        //         const directionOpen = document.createElement('span');
-        //         directionOpen.setAttribute("id", "direction-icon-open");
-        //         directionOpen.className =
-        //             'pelias-ctrl-action-icon pelias-ctrl-action-icon-directions pelias-ctrl-disabled';
-        //         peliasInputSelector.appendChild(directionOpen);
-        //         directionOpen.addEventListener('click', () => {
-        //             console.log('Active direction');
-        //             self.activeDirections();
-        //         });
-        //     }
-        //
-        //     if (peliasSelector) {
-        //         if (directionInputSelector) {
-        //             const directionClose = document.createElement('span');
-        //             directionClose.setAttribute("id", "direction-icon-close");
-        //             directionClose.className =
-        //                 'direction-icon-search';
-        //             directionInputSelector.appendChild(directionClose);
-        //             directionClose.addEventListener('click', () => {
-        //                 console.log('Deactive direction');
-        //                 self.deactiveDirections();
-        //             });
-        //         }
-        //     }
-        // });
 
         let peliasSelector =
             document.querySelectorAll('div.pelias-ctrl.mapboxgl-ctrl')[0];
