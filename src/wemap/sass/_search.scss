@@ -256,7 +256,7 @@ button {
   z-index: 9999;
   background: white;
   position: absolute;
-  top: 0;
+  top: -5px;
   bottom: 0;
   border-radius: 3px;
   width: 400px;
@@ -442,11 +442,18 @@ i {
 // result search
 /* css result-search */
 
-#results-list p.no-result{
+#no-result{
+  display: none;
+  &.no-result{
     color: black;
+    padding: 3px 0 3px 0;
+  }
 }
 #icon-cross-noresult {
     float: right;
+}
+#icon-cross-noresult:hover{
+  cursor: pointer;
 }
 
 #wemap-results-search {

@@ -191,6 +191,7 @@ export default class WeGeocoder {
             WeGeocoder.hideDetailFeatureFrame()
         })
         inputEl.addEventListener("keyup", function (e) {
+            WeGeocoder.hideNoResult()
             // Enter -> go to feature location.
             if (self._eventMatchKey(e, self._keys.enter) && self._selectedFeature) {
                 inputEl.blur();
@@ -249,9 +250,8 @@ export default class WeGeocoder {
                     self._addOrRemoveClassToElement(self._iconSearchEl, false, "pelias-ctrl-disabled");
                 }
                 }, 'search');
-                
                 self._resultsListEl.hideAll();
-                WeGeocoder.showResultSearch()
+                
             }
         
             if (!self._eventMatchKey(e, self._keys.enter)&&!self._eventMatchKey(e, self._keys.arrowUp)) {
@@ -261,7 +261,8 @@ export default class WeGeocoder {
                         return self._showError(err);
                     }
                     if (result) {
-                        // self._resultsListEl.showAll();
+                        self._resultsListEl.showAll();
+                        WeGeocoder.showAll
                         return self._showResults(result)
                     }
                     }, 'autocomplete');
@@ -411,6 +412,7 @@ export default class WeGeocoder {
                 let address = [info.street, info.county, info.region, info.country]
                 wegeocoder.place.setAttribute({name, type, lat, lon,address ,osm_id, osm_type})
                 wegeocoder.place.showDetailFeature()
+                this._updateMarkers(feature);
             }
             // default goToFeature
             var cameraOpts = {
@@ -423,7 +425,7 @@ export default class WeGeocoder {
                 this._map.jumpTo(cameraOpts);
             }
             
-            this._updateMarkers(feature);
+            
             if (feature.properties.source === 'whosonfirst' && ['macroregion', 'region', 'macrocounty', 'county', 'locality', 'localadmin', 'borough', 'macrohood', 'neighbourhood', 'postalcode'].indexOf(feature.properties.layer) >= 0) {
                 this._showPolygon(feature.properties, cameraOpts.zoom);
             } else {
@@ -437,15 +439,20 @@ export default class WeGeocoder {
         let self = this
         let results = document.getElementById('results-list');
         if(result.features == false){
-            results.innerHTML = '<p class="js-poicard poicard no-result">Không có kết quả tìm kiếm'+
+            let no_result = document.getElementById('no-result')
+            no_result.classList.add('no-result')
+            no_result.innerHTML = 'Không có kết quả tìm kiếm'+
             '<span class="fa fa-times" id= "icon-cross-noresult"></span>'
-            '<p>'
+            WeGeocoder.showNoResult()
+            self._clearAll()
+            WeGeocoder.hideResultSearch()
             document.getElementById('icon-cross-noresult').addEventListener('click', function(e){
                 WeGeocoder.hideNoResult()
             })
             return 
         }   
-
+        WeGeocoder.hideNoResult()
+        WeGeocoder.showResultSearch()
 
         let features = result.features;
         let resultFeatures = '';
@@ -489,13 +496,13 @@ export default class WeGeocoder {
         let resultList = results.querySelectorAll("li");
         resultList.forEach(function (result, index) {
             result.onmouseover = function (e) {
-            self._selectFeature(features[index]);
-            self._goToFeatureLocation(features[index]);
+                // self._selectFeature(features[index]);
+                self._goToFeatureLocation(features[index]);
             }
             result.onclick = function (e) {
-            self._selectFeature(features[index]);
-            self._goToFeatureLocation(features[index], true);
-            WeGeocoder.hideResultSearch();
+                self._selectFeature(features[index]);
+                self._goToFeatureLocation(features[index], true);
+                WeGeocoder.hideResultSearch();
             };
         
             let rating = result.querySelectorAll('.full');
@@ -558,7 +565,8 @@ export default class WeGeocoder {
             '<section class="results with_ads">'+
             '    <ul id="results-list"></ul>'+
             '</section>'+
-        '</div>'
+        '</div>'+
+        '<ul id="no-result"></ul>'
         let view_detail = document.createElement('div')
         view_detail.setAttribute("id", "detail-feature");
         view_detail.setAttribute("class", "scrollbar");
@@ -603,7 +611,7 @@ export default class WeGeocoder {
         document.body.appendChild(view_detail)
     }
     static hideNoResult(){
-        document.getElementById('results-list').style.display = 'none'
+        document.getElementById('no-result').style.display = 'none'
     }
     static hideDetailFeatureFrame() {
         let detail_feature = document.getElementById("detail-feature");
@@ -618,6 +626,9 @@ export default class WeGeocoder {
     }
     static showResultSearch() {
         document.getElementById("results-search").style.display = "inline-block";
+    }
+    static showNoResult(){
+        document.getElementById("no-result").style.display = "inline-block";
     }
     static hideResultAutocompele() {
         let resultAutocompele = document.getElementsByClassName(
