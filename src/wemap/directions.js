@@ -134,15 +134,20 @@ export default class WeDirections {
             self._addClass2Container();
             self._checkActiveGeocode();
             self._addDirectionIcon();
+            self._rightClickHandler();
+            self._onReverseInput();
+            self._inputChange();
+            self._urlPreChecking();
+            self._urlCheckChange();
         });
         // this._addClass2Container();
         // this._checkActiveGeocode();
         // this._addDirectionIcon();
-        this._rightClickHandler();
-        this._onReverseInput();
-        this._inputChange();
-        this._urlPreChecking();
-        this._urlCheckChange();
+        // this._rightClickHandler();
+        // this._onReverseInput();
+        // this._inputChange();
+        // this._urlPreChecking();
+        // this._urlCheckChange();
     }
 
     /**
@@ -210,26 +215,46 @@ export default class WeDirections {
     _rightClickHandler() {
         let self = this;
         let direction = self.weDirection;
-        window.addEventListener('DOMContentLoaded', function(){
-            const startHere = document.getElementById('right-click-start');
-            const endHere = document.getElementById('right-click-end');
+        // window.addEventListener('DOMContentLoaded', function(){
+        //     const startHere = document.getElementById('right-click-start');
+        //     const endHere = document.getElementById('right-click-end');
+        //
+        //     startHere.addEventListener('click', function(e) {
+        //         self.activeDirections();
+        //         const urlParams = wemapgl.urlController.getParams();
+        //         if (urlParams.ox && urlParams.oy) {
+        //             const coords = [urlParams.ox, urlParams.oy];
+        //             direction.actions.setOriginFromCoordinates(coords);
+        //         }
+        //     });
+        //     endHere.addEventListener('click', function(e) {
+        //         self.activeDirections();
+        //         const urlParams = wemapgl.urlController.getParams();
+        //         if (urlParams.dx && urlParams.dy) {
+        //             const coords = [urlParams.dx, urlParams.dy];
+        //             direction.actions.setDestinationFromCoordinates(coords);
+        //         }
+        //     });
+        // });
 
-            startHere.addEventListener('click', function(e) {
-                self.activeDirections();
-                const urlParams = wemapgl.urlController.getParams();
-                if (urlParams.ox && urlParams.oy) {
-                    const coords = [urlParams.ox, urlParams.oy];
-                    direction.actions.setOriginFromCoordinates(coords);
-                }
-            });
-            endHere.addEventListener('click', function(e) {
-                self.activeDirections();
-                const urlParams = wemapgl.urlController.getParams();
-                if (urlParams.dx && urlParams.dy) {
-                    const coords = [urlParams.dx, urlParams.dy];
-                    direction.actions.setDestinationFromCoordinates(coords);
-                }
-            });
+        const startHere = document.getElementById('right-click-start');
+        const endHere = document.getElementById('right-click-end');
+
+        startHere.addEventListener('click', function(e) {
+            self.activeDirections();
+            const urlParams = wemapgl.urlController.getParams();
+            if (urlParams.ox && urlParams.oy) {
+                const coords = [urlParams.ox, urlParams.oy];
+                direction.actions.setOriginFromCoordinates(coords);
+            }
+        });
+        endHere.addEventListener('click', function(e) {
+            self.activeDirections();
+            const urlParams = wemapgl.urlController.getParams();
+            if (urlParams.dx && urlParams.dy) {
+                const coords = [urlParams.dx, urlParams.dy];
+                direction.actions.setDestinationFromCoordinates(coords);
+            }
         });
     }
 
@@ -323,52 +348,80 @@ export default class WeDirections {
      */
     _inputChange() {
         let direction = this.weDirection;
-        window.addEventListener('DOMContentLoaded', function(){
-            let directionSelector = document.getElementById('mapbox-directions-form-area');
-            let origin = document.getElementById('mapbox-directions-origin-input');
-            let destination = document.getElementById('mapbox-directions-destination-input');
-            let originValue = {};
-            let destinationValue = {};
+        // window.addEventListener('DOMContentLoaded', function(){
+        //     let directionSelector = document.getElementById('mapbox-directions-form-area');
+        //     let origin = document.getElementById('mapbox-directions-origin-input');
+        //     let destination = document.getElementById('mapbox-directions-destination-input');
+        //     let originValue = {};
+        //     let destinationValue = {};
+        //
+        //     directionSelector.addEventListener('change', function(e) {
+        //         let o = document.querySelectorAll('#mapbox-directions-origin-input input')[0];
+        //         let d = document.querySelectorAll('#mapbox-directions-destination-input input')[0];
+        //         if (o.value && d.value) {
+        //             wemapgl.reverse.onReverse();
+        //         } else {
+        //             wemapgl.reverse.offReverse();
+        //         }
+        //
+        //         originValue =  direction.getOrigin();
+        //         destinationValue =  direction.getDestination();
+        //
+        //         wemapgl.urlController.updateParams("route",
+        //             {
+        //                 ox: originValue.geometry ? originValue.geometry.coordinates[0] : 0,
+        //                 oy: originValue.geometry ? originValue.geometry.coordinates[1] : 0,
+        //                 dx: destinationValue.geometry ? destinationValue.geometry.coordinates[0] : 0,
+        //                 dy: destinationValue.geometry ? destinationValue.geometry.coordinates[1] : 0
+        //             });
+        //     });
+        //
+        //
+        //     // origin.addEventListener('change', function(e) {
+        //     //     originValue =  direction.getOrigin();
+        //     //     wemapgl.urlController.updateParams("route",
+        //     //         {
+        //     //             ox: originValue.geometry ? originValue.geometry.coordinates[0] : 0,
+        //     //             oy: originValue.geometry ? originValue.geometry.coordinates[1] : 0
+        //     //         });
+        //     // });
+        //     //
+        //     // destination.addEventListener('change', function(e) {
+        //     //     destinationValue =  direction.getDestination();
+        //     //     wemapgl.urlController.updateParams("route",
+        //     //         {
+        //     //             dx: destinationValue.geometry ? destinationValue.geometry.coordinates[0] : 0,
+        //     //             dy: destinationValue.geometry ? destinationValue.geometry.coordinates[1] : 0
+        //     //         });
+        //     // });
+        // });
 
-            directionSelector.addEventListener('change', function(e) {
-                let o = document.querySelectorAll('#mapbox-directions-origin-input input')[0];
-                let d = document.querySelectorAll('#mapbox-directions-destination-input input')[0];
-                if (o.value && d.value) {
-                    wemapgl.reverse.onReverse();
-                } else {
-                    wemapgl.reverse.offReverse();
-                }
+        let directionSelector = document.getElementById('mapbox-directions-form-area');
+        // let origin = document.getElementById('mapbox-directions-origin-input');
+        // let destination = document.getElementById('mapbox-directions-destination-input');
+        let originValue = {};
+        let destinationValue = {};
 
-                originValue =  direction.getOrigin();
-                destinationValue =  direction.getDestination();
+        directionSelector.addEventListener('change', function(e) {
+            // console.log('Input changed: ', e);
+            let o = document.querySelectorAll('#mapbox-directions-origin-input input')[0];
+            let d = document.querySelectorAll('#mapbox-directions-destination-input input')[0];
+            if (o.value && d.value) {
+                wemapgl.reverse.onReverse();
+            } else {
+                wemapgl.reverse.offReverse();
+            }
 
-                wemapgl.urlController.updateParams("route",
-                    {
-                        ox: originValue.geometry ? originValue.geometry.coordinates[0] : 0,
-                        oy: originValue.geometry ? originValue.geometry.coordinates[1] : 0,
-                        dx: destinationValue.geometry ? destinationValue.geometry.coordinates[0] : 0,
-                        dy: destinationValue.geometry ? destinationValue.geometry.coordinates[1] : 0
-                    });
-            });
+            originValue =  direction.getOrigin();
+            destinationValue =  direction.getDestination();
 
-
-            // origin.addEventListener('change', function(e) {
-            //     originValue =  direction.getOrigin();
-            //     wemapgl.urlController.updateParams("route",
-            //         {
-            //             ox: originValue.geometry ? originValue.geometry.coordinates[0] : 0,
-            //             oy: originValue.geometry ? originValue.geometry.coordinates[1] : 0
-            //         });
-            // });
-            //
-            // destination.addEventListener('change', function(e) {
-            //     destinationValue =  direction.getDestination();
-            //     wemapgl.urlController.updateParams("route",
-            //         {
-            //             dx: destinationValue.geometry ? destinationValue.geometry.coordinates[0] : 0,
-            //             dy: destinationValue.geometry ? destinationValue.geometry.coordinates[1] : 0
-            //         });
-            // });
+            wemapgl.urlController.updateParams("route",
+                {
+                    ox: originValue.geometry ? originValue.geometry.coordinates[0] : 0,
+                    oy: originValue.geometry ? originValue.geometry.coordinates[1] : 0,
+                    dx: destinationValue.geometry ? destinationValue.geometry.coordinates[0] : 0,
+                    dy: destinationValue.geometry ? destinationValue.geometry.coordinates[1] : 0
+                });
         });
     }
 
@@ -379,21 +432,36 @@ export default class WeDirections {
     _urlPreChecking() {
         let self = this;
         let direction = self.weDirection;
-        window.addEventListener('DOMContentLoaded', function(){
-            const urlParams = wemapgl.urlController.getParams();
-            if (urlParams.ox && urlParams.oy && urlParams.dx && urlParams.dy) {
-                self.activeDirections();
-                direction._map.on('load', function () {
-                    // TODO: Check bug add layer when direction url
-                    // URL: https://github.com/mapbox/mapbox-gl-directions/issues/190
-                    // direction._map.addLayer({ 'id': 'directions-route-line-alt'});
-                    const originCoords = [urlParams.ox, urlParams.oy];
-                    const destinationCoords = [urlParams.dx, urlParams.dy];
-                    direction.actions.setOriginFromCoordinates(originCoords);
-                    direction.actions.setDestinationFromCoordinates(destinationCoords);
-                });
-            }
-        });
+        // window.addEventListener('DOMContentLoaded', function(){
+        //     const urlParams = wemapgl.urlController.getParams();
+        //     if (urlParams.ox && urlParams.oy && urlParams.dx && urlParams.dy) {
+        //         self.activeDirections();
+        //         direction._map.on('load', function () {
+        //             // TODO: Check bug add layer when direction url
+        //             // URL: https://github.com/mapbox/mapbox-gl-directions/issues/190
+        //             // direction._map.addLayer({ 'id': 'directions-route-line-alt'});
+        //             const originCoords = [urlParams.ox, urlParams.oy];
+        //             const destinationCoords = [urlParams.dx, urlParams.dy];
+        //             direction.actions.setOriginFromCoordinates(originCoords);
+        //             direction.actions.setDestinationFromCoordinates(destinationCoords);
+        //         });
+        //     }
+        // });
+
+        const urlParams = wemapgl.urlController.getParams();
+        if (urlParams.ox && urlParams.oy && urlParams.dx && urlParams.dy) {
+            self.activeDirections();
+            direction._map.on('load', function () {
+                console.log('Map loaded');
+                // TODO: Check bug add layer when direction url
+                // URL: https://github.com/mapbox/mapbox-gl-directions/issues/190
+                // direction._map.addLayer({ 'id': 'directions-route-line-alt'});
+                const originCoords = [urlParams.ox, urlParams.oy];
+                const destinationCoords = [urlParams.dx, urlParams.dy];
+                direction.actions.setOriginFromCoordinates(originCoords);
+                direction.actions.setDestinationFromCoordinates(destinationCoords);
+            });
+        }
     }
 
     /**
@@ -404,17 +472,28 @@ export default class WeDirections {
         let self = this;
         let direction = self.weDirection;
 
-        window.addEventListener('DOMContentLoaded', function(){
-            const directionSelector = document.getElementById('direction-icon');
-            directionSelector.addEventListener('click', function(e) {
-                self.activeDirections();
-                const urlParams = wemapgl.urlController.getParams();
-                if (urlParams.dx && urlParams.dy) {
-                    const coords = [urlParams.dx, urlParams.dy];
-                    direction.actions.setDestinationFromCoordinates(coords);
-                    wemapgl.reverse.offReverse();
-                }
-            });
+        // window.addEventListener('DOMContentLoaded', function(){
+        //     const directionSelector = document.getElementById('direction-icon');
+        //     directionSelector.addEventListener('click', function(e) {
+        //         self.activeDirections();
+        //         const urlParams = wemapgl.urlController.getParams();
+        //         if (urlParams.dx && urlParams.dy) {
+        //             const coords = [urlParams.dx, urlParams.dy];
+        //             direction.actions.setDestinationFromCoordinates(coords);
+        //             wemapgl.reverse.offReverse();
+        //         }
+        //     });
+        // });
+
+        const directionSelector = document.getElementById('direction-icon');
+        directionSelector.addEventListener('click', function(e) {
+            self.activeDirections();
+            const urlParams = wemapgl.urlController.getParams();
+            if (urlParams.dx && urlParams.dy) {
+                const coords = [urlParams.dx, urlParams.dy];
+                direction.actions.setDestinationFromCoordinates(coords);
+                wemapgl.reverse.offReverse();
+            }
         });
     }
 
@@ -547,21 +626,36 @@ export default class WeDirections {
      */
     _onReverseInput() {
         let direction = self.weDirection;
-        window.addEventListener('DOMContentLoaded', function(){
-            let reverseButton = document.querySelectorAll('button.directions-reverse')[0];
-            reverseButton.addEventListener('click', () => {
-                let origin =  direction.getOrigin();
-                let destination =  direction.getDestination();
-                let originCoordinate =
-                    [origin.geometry ? origin.geometry.coordinates[0] : 0,
-                        origin.geometry ? origin.geometry.coordinates[1] : 0];
-                let destinationCoordinate =
-                    [destination.geometry ? destination.geometry.coordinates[0] : 0,
-                        destination.geometry ? destination.geometry.coordinates[1] : 0];
-                direction.actions.setOriginFromCoordinates(destinationCoordinate);
-                direction.actions.setDestinationFromCoordinates(originCoordinate);
-                direction.actions.reverse();
-            });
+        // window.addEventListener('DOMContentLoaded', function(){
+        //     let reverseButton = document.querySelectorAll('button.directions-reverse')[0];
+        //     reverseButton.addEventListener('click', () => {
+        //         let origin =  direction.getOrigin();
+        //         let destination =  direction.getDestination();
+        //         let originCoordinate =
+        //             [origin.geometry ? origin.geometry.coordinates[0] : 0,
+        //                 origin.geometry ? origin.geometry.coordinates[1] : 0];
+        //         let destinationCoordinate =
+        //             [destination.geometry ? destination.geometry.coordinates[0] : 0,
+        //                 destination.geometry ? destination.geometry.coordinates[1] : 0];
+        //         direction.actions.setOriginFromCoordinates(destinationCoordinate);
+        //         direction.actions.setDestinationFromCoordinates(originCoordinate);
+        //         direction.actions.reverse();
+        //     });
+        // });
+
+        let reverseButton = document.querySelectorAll('button.directions-reverse')[0];
+        reverseButton.addEventListener('click', () => {
+            let origin =  direction.getOrigin();
+            let destination =  direction.getDestination();
+            let originCoordinate =
+                [origin.geometry ? origin.geometry.coordinates[0] : 0,
+                    origin.geometry ? origin.geometry.coordinates[1] : 0];
+            let destinationCoordinate =
+                [destination.geometry ? destination.geometry.coordinates[0] : 0,
+                    destination.geometry ? destination.geometry.coordinates[1] : 0];
+            direction.actions.setOriginFromCoordinates(destinationCoordinate);
+            direction.actions.setDestinationFromCoordinates(originCoordinate);
+            direction.actions.reverse();
         });
     }
 }
