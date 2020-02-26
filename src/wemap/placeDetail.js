@@ -8,6 +8,10 @@ export default class PlaceDetail{
     this.options = options
     // self=this
   }
+
+  setAttribute(options){
+    this.options = options
+  }
   /**
    * show detail Feature
   */
