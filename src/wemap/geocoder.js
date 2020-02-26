@@ -1,12 +1,12 @@
 import PeliasGeocoder from '../pelias-geocoder/pelias-geocoder'
 import PlaceDetail from './placeDetail'
+import { default as config } from '../config.json';
 export default class WeGeocoder {
         constructor(options) {
             options = options || {}
             this.options = options
             this.options.params = {'key': this.options.key}
-            // this.options.url = 'https://places.jawg.io/v1'
-            this.options.url = 'https://apis.wemap.asia/geocode-1'
+            this.options.url = config.search.url
             delete this.options.key
             this.options.suggestion.min_chars |= 4
             if(!this.options.marker){
@@ -15,6 +15,7 @@ export default class WeGeocoder {
             this.options.marker.icon = this.initMarker()
             WeGeocoder.min_chars = this.options.suggestion.min_chars
             this.geocoder = this.init(this.options)
+            this.resultAutocompele = null
             this.initMultiView()
             this.initEvent()
             this.updateInfoFromUrl()
@@ -53,10 +54,23 @@ export default class WeGeocoder {
                 place.showDetailFeature()
             }
         }
+        updateListMarker(){
+            let self = this.geocoder
+            let resuls = self._results
+            
+            console.log(this.geocoder._results)
+            if(resuls){
+                let features = self._removeDuplicates(resuls.features);
+                if (self.opts.marker && self.opts.marker.multiple) {
+                    self._updateMarkers(features);
+                }
+            }
+            
+        }
         /**
          * @returns standardized address
          */
-        static getAddess(address) {
+        static getAddress(address) {
             if(!Array.isArray(address)){
                 address = address.split(',')
             }
@@ -98,12 +112,13 @@ export default class WeGeocoder {
             inputEl.placeholder = this.opts.placeholder;
             inputEl.addEventListener("focus", function(e){
                 self._resultsListEl.showAll();
+                WeGeocoder.hideDetailFeatureFrame()
             })
             inputEl.addEventListener("keyup", function (e) {
                 // Enter -> go to feature location.
                 if (self._eventMatchKey(e, self._keys.enter) && self._selectedFeature) {
                     inputEl.blur();
-                    self._goToFeatureLocation(self._selectedFeature);
+                    self._goToFeatureLocation(self._selectedFeature, true);
                     return;
                 }
                 //  if(self._results){
@@ -139,14 +154,23 @@ export default class WeGeocoder {
                     clearTimeout(this._timeoutId);
                 }
                 if (self._eventMatchKey(e, self._keys.enter)) {
-                    self.search({text: value}, function (err, result) {
+                    self.search({text: value}, function (err, results) {
                     if (err) {
                         return self._showError(err);
                     }
-                    if (result) {
-                        // self._clearAll()
+                    if (results) {
+                        self._clearAll()
                         WeGeocoder.hideDetailFeatureFrame()
-                        self.showResultsSearch(result)
+                        self.showResultsSearch(results)
+                        
+                        // create list marker
+                        
+                        self._results = results;
+                        let features = self._removeDuplicates(results.features);
+                        if (self.opts.marker && self.opts.marker.multiple) {
+                            self._updateMarkers(features);
+                        }
+
                     }
                     }, 'search');
                     self._resultsListEl.hideAll();
@@ -170,13 +194,6 @@ export default class WeGeocoder {
             return inputEl
         }
 
-        /**
-         * override PeliasGeocoder.goToFeatureLocation
-         */
-        overrideGoToFeatureLocation(feature){
-            
-        }
-        
         initEventIconCross(){
             // var iconCrossEl = document.getElementsByClassName('pelias-ctrl-icon-cross')
             // iconCrossEl.addEventListener("click", function () {
@@ -215,7 +232,9 @@ export default class WeGeocoder {
          * init event close detail frame
          */
         initEventCloseDetailFrame(){
+            let self = this
             document.getElementById('close-detail-button').addEventListener('click', function(){
+                self.updateListMarker()
                 WeGeocoder.hideDetailFeatureFrame()
             })
         }
@@ -228,6 +247,7 @@ export default class WeGeocoder {
                 return
             }
             var originBuildAndGetResult = this.geocoder._buildAndGetResult
+            let wegeocoder = this
             this.geocoder._buildAndGetResult = function(feature, index){
                 let self = this
                 let resultEl = originBuildAndGetResult.call(this, feature, index)
@@ -261,8 +281,12 @@ export default class WeGeocoder {
                 
                 resultEl.addEventListener("focus", function () {
                     self._goToFeatureLocation(feature);
-                    WeGeocoder.hideDetailFeatureFrame();
                     self._resultsListEl.showAll();
+                  });
+                  resultEl.addEventListener("click", function () {
+                    self._goToFeatureLocation(feature, true);
+                    self._removeMarkers()
+                    self._updateMarkers(feature)
                   });
                 return resultEl
             }
@@ -272,7 +296,8 @@ export default class WeGeocoder {
             this.initEventIconCross()
             this.initEventCloseDetailFrame()
             var originGoToFeatureLocation = this.geocoder._goToFeatureLocation
-            this.geocoder._goToFeatureLocation = function(feature){
+            this.geocoder._goToFeatureLocation = function(feature, viewDetail){
+                console.log(this._results)
                 let info = feature.properties
                 let osm_id = ''
                 let osm_type = ''
@@ -282,16 +307,19 @@ export default class WeGeocoder {
                     var get_text = /[a-zA-Z]/
                     osm_type = info.id.match(get_text).join('').toUpperCase()
                 }
-                let name = info.name
-                let type = feature.geometry.type
-                let lat = feature.geometry.coordinates[0]
-                let lon = feature.geometry.coordinates[1]
-                let address = [info.street, info.county, info.region, info.country]
-                let place = new PlaceDetail({name: name, type: type, lat: lat, lon: lon,address: address ,osm_id: osm_id, osm_type: osm_type});
-                
-                place.showDetailFeature()
+                if(viewDetail){
+                    let name = info.name
+                    let type = feature.geometry.type
+                    let lat = feature.geometry.coordinates[0]
+                    let lon = feature.geometry.coordinates[1]
+                    let address = [info.street, info.county, info.region, info.country]
+                    let place = new PlaceDetail({name: name, type: type, lat: lat, lon: lon,address: address ,osm_id: osm_id, osm_type: osm_type});
+                    
+                    place.showDetailFeature()
+                }
                 // default goToFeature
-                this._results = undefined;
+                //*********** */
+                // this._results = undefined;
                 var cameraOpts = {
                     center: feature.geometry.coordinates,
                     zoom: this._getBestZoom(feature)
@@ -312,9 +340,24 @@ export default class WeGeocoder {
         }
 
         showResultsSearch(result) {
+            console.log(result)
+            console.log(result.features)
+            let self = this
+            let results = document.getElementById('results-list');
+            if(result.features == false){
+                console.log('no result')
+                results.innerHTML = '<p class="js-poicard poicard no-result">Không có kết quả tìm kiếm'+
+                '<span class="fa fa-times" id= "icon-cross-noresult"></span>'
+                '<p>'
+                document.getElementById('icon-cross-noresult').addEventListener('click', function(e){
+                    WeGeocoder.hideNoResult()
+                })
+                return 
+            }   
+
+
             let features = result.features;
             let resultFeatures = '';
-            let self = this
             features.forEach(function (feature, i) {
               if (i < features.length) {
                 resultFeatures = resultFeatures + '<li class="js-poicard poicard">' +
@@ -342,7 +385,7 @@ export default class WeGeocoder {
                   '</div>' +
                   '</div>' +
                   '<ul class="poicard-data">'+
-                  '<div class="poicard-data-item address">' + WeGeocoder.getAddess([feature.properties.street, feature.properties.county, feature.properties.region, feature.properties.country]) +
+                  '<div class="poicard-data-item address">' + WeGeocoder.getAddress([feature.properties.street, feature.properties.county, feature.properties.region, feature.properties.country]) +
                   '</div>' +
                   '<div id="lat-log">' + feature.geometry.coordinates[1]+',' + feature.geometry.coordinates[0] + '</div>' +
                   '</ul>' +
@@ -350,23 +393,22 @@ export default class WeGeocoder {
                   '</li>';
               }
             });
-            let results = document.getElementById('results-list');
+            
             results.innerHTML = resultFeatures;
             let resultList = results.querySelectorAll("li");
             resultList.forEach(function (result, index) {
               result.onmouseover = function (e) {
                 self._selectFeature(features[index]);
                 self._goToFeatureLocation(features[index]);
-                WeGeocoder.hideDetailFeatureFrame();
               }
               result.onclick = function (e) {
                 self._selectFeature(features[index]);
-                self._goToFeatureLocation(features[index]);
+                self._goToFeatureLocation(features[index], true);
                 WeGeocoder.hideResultSearch();
               };
           
               let rating = result.querySelectorAll('.full');
-              let averageStar = Math.floor((Math.random()*5)*10)/10 ;
+              let averageStar = 2 + Math.floor((Math.random()*3)*10)/10 ;
 
               for (let i=0; i< Math.floor(averageStar ); i++ ){
                 rating[4-i].style.color = '#E7711B'
@@ -418,58 +460,60 @@ export default class WeGeocoder {
          * init view detailFeature, result search
          */
         initMultiView(){
-            let view = document.createElement('div')
-            view.innerHTML = '<div id="no-result"\>'+
-            '<p>Không tìm thấy kết quả</p>'+
-            '</div>'+
+            let view_search = document.createElement('div')
+            view_search.setAttribute("id", "wemap-results-search");
+            view_search.innerHTML = 
             '<div id="results-search">'+
                 '<section class="results with_ads">'+
                 '    <ul id="results-list"></ul>'+
                 '</section>'+
-            '</div>'+
-    
-            '<div id="detail-feature" class="scrollbar">'+
-                '<button class="btn" id="close-detail-button" title="Close"><i class="fa fa-close"></i></button>'+
-            '<div class="detail-feature-element" id="feature-img"></div>'+
-            '<div class="detail-feature-heading">'+
-            '    <div id="feature-name"></div>'+
-            '    <div class="detail-feature-category-rating">'+
-            '        <!-- <div id="feature-category">Education</div> -->'+
-            '        <div id="feature-rating"></div>'+
-            '    </div>'+
-    
-            '</div>'+
-            '<div id="feature-controls">'+
-            '    <div class="feature-control" id="feature-directions">'+
-            '        <i class="fa fa-arrow-right "></i><span>Chỉ đường</span>'+
-            '    </div>'+
-            '    <div class="feature-control">'+
-            '        <i class="fa fa-share-alt"></i><span>Chia sẻ</span>'+
-            '    </div>'+
-            '    <div class="feature-control">'+
-            '        <i class="fa fa-comments"></i><span>Nhận xét</span>'+
-            '    </div>'+
-            '</div>'+
-    
-            '<div class="detail-feature-body">'+
-            '    <p id="feature-description"></p>'+
-    
-            '    <div class="information-feature">'+
-            '        <div class="detail-feature-element" id="feature-location">'+
-            '        </div>'+
-            '        <div class="detail-feature-element" id="feature-coordinates">'+
-            '        </div>'+
-            '        <div id="feature-website">'+
-            '        </div>'+
-            '        <div id="feature-phone">'+
-            '        </div>'+
-            '        <div id="feature-opening-hours">'+
-            '        </div>'+
-            '    </div>'+
             '</div>'
-            document.body.appendChild(view)
+            let view_detail = document.createElement('div')
+            view_detail.setAttribute("id", "detail-feature");
+            view_detail.setAttribute("class", "scrollbar");
+            view_detail.innerHTML = 
+                '<button class="btn" id="close-detail-button" title="Close"><i class="fa fa-close"></i></button>'+
+                '<div class="detail-feature-element" id="feature-img"></div>'+
+                '<div class="detail-feature-heading">'+
+                '    <div id="feature-name"></div>'+
+                '    <div class="detail-feature-category-rating">'+
+                '        <!-- <div id="feature-category">Education</div> -->'+
+                '        <div id="feature-rating"></div>'+
+                '    </div>'+
+                '</div>'+
+                '<div id="feature-controls">'+
+                '    <div class="feature-control" id="feature-directions">'+
+                '        <i class="fa fa-arrow-right "></i><span>Chỉ đường</span>'+
+                '    </div>'+
+                '    <div class="feature-control">'+
+                '        <i class="fa fa-share-alt"></i><span>Chia sẻ</span>'+
+                '    </div>'+
+                '    <div class="feature-control">'+
+                '        <i class="fa fa-comments"></i><span>Nhận xét</span>'+
+                '    </div>'+
+                '</div>'+
+        
+                '<div class="detail-feature-body">'+
+                '    <p id="feature-description"></p>'+
+                '    <div class="information-feature">'+
+                '        <div class="detail-feature-element" id="feature-location">'+
+                '        </div>'+
+                '        <div class="detail-feature-element" id="feature-coordinates">'+
+                '        </div>'+
+                '        <div id="feature-website">'+
+                '        </div>'+
+                '        <div id="feature-phone">'+
+                '        </div>'+
+                '        <div id="feature-opening-hours">'+
+                '        </div>'+
+                '    </div>'+
+                '</div>'
+            document.body.appendChild(view_search)
+            document.body.appendChild(view_detail)
         }
-
+        static hideNoResult(){
+            document.getElementById('results-list').style.display = 'none'
+        }
         static hideDetailFeatureFrame() {
             let detail_feature = document.getElementById("detail-feature");
             if (detail_feature) {

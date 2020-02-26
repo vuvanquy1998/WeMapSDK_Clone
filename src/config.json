@@ -47,6 +47,9 @@
       "history":  false
     }
   },
+  "search": {
+    "url": "https://apis.wemap.asia/geocode-1"
+  },
   "language": {
     "vi": "vi-VN",
     "en": "en-US"
