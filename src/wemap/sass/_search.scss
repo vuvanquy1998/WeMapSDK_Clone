@@ -449,5 +449,37 @@ i {
     float: right;
 }
 
+#wemap-results-search {
+  position: relative;
+  div#results-search {
+  display: none;
+  position: absolute;
+  top: 65px;
+  left: 20px;
+  height: calc(100vh - 90px);
+  overflow-y: auto;
+  background: #fff;
+
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+  }
+
+  section.results {
+    position: unset;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    margin-left: unset;
+    margin-top: unset;
+    margin-bottom: unset;
+  }
+
+  #results-list {
+    -webkit-box-shadow: 0;
+    box-shadow: none;
+  }
+}
+
 
 

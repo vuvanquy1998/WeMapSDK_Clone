@@ -460,54 +460,56 @@ export default class WeGeocoder {
          * init view detailFeature, result search
          */
         initMultiView(){
-            let view = document.createElement('div')
-            view.setAttribute("id", "wemap-results-search");
-            view.innerHTML = '<div id="results-search">'+
+            let view_search = document.createElement('div')
+            view_search.setAttribute("id", "wemap-results-search");
+            view_search.innerHTML = 
+            '<div id="results-search">'+
                 '<section class="results with_ads">'+
                 '    <ul id="results-list"></ul>'+
                 '</section>'+
-            '</div>'+
-    
-            '<div id="detail-feature" class="scrollbar">'+
-                '<button class="btn" id="close-detail-button" title="Close"><i class="fa fa-close"></i></button>'+
-            '<div class="detail-feature-element" id="feature-img"></div>'+
-            '<div class="detail-feature-heading">'+
-            '    <div id="feature-name"></div>'+
-            '    <div class="detail-feature-category-rating">'+
-            '        <!-- <div id="feature-category">Education</div> -->'+
-            '        <div id="feature-rating"></div>'+
-            '    </div>'+
-    
-            '</div>'+
-            '<div id="feature-controls">'+
-            '    <div class="feature-control" id="feature-directions">'+
-            '        <i class="fa fa-arrow-right "></i><span>Chỉ đường</span>'+
-            '    </div>'+
-            '    <div class="feature-control">'+
-            '        <i class="fa fa-share-alt"></i><span>Chia sẻ</span>'+
-            '    </div>'+
-            '    <div class="feature-control">'+
-            '        <i class="fa fa-comments"></i><span>Nhận xét</span>'+
-            '    </div>'+
-            '</div>'+
-    
-            '<div class="detail-feature-body">'+
-            '    <p id="feature-description"></p>'+
-    
-            '    <div class="information-feature">'+
-            '        <div class="detail-feature-element" id="feature-location">'+
-            '        </div>'+
-            '        <div class="detail-feature-element" id="feature-coordinates">'+
-            '        </div>'+
-            '        <div id="feature-website">'+
-            '        </div>'+
-            '        <div id="feature-phone">'+
-            '        </div>'+
-            '        <div id="feature-opening-hours">'+
-            '        </div>'+
-            '    </div>'+
             '</div>'
-            document.body.appendChild(view)
+            let view_detail = document.createElement('div')
+            view_detail.setAttribute("id", "detail-feature");
+            view_detail.setAttribute("class", "scrollbar");
+            view_detail.innerHTML = 
+                '<button class="btn" id="close-detail-button" title="Close"><i class="fa fa-close"></i></button>'+
+                '<div class="detail-feature-element" id="feature-img"></div>'+
+                '<div class="detail-feature-heading">'+
+                '    <div id="feature-name"></div>'+
+                '    <div class="detail-feature-category-rating">'+
+                '        <!-- <div id="feature-category">Education</div> -->'+
+                '        <div id="feature-rating"></div>'+
+                '    </div>'+
+                '</div>'+
+                '<div id="feature-controls">'+
+                '    <div class="feature-control" id="feature-directions">'+
+                '        <i class="fa fa-arrow-right "></i><span>Chỉ đường</span>'+
+                '    </div>'+
+                '    <div class="feature-control">'+
+                '        <i class="fa fa-share-alt"></i><span>Chia sẻ</span>'+
+                '    </div>'+
+                '    <div class="feature-control">'+
+                '        <i class="fa fa-comments"></i><span>Nhận xét</span>'+
+                '    </div>'+
+                '</div>'+
+        
+                '<div class="detail-feature-body">'+
+                '    <p id="feature-description"></p>'+
+                '    <div class="information-feature">'+
+                '        <div class="detail-feature-element" id="feature-location">'+
+                '        </div>'+
+                '        <div class="detail-feature-element" id="feature-coordinates">'+
+                '        </div>'+
+                '        <div id="feature-website">'+
+                '        </div>'+
+                '        <div id="feature-phone">'+
+                '        </div>'+
+                '        <div id="feature-opening-hours">'+
+                '        </div>'+
+                '    </div>'+
+                '</div>'
+            document.body.appendChild(view_search)
+            document.body.appendChild(view_detail)
         }
         static hideNoResult(){
             document.getElementById('results-list').style.display = 'none'
