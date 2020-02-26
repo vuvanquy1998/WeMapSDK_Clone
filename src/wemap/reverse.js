@@ -16,6 +16,7 @@ export default class Reverse{
         this.on = true;
         this.pointLayers = [];
         this.receivedData = {};
+        this.marker;
   
         this.getStyle();
         this.leftClick();
@@ -107,11 +108,13 @@ export default class Reverse{
     onClick(e){
         let features = this.map.queryRenderedFeatures(e.point);
         this.getReverseData(e).then(data => {
+            console.log(data)
+            console.log(e.lngLat)
             if(data.features.length == 0){
                 this.showUiNoData(e.lngLat.lat, e.lngLat.lng)
             }else{
                 if(features.length == 0){
-                    this.clickoutIcon(data.features[0])
+                    this.clickoutIcon(data.features[0], e.lngLat)
                 }else{
                     let notPointLayer = 0
 
@@ -123,10 +126,11 @@ export default class Reverse{
                     });
 
                     if(notPointLayer == 0){
-                        this.clickoutIcon(data.features[0])
+                        this.clickoutIcon(data.features[0], e.lngLat)
                     }
                 }
             }
+            this.addMarker(e.lngLat.lng, e.lngLat.lat)
         })
         .catch(err => console.log(err))
     }
@@ -134,10 +138,27 @@ export default class Reverse{
      * render ui when clicked point is not an icon
      * @param {Object} data 
      */
-    clickoutIcon(data){
+    clickoutIcon(data, originalCoordinates){
         this.displayUI('detail-feature', 'none')                
         this.displayUI('place', 'block')    
+
+        let originalLat = originalCoordinates.lat;
+        let originalLon = originalCoordinates.lng;
+
+        let distance = this.getDistance({
+            lat: originalLat,
+            lon: originalLon
+        }, {
+            lat: data.geometry.coordinates[1],
+            lon: data.geometry.coordinates[0]
+        })
+        console.log('distance', distance)
         let address = [data.properties.name, data.properties.street, data.properties.district, data.properties.city, data.properties.country]
+
+        if(distance > 20){
+            address.shift();
+        }
+
         let secondLine = []
         let lastI = 0
         for(let i = 0; i < 5; i++){
@@ -202,6 +223,20 @@ export default class Reverse{
         document.getElementById('placelatlon').innerHTML = Number(lon).toFixed(7)+' ,'+ Number(lat).toFixed(7)
     }
     /**
+     * 
+     * @param {Number} lon 
+     * @param {Number} lat 
+     */
+    addMarker(lon, lat){
+        if(this.marker){
+            this.marker.remove();
+        }
+        let iconMarkerEl = document.createElement("div");
+        iconMarkerEl.innerHTML = "<div class='marker-arrow'></div>"
+                    + "<div class='marker-pulse'></div>";
+        this.marker = new mapboxgl.Marker(iconMarkerEl).setLngLat([lon, lat]).addTo(this.map);            
+    }
+    /**
      * show feature detail when click reverse bottom card
      */
     clickBottomCard(){
@@ -243,6 +278,23 @@ export default class Reverse{
     displayUI(id, text){
         document.getElementById(id).style.display = text;
     }
-    
+    /**
+     * calculate distance between 2 points
+     */
+    getDistance(p1, p2){
+        let R = 6378137; 
+        let dLat = rad(p2.lat - p1.lat);
+        let dLong = rad(p2.lon - p1.lon);
+        let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(rad(p1.lat)) * Math.cos(rad(p2.lat)) *
+            Math.sin(dLong / 2) * Math.sin(dLong / 2);
+        let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        let d = R * c;
+        return d;
+
+        function rad(x){
+            return x * Math.PI /180;
+        }
+    }
 
 }
