@@ -260,25 +260,7 @@ export default class WeDirections {
      * @private
      */
     _activeDefaultDriveMode() {
-        // let self = this;
         let mode = this.options.mode;
-        // self.optionProfile = mode;
-        // window.addEventListener('DOMContentLoaded', function(){
-        //     const traffic = document.getElementById('mapbox-directions-profile-driving-traffic');
-        //     const driving = document.getElementById('mapbox-directions-profile-driving');
-        //     const walking = document.getElementById('mapbox-directions-profile-walking');
-        //     const cycling = document.getElementById('mapbox-directions-profile-cycling');
-        //     // Active traffic mode
-        //     if (mode === 'traffic') {
-        //         traffic.checked = true;
-        //     } else if (mode === 'driving') {
-        //         driving.checked = true;
-        //     } else if (mode === 'walking') {
-        //         walking.checked = true;
-        //     } else if (mode === 'cycling') {
-        //         cycling.checked = true;
-        //     }
-        // });
 
         const traffic = document.getElementById('mapbox-directions-profile-driving-traffic');
         const driving = document.getElementById('mapbox-directions-profile-driving');
