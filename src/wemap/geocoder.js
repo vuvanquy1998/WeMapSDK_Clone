@@ -55,17 +55,13 @@ export default class WeGeocoder {
             }
         }
         updateListMarker(){
-            let self = this.geocoder
-            let resuls = self._results
-            
-            console.log(this.geocoder._results)
+            let resuls = this._results
             if(resuls){
-                let features = self._removeDuplicates(resuls.features);
-                if (self.opts.marker && self.opts.marker.multiple) {
-                    self._updateMarkers(features);
+                let features = this._removeDuplicates(resuls.features);
+                if (this.opts.marker && this.opts.marker.multiple) {
+                    this._updateMarkers(features);
                 }
             }
-            
         }
         /**
          * @returns standardized address
@@ -112,6 +108,8 @@ export default class WeGeocoder {
             inputEl.placeholder = this.opts.placeholder;
             inputEl.addEventListener("focus", function(e){
                 self._resultsListEl.showAll();
+                // document.getElementById('close-detail-button')
+                self.updateListMarker()
                 WeGeocoder.hideDetailFeatureFrame()
             })
             inputEl.addEventListener("keyup", function (e) {
@@ -164,7 +162,6 @@ export default class WeGeocoder {
                         self.showResultsSearch(results)
                         
                         // create list marker
-                        
                         self._results = results;
                         let features = self._removeDuplicates(results.features);
                         if (self.opts.marker && self.opts.marker.multiple) {
@@ -216,11 +213,13 @@ export default class WeGeocoder {
             var originBuildIconCross = this.geocoder._buildIconCrossHTMLElement
             this.geocoder._buildIconCrossHTMLElement = function(){
                 let iconCrossEl = originBuildIconCross.call(this)
+                let self = this
                 iconCrossEl.addEventListener("click", function () {
                     // if(marker){
                     //     marker.remove();
                     // }
                     // self._clearAll();
+                    self._results = null
                     WeGeocoder.hideDetailFeatureFrame();
                     WeGeocoder.hideResultSearch();
                     // document.getElementById('place').style.display = 'none'
@@ -232,9 +231,9 @@ export default class WeGeocoder {
          * init event close detail frame
          */
         initEventCloseDetailFrame(){
-            let self = this
+            let geocoder = this.geocoder
             document.getElementById('close-detail-button').addEventListener('click', function(){
-                self.updateListMarker()
+                geocoder.updateListMarker()
                 WeGeocoder.hideDetailFeatureFrame()
             })
         }
@@ -247,6 +246,7 @@ export default class WeGeocoder {
                 return
             }
             var originBuildAndGetResult = this.geocoder._buildAndGetResult
+
             let wegeocoder = this
             this.geocoder._buildAndGetResult = function(feature, index){
                 let self = this
@@ -282,17 +282,32 @@ export default class WeGeocoder {
                 resultEl.addEventListener("focus", function () {
                     self._goToFeatureLocation(feature);
                     self._resultsListEl.showAll();
-                  });
-                  resultEl.addEventListener("click", function () {
+                });
+                resultEl.addEventListener("click", function () {
                     self._goToFeatureLocation(feature, true);
-                    self._removeMarkers()
-                    self._updateMarkers(feature)
+                    // self._updateMarkers(feature)
+                });
+                resultEl.addEventListener("keydown", function (e) {
+                    if (self._eventMatchKey(e, self._keys.enter)) {
+                      self._goToFeatureLocation(feature, true);
+                    }
+                    if (self._eventMatchKey(e, self._keys.arrowUp)) {
+                      if (self._resultsListEl.childNodes[index - 1]) {
+                        self._resultsListEl.childNodes[index - 1].focus();
+                      } else if (index - 1 === -1) {
+                        self._inputEl.focus();
+                      }
+                    }
+                    if (self._eventMatchKey(e, self._keys.arrowDown) && self._resultsListEl.childNodes[index + 1]) {
+                      self._resultsListEl.childNodes[index + 1].focus();
+                    }
                   });
                 return resultEl
             }
             this.geocoder.showResultsSearch = this.showResultsSearch
             this.geocoder.search = this.overrideSearch
             this.geocoder._buildInputHTMLElement = this.overrideBuildInputHTMLElement
+            this.geocoder.updateListMarker = this.updateListMarker
             this.initEventIconCross()
             this.initEventCloseDetailFrame()
             var originGoToFeatureLocation = this.geocoder._goToFeatureLocation
@@ -308,6 +323,7 @@ export default class WeGeocoder {
                     osm_type = info.id.match(get_text).join('').toUpperCase()
                 }
                 if(viewDetail){
+                    this._removeMarkers()
                     let name = info.name
                     let type = feature.geometry.type
                     let lat = feature.geometry.coordinates[0]
@@ -329,7 +345,8 @@ export default class WeGeocoder {
                 } else {
                     this._map.jumpTo(cameraOpts);
                 }
-                // this._updateMarkers(feature);
+                
+                this._updateMarkers(feature);
                 if (feature.properties.source === 'whosonfirst' && ['macroregion', 'region', 'macrocounty', 'county', 'locality', 'localadmin', 'borough', 'macrohood', 'neighbourhood', 'postalcode'].indexOf(feature.properties.layer) >= 0) {
                     this._showPolygon(feature.properties, cameraOpts.zoom);
                 } else {
