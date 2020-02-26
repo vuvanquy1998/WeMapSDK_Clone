@@ -129,9 +129,15 @@ export default class WeDirections {
      * @private
      */
     _onRendered() {
-        this._addClass2Container();
-        this._checkActiveGeocode();
-        this._addDirectionIcon();
+        let self = this;
+        window.addEventListener('DOMContentLoaded', function() {
+            self._addClass2Container();
+            self._checkActiveGeocode();
+            self._addDirectionIcon();
+        });
+        // this._addClass2Container();
+        // this._checkActiveGeocode();
+        // this._addDirectionIcon();
         this._rightClickHandler();
         this._onReverseInput();
         this._inputChange();
@@ -233,13 +239,19 @@ export default class WeDirections {
      */
     _addClass2Container() {
         let direction = this.weDirection;
-        window.addEventListener('DOMContentLoaded', function(){
-            let container = direction._map._container.id;
-            if (container) {
-                let containerSelector = document.getElementById(container);
-                containerSelector.classList.add("wemap-direction");
-            }
-        });
+        // window.addEventListener('DOMContentLoaded', function(){
+        //     let container = direction._map._container.id;
+        //     if (container) {
+        //         let containerSelector = document.getElementById(container);
+        //         containerSelector.classList.add("wemap-direction");
+        //     }
+        // });
+
+        let container = direction._map._container.id;
+        if (container) {
+            let containerSelector = document.getElementById(container);
+            containerSelector.classList.add("wemap-direction");
+        }
     }
 
     /**
@@ -247,15 +259,23 @@ export default class WeDirections {
      * @private
      */
     _checkActiveGeocode() {
-        window.addEventListener('DOMContentLoaded', function() {
-            let peliasSelector =
-                document.querySelectorAll('div.pelias-ctrl.mapboxgl-ctrl')[0];
-            if (!peliasSelector) {
-                let directionSelector =
-                    document.querySelectorAll('.mapboxgl-control-container .mapboxgl-ctrl-directions.mapboxgl-ctrl')[0];
-                directionSelector.classList.remove("hide");
-            }
-        });
+        // window.addEventListener('DOMContentLoaded', function() {
+        //     let peliasSelector =
+        //         document.querySelectorAll('div.pelias-ctrl.mapboxgl-ctrl')[0];
+        //     if (!peliasSelector) {
+        //         let directionSelector =
+        //             document.querySelectorAll('.mapboxgl-control-container .mapboxgl-ctrl-directions.mapboxgl-ctrl')[0];
+        //         directionSelector.classList.remove("hide");
+        //     }
+        // });
+
+        let peliasSelector =
+            document.querySelectorAll('div.pelias-ctrl.mapboxgl-ctrl')[0];
+        if (!peliasSelector) {
+            let directionSelector =
+                document.querySelectorAll('.mapboxgl-control-container .mapboxgl-ctrl-directions.mapboxgl-ctrl')[0];
+            directionSelector.classList.remove("hide");
+        }
     }
 
     /**
@@ -318,26 +338,37 @@ export default class WeDirections {
                 } else {
                     wemapgl.reverse.offReverse();
                 }
-            });
 
-
-            origin.addEventListener('change', function(e) {
                 originValue =  direction.getOrigin();
-                wemapgl.urlController.updateParams("route",
-                    {
-                        dx: originValue.geometry ? originValue.geometry.coordinates[0] : 0,
-                        dy: originValue.geometry ? originValue.geometry.coordinates[1] : 0
-                    });
-            });
-
-            destination.addEventListener('change', function(e) {
                 destinationValue =  direction.getDestination();
+
                 wemapgl.urlController.updateParams("route",
                     {
+                        ox: originValue.geometry ? originValue.geometry.coordinates[0] : 0,
+                        oy: originValue.geometry ? originValue.geometry.coordinates[1] : 0,
                         dx: destinationValue.geometry ? destinationValue.geometry.coordinates[0] : 0,
                         dy: destinationValue.geometry ? destinationValue.geometry.coordinates[1] : 0
                     });
             });
+
+
+            // origin.addEventListener('change', function(e) {
+            //     originValue =  direction.getOrigin();
+            //     wemapgl.urlController.updateParams("route",
+            //         {
+            //             ox: originValue.geometry ? originValue.geometry.coordinates[0] : 0,
+            //             oy: originValue.geometry ? originValue.geometry.coordinates[1] : 0
+            //         });
+            // });
+            //
+            // destination.addEventListener('change', function(e) {
+            //     destinationValue =  direction.getDestination();
+            //     wemapgl.urlController.updateParams("route",
+            //         {
+            //             dx: destinationValue.geometry ? destinationValue.geometry.coordinates[0] : 0,
+            //             dy: destinationValue.geometry ? destinationValue.geometry.coordinates[1] : 0
+            //         });
+            // });
         });
     }
 
@@ -353,6 +384,9 @@ export default class WeDirections {
             if (urlParams.ox && urlParams.oy && urlParams.dx && urlParams.dy) {
                 self.activeDirections();
                 direction._map.on('load', function () {
+                    // TODO: Check bug add layer when direction url
+                    // URL: https://github.com/mapbox/mapbox-gl-directions/issues/190
+                    // direction._map.addLayer({ 'id': 'directions-route-line-alt'});
                     const originCoords = [urlParams.ox, urlParams.oy];
                     const destinationCoords = [urlParams.dx, urlParams.dy];
                     direction.actions.setOriginFromCoordinates(originCoords);
@@ -390,39 +424,71 @@ export default class WeDirections {
      */
     _addDirectionIcon() {
         let self = this;
-        window.addEventListener('DOMContentLoaded', function(){
-            let peliasSelector =
-                document.querySelectorAll('div.pelias-ctrl.mapboxgl-ctrl')[0];
-            let peliasInputSelector =
-                document.querySelectorAll('div.pelias-ctrl-input-actions-wrapper.pelias-ctrl-shadow')[0];
-            let directionInputSelector = document.getElementById('mapbox-directions-form-area');
+        // window.addEventListener('DOMContentLoaded', function(){
+        //     let peliasSelector =
+        //         document.querySelectorAll('div.pelias-ctrl.mapboxgl-ctrl')[0];
+        //     let peliasInputSelector =
+        //         document.querySelectorAll('div.pelias-ctrl-input-actions-wrapper.pelias-ctrl-shadow')[0];
+        //     let directionInputSelector = document.getElementById('mapbox-directions-form-area');
+        //
+        //     if (peliasInputSelector) {
+        //         const directionOpen = document.createElement('span');
+        //         directionOpen.setAttribute("id", "direction-icon-open");
+        //         directionOpen.className =
+        //             'pelias-ctrl-action-icon pelias-ctrl-action-icon-directions pelias-ctrl-disabled';
+        //         peliasInputSelector.appendChild(directionOpen);
+        //         directionOpen.addEventListener('click', () => {
+        //             console.log('Active direction');
+        //             self.activeDirections();
+        //         });
+        //     }
+        //
+        //     if (peliasSelector) {
+        //         if (directionInputSelector) {
+        //             const directionClose = document.createElement('span');
+        //             directionClose.setAttribute("id", "direction-icon-close");
+        //             directionClose.className =
+        //                 'direction-icon-search';
+        //             directionInputSelector.appendChild(directionClose);
+        //             directionClose.addEventListener('click', () => {
+        //                 console.log('Deactive direction');
+        //                 self.deactiveDirections();
+        //             });
+        //         }
+        //     }
+        // });
 
-            if (peliasInputSelector) {
-                const directionOpen = document.createElement('span');
-                directionOpen.setAttribute("id", "direction-icon-open");
-                directionOpen.className =
-                    'pelias-ctrl-action-icon pelias-ctrl-action-icon-directions pelias-ctrl-disabled';
-                peliasInputSelector.appendChild(directionOpen);
-                directionOpen.addEventListener('click', () => {
-                    console.log('Active direction');
-                    self.activeDirections();
+        let peliasSelector =
+            document.querySelectorAll('div.pelias-ctrl.mapboxgl-ctrl')[0];
+        let peliasInputSelector =
+            document.querySelectorAll('div.pelias-ctrl-input-actions-wrapper.pelias-ctrl-shadow')[0];
+        let directionInputSelector = document.getElementById('mapbox-directions-form-area');
+
+        if (peliasInputSelector) {
+            const directionOpen = document.createElement('span');
+            directionOpen.setAttribute("id", "direction-icon-open");
+            directionOpen.className =
+                'pelias-ctrl-action-icon pelias-ctrl-action-icon-directions pelias-ctrl-disabled';
+            peliasInputSelector.appendChild(directionOpen);
+            directionOpen.addEventListener('click', () => {
+                console.log('Active direction');
+                self.activeDirections();
+            });
+        }
+
+        if (peliasSelector) {
+            if (directionInputSelector) {
+                const directionClose = document.createElement('span');
+                directionClose.setAttribute("id", "direction-icon-close");
+                directionClose.className =
+                    'direction-icon-search';
+                directionInputSelector.appendChild(directionClose);
+                directionClose.addEventListener('click', () => {
+                    console.log('Deactive direction');
+                    self.deactiveDirections();
                 });
             }
-
-            if (peliasSelector) {
-                if (directionInputSelector) {
-                    const directionClose = document.createElement('span');
-                    directionClose.setAttribute("id", "direction-icon-close");
-                    directionClose.className =
-                        'direction-icon-search';
-                    directionInputSelector.appendChild(directionClose);
-                    directionClose.addEventListener('click', () => {
-                        console.log('Deactive direction');
-                        self.deactiveDirections();
-                    });
-                }
-            }
-        });
+        }
     }
 
     /**
@@ -459,6 +525,11 @@ export default class WeDirections {
             document.querySelectorAll('div.pelias-ctrl.mapboxgl-ctrl')[0];
         let directionSelector =
             document.querySelectorAll('div.mapboxgl-ctrl-directions.mapboxgl-ctrl')[0];
+
+        let o = document.querySelectorAll('#mapbox-directions-origin-input input')[0];
+        o.value = ''; // Reset input origin
+        let d = document.querySelectorAll('#mapbox-directions-destination-input input')[0];
+        d.value = ''; // Reset input destination
 
         peliasSelector.classList.remove("hide");
         directionSelector.classList.add("hide");
