@@ -12,29 +12,8 @@ export default class PlaceDetail{
   setAttribute(options){
     this.options = options
   }
-  updateInfoFromUrl(){
-    let info = wemapgl.urlController.getParams()
-    if (info.lat) {
-        // let feature = {geometry: {type: info.osm_type, coordinates: [info.lat, info.lon]},
-        // properties: {}
-        // }
-        this.setAttribute({
-            name: info.name, type: info.type,
-            lat: info.lat, lon: info.lon, address: info.address, osm_id: info.osmid, osm_type: info.osmtype
-        });
-        this.showDetailFeature()
-        // var cameraOpts = {
-        //     center: [info.lat, info.lon],
-        //     zoom: 10
-        // };
-        // if (this.geocoder._useFlyTo(cameraOpts)) {
-        //     this.geocoder._map.flyTo(cameraOpts);
-        // } else {
-        //     this.geocoder._map.jumpTo(cameraOpts);
-        // }
-        // this.geocoder._customHtmlMarkers.push(this.geocoder._addAndGetCustomHtmlMarker([info.lat, info.long]));
-    }
-}
+  
+
 
 
   /**
@@ -185,9 +164,7 @@ export default class PlaceDetail{
       WeGeocoder.hideDetailFeatureFrame()
       wemapgl.urlController.updateParams("route", {ox: null, oy: null, dx: lat, dy: lon})
     }
-    document.getElementById('wemap-click-detail').addEventListener('click', (e) => {
-      this.updateInfoFromUrl()
-  })  
+    
     wemapgl.urlController.updateParams("place", {name, type, lat, lon, address, osmid, osmtype})
   }
 
