@@ -186,7 +186,7 @@ export default class WeGeocoder {
         inputEl.placeholder = this.opts.placeholder;
         inputEl.addEventListener("focus", function(e){
             self._resultsListEl.showAll();
-            // document.getElementById('close-detail-button')
+            // document.getElementById('wemap-close-detail-button')
             self.updateListMarker()
             WeGeocoder.hideDetailFeatureFrame()
         })
@@ -313,7 +313,7 @@ export default class WeGeocoder {
      */
     initEventCloseDetailFrame(){
         let geocoder = this.geocoder
-        document.getElementById('close-detail-button').addEventListener('click', function(){
+        document.getElementById('wemap-close-detail-button').addEventListener('click', function(){
             geocoder.updateListMarker()
             WeGeocoder.hideDetailFeatureFrame()
         })
@@ -437,16 +437,16 @@ export default class WeGeocoder {
 
     showResultsSearch(result) {
         let self = this
-        let results = document.getElementById('results-list');
+        let results = document.getElementById('wemap-results-list');
         if(result.features == false){
-            let no_result = document.getElementById('no-result')
-            no_result.classList.add('no-result')
+            let no_result = document.getElementById('wemap-no-result')
+            no_result.classList.add('wemap-no-result')
             no_result.innerHTML = 'Không có kết quả tìm kiếm'+
-            '<span class="fa fa-times" id= "icon-cross-noresult"></span>'
+            '<span class="fa fa-times" id= "wemap-icon-cross-noresult"></span>'
             WeGeocoder.showNoResult()
             self._clearAll()
             WeGeocoder.hideResultSearch()
-            document.getElementById('icon-cross-noresult').addEventListener('click', function(e){
+            document.getElementById('wemap-icon-cross-noresult').addEventListener('click', function(e){
                 WeGeocoder.hideNoResult()
             })
             return 
@@ -550,8 +550,8 @@ export default class WeGeocoder {
      */  
     initMarker(){
         let iconMarkerEl = document.createElement("div")
-        iconMarkerEl.innerHTML = "<div class='marker-arrow'></div>" +
-            "<div class='marker-pulse'></div>"
+        iconMarkerEl.innerHTML = "<div class='wemap-marker-arrow'></div>" +
+            "<div class='wemap-marker-pulse'></div>"
         return iconMarkerEl
     }
     /**
@@ -561,43 +561,42 @@ export default class WeGeocoder {
         let view_search = document.createElement('div')
         view_search.setAttribute("id", "wemap-results-search");
         view_search.innerHTML = 
-        '<div id="results-search">'+
+        '<div id="wemap-results-items">'+
             '<section class="results with_ads">'+
-            '    <ul id="results-list"></ul>'+
+            '    <ul id="wemap-results-list"></ul>'+
             '</section>'+
         '</div>'+
-        '<ul id="no-result"></ul>'
+        '<ul id="wemap-no-result"></ul>'
         let view_detail = document.createElement('div')
-        view_detail.setAttribute("id", "detail-feature");
-        view_detail.setAttribute("class", "scrollbar");
+        view_detail.setAttribute("id", "wemap-detail-feature");
+        view_detail.setAttribute("class", "wemap-scrollbar");
         view_detail.innerHTML = 
-            '<button class="btn" id="close-detail-button" title="Close"><i class="fa fa-close"></i></button>'+
-            '<div class="detail-feature-element" id="feature-img"></div>'+
-            '<div class="detail-feature-heading">'+
-            '    <div id="feature-name"></div>'+
-            '    <div class="detail-feature-category-rating">'+
-            '        <!-- <div id="feature-category">Education</div> -->'+
+            '<button class="btn" id="wemap-close-detail-button" title="Close"><i class="fa fa-close"></i></button>'+
+            '<div class="wemap-detail-feature-element" id="wemap-feature-img"></div>'+
+            '<div class="wemap-detail-feature-heading">'+
+            '    <div id="wemap-feature-name"></div>'+
+            '    <div class="wemap-detail-feature-category-rating">'+
             '        <div id="feature-rating"></div>'+
             '    </div>'+
             '</div>'+
-            '<div id="feature-controls">'+
-            '    <div class="feature-control" id="feature-directions">'+
+            '<div id="wemap-feature-controls">'+
+            '    <div class="wemap-feature-control" id="feature-directions">'+
             '        <i class="fa fa-arrow-right "></i><span>Chỉ đường</span>'+
             '    </div>'+
-            '    <div class="feature-control">'+
+            '    <div class="wemap-feature-control">'+
             '        <i class="fa fa-share-alt"></i><span>Chia sẻ</span>'+
             '    </div>'+
-            '    <div class="feature-control">'+
+            '    <div class="wemap-feature-control">'+
             '        <i class="fa fa-comments"></i><span>Nhận xét</span>'+
             '    </div>'+
             '</div>'+
     
-            '<div class="detail-feature-body">'+
+            '<div class="wemap-detail-feature-body">'+
             '    <p id="feature-description"></p>'+
-            '    <div class="information-feature">'+
-            '        <div class="detail-feature-element" id="feature-location">'+
+            '    <div class="wemap-information-feature">'+
+            '        <div class="wemap-detail-feature-element" id="feature-location">'+
             '        </div>'+
-            '        <div class="detail-feature-element" id="feature-coordinates">'+
+            '        <div class="wemap-detail-feature-element" id="feature-coordinates">'+
             '        </div>'+
             '        <div id="feature-website">'+
             '        </div>'+
@@ -611,24 +610,24 @@ export default class WeGeocoder {
         document.body.appendChild(view_detail)
     }
     static hideNoResult(){
-        document.getElementById('no-result').style.display = 'none'
+        document.getElementById('wemap-no-result').style.display = 'none'
     }
     static hideDetailFeatureFrame() {
-        let detail_feature = document.getElementById("detail-feature");
+        let detail_feature = document.getElementById("wemap-detail-feature");
         if (detail_feature) {
-            document.getElementById("detail-feature").style.display = "none";
+            document.getElementById("wemap-detail-feature").style.display = "none";
         }
         // deleteAllUrlParams()
         wemapgl.urlController.deleteParams("place")
     }
     static hideResultSearch() {
-        document.getElementById("results-search").style.display = "none";
+        document.getElementById("wemap-results-items").style.display = "none";
     }
     static showResultSearch() {
-        document.getElementById("results-search").style.display = "inline-block";
+        document.getElementById("wemap-results-items").style.display = "inline-block";
     }
     static showNoResult(){
-        document.getElementById("no-result").style.display = "inline-block";
+        document.getElementById("wemap-no-result").style.display = "inline-block";
     }
     static hideResultAutocompele() {
         let resultAutocompele = document.getElementsByClassName(
