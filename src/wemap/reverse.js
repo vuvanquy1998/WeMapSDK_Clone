@@ -227,9 +227,9 @@ export default class Reverse{
             this.marker.remove();
         }
         let iconMarkerEl = document.createElement("div");
-        iconMarkerEl.innerHTML = "<div class='marker-arrow'></div>"
-                    + "<div class='marker-pulse'></div>";
-        this.marker = new mapboxgl.Marker(iconMarkerEl).setLngLat([lon, lat]).addTo(this.map);            
+        iconMarkerEl.innerHTML = "<div class='wemap-marker-arrow'></div>"
+                    + "<div class='wemap-marker-pulse'></div>";
+        this.marker = new wemapgl.Marker(iconMarkerEl).setLngLat([lon, lat]).addTo(this.map);
     }
     /**
      * show feature detail when click reverse bottom card
