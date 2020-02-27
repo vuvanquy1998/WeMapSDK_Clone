@@ -46,29 +46,25 @@ export default class WeGeocoder {
     }
 
     updateInfoFromUrl(){
-        console.log('update info')
         let info = wemapgl.urlController.getParams()
         if (info.lat) {
-            // let feature = {geometry: {type: info.osm_type, coordinates: [info.lat, info.lon]},
-            // properties: {}
-            // }
             this.place.setAttribute({
                 name: info.name, type: info.type,
                 lat: info.lat, lon: info.lon, address: info.address, osm_id: info.osmid, osm_type: info.osmtype
             });
             this.geocoder._removeMarkers()
+            this.geocoder._results = null
             this.place.showDetailFeature()
-            // var cameraOpts = {
-            //     center: [info.lat, info.lon],
-            //     zoom: 10
-            // };
-            // if (this.geocoder._useFlyTo(cameraOpts)) {
-            //     this.geocoder._map.flyTo(cameraOpts);
-            // } else {
-            //     this.geocoder._map.jumpTo(cameraOpts);
-            // }
-            this.geocoder._customHtmlMarkers.push(this.geocoder._addAndGetCustomHtmlMarker([info.lon, info.lat]));
-        }
+            let geocoder = this.geocoder
+            try {
+                geocoder._customHtmlMarkers.push(geocoder._addAndGetCustomHtmlMarker([info.lon, info.lat]));
+            }
+            catch(err) {
+                window.addEventListener('DOMContentLoaded', function() {
+                geocoder._customHtmlMarkers.push(geocoder._addAndGetCustomHtmlMarker([info.lon, info.lat]));
+                })
+             }
+         }
     }
     updateListMarker(){
         let resuls = this._results
@@ -102,7 +98,9 @@ export default class WeGeocoder {
     getFeatureFromResultByLatLon(coordinates){
         let self = this
         let results = self._results
-        // feature.geometry.coordinates
+        if(!results){
+            return null
+        }
         let features = results.features
 
         for(let index in features){
@@ -274,19 +272,12 @@ export default class WeGeocoder {
     }
 
     initEventIconCross(){
-        // var iconCrossEl = document.getElementsByClassName('pelias-ctrl-icon-cross')
-        // iconCrossEl.addEventListener("click", function () {
-        //     this._clearAll();
-        //     WeGeocoder.hideDetailFeatureFrame();
-        //     WeGeocoder.hideResultSearch();
-        //   });
         var originBuildResultsListHTMLElement = this.geocoder._buildResultsListHTMLElement
         this.geocoder._buildResultsListHTMLElement = function(){
             var resultsListEl = originBuildResultsListHTMLElement.call(this)
             resultsListEl.hideAll = function (){
                 resultsListEl.style.display= 'none';
             }
-            
             resultsListEl.showAll = function (){
                 resultsListEl.style.display= 'block';
             }
@@ -297,14 +288,9 @@ export default class WeGeocoder {
             let iconCrossEl = originBuildIconCross.call(this)
             let self = this
             iconCrossEl.addEventListener("click", function () {
-                // if(marker){
-                //     marker.remove();
-                // }
-                // self._clearAll();
                 self._results = null
                 WeGeocoder.hideDetailFeatureFrame();
                 WeGeocoder.hideResultSearch();
-                // document.getElementById('place').style.display = 'none'
             });
             return iconCrossEl
         }
@@ -315,7 +301,10 @@ export default class WeGeocoder {
     initEventCloseDetailFrame(){
         var geocoder = this.geocoder
         document.getElementById('wemap-close-detail-button').addEventListener('click', function(){
-            geocoder.updateListMarker()
+            geocoder._removeMarkers()
+            if(geocoder._results && geocoder._results.features.length > 0){
+                geocoder._updateMarkers()
+            }
             WeGeocoder.hideDetailFeatureFrame()
         })
     }
@@ -325,123 +314,117 @@ export default class WeGeocoder {
      */
     initEvent(){
         let wegeocoder = this;
-        window.addEventListener('DOMContentLoaded', function() {
-            if(!wegeocoder.geocoder){
-                return
+        if(!wegeocoder.geocoder){
+            return
+        }
+        wegeocoder.updateInfoFromUrl()
+        var originBuildAndGetResult = wegeocoder.geocoder._buildAndGetResult
+        
+        wegeocoder.geocoder._buildAndGetResult = function(feature, index){
+            let self = this
+            let resultEl = originBuildAndGetResult.call(this, feature, index)
+            let lastChild = resultEl.lastElementChild
+            resultEl.removeChild(lastChild)
+            var name = '';
+            name = feature.properties.name ? (name + feature.properties.name ) : name;
+            name = feature.properties.street ? (name + ", " + feature.properties.street) : name;
+            var nameEl = this._boldingPartsOfStringAccordingToTheSearch(name, this._search);
+            nameEl.className = "name";
+            var labelWrapperEl = this._createElement({type: "span", class: "pelias-ctrl-wrapper-label"});
+            labelWrapperEl.appendChild(nameEl);
+            
+            if (feature.properties.country) {
+                // Add a span containing the dash separator.
+                var separatorEl = this._createElement({type: "span", class: "pelias-ctrl-separator"});
+                separatorEl.innerHTML = ' - ';
+                labelWrapperEl.appendChild(separatorEl);
+                var address = '';
+                address = feature.properties.county ? (address + feature.properties.county + ", ") : address;
+                address = feature.properties.region ? (address + feature.properties.region + ", ") : address;
+                address = feature.properties.country ? (address + feature.properties.country) : address;
+                // Add a span containing the location of the result with potentially bold span.
+                var locationEl = this._boldingPartsOfStringAccordingToTheSearch(address, this._search);
+                locationEl.className = "pelias-ctrl-location";
+                labelWrapperEl.appendChild(locationEl);
             }
-            wegeocoder.updateInfoFromUrl()
-            var originBuildAndGetResult = wegeocoder.geocoder._buildAndGetResult
-    
+        
+            resultEl.appendChild(labelWrapperEl);
             
-            wegeocoder.geocoder._buildAndGetResult = function(feature, index){
-                let self = this
-                let resultEl = originBuildAndGetResult.call(this, feature, index)
-                let lastChild = resultEl.lastElementChild
-                resultEl.removeChild(lastChild)
-                var name = '';
-                name = feature.properties.name ? (name + feature.properties.name ) : name;
-                name = feature.properties.street ? (name + ", " + feature.properties.street) : name;
-                var nameEl = this._boldingPartsOfStringAccordingToTheSearch(name, this._search);
-                nameEl.className = "name";
-                var labelWrapperEl = this._createElement({type: "span", class: "pelias-ctrl-wrapper-label"});
-                labelWrapperEl.appendChild(nameEl);
-                
-                if (feature.properties.country) {
-                    // Add a span containing the dash separator.
-                    var separatorEl = this._createElement({type: "span", class: "pelias-ctrl-separator"});
-                    separatorEl.innerHTML = ' - ';
-                    labelWrapperEl.appendChild(separatorEl);
-                    var address = '';
-                    address = feature.properties.county ? (address + feature.properties.county + ", ") : address;
-                    address = feature.properties.region ? (address + feature.properties.region + ", ") : address;
-                    address = feature.properties.country ? (address + feature.properties.country) : address;
-                    // Add a span containing the location of the result with potentially bold span.
-                    var locationEl = this._boldingPartsOfStringAccordingToTheSearch(address, this._search);
-                    locationEl.className = "pelias-ctrl-location";
-                    labelWrapperEl.appendChild(locationEl);
-                }
-            
-                resultEl.appendChild(labelWrapperEl);
-                
-                resultEl.addEventListener("focus", function () {
-                    self._goToFeatureLocation(feature);
-                    self._resultsListEl.showAll();
-                });
-                resultEl.addEventListener("click", function () {
+            resultEl.addEventListener("focus", function () {
+                self._goToFeatureLocation(feature);
+                self._resultsListEl.showAll();
+            });
+            resultEl.addEventListener("click", function () {
+                self._goToFeatureLocation(feature, true);
+            });
+            resultEl.addEventListener("keydown", function (e) {
+                if (self._eventMatchKey(e, self._keys.enter)) {
                     self._goToFeatureLocation(feature, true);
-                    // self._updateMarkers(feature)
+                }
+                if (self._eventMatchKey(e, self._keys.arrowUp)) {
+                    if (self._resultsListEl.childNodes[index - 1]) {
+                    self._resultsListEl.childNodes[index - 1].focus();
+                    } else if (index - 1 === -1) {
+                    self._inputEl.focus();
+                    }
+                }
+                if (self._eventMatchKey(e, self._keys.arrowDown) && self._resultsListEl.childNodes[index + 1]) {
+                    self._resultsListEl.childNodes[index + 1].focus();
+                }
                 });
-                resultEl.addEventListener("keydown", function (e) {
-                    if (self._eventMatchKey(e, self._keys.enter)) {
-                        self._goToFeatureLocation(feature, true);
-                    }
-                    if (self._eventMatchKey(e, self._keys.arrowUp)) {
-                        if (self._resultsListEl.childNodes[index - 1]) {
-                        self._resultsListEl.childNodes[index - 1].focus();
-                        } else if (index - 1 === -1) {
-                        self._inputEl.focus();
-                        }
-                    }
-                    if (self._eventMatchKey(e, self._keys.arrowDown) && self._resultsListEl.childNodes[index + 1]) {
-                        self._resultsListEl.childNodes[index + 1].focus();
-                    }
-                    });
-                return resultEl
+            return resultEl
+        }
+        wegeocoder.geocoder.getFeatureFromResultByLatLon = wegeocoder.getFeatureFromResultByLatLon
+        wegeocoder.geocoder._addAndGetCustomHtmlMarker = wegeocoder.overrideAddAndGetCustomHtmlMarker
+        wegeocoder.geocoder.showResultsSearch = wegeocoder.showResultsSearch
+        wegeocoder.geocoder.search = wegeocoder.overrideSearch
+        wegeocoder.geocoder._buildInputHTMLElement = wegeocoder.overrideBuildInputHTMLElement
+        wegeocoder.geocoder.updateListMarker = wegeocoder.updateListMarker
+        wegeocoder.initEventIconCross()
+        wegeocoder.initEventCloseDetailFrame()
+        wegeocoder.geocoder._goToFeatureLocation = function(feature, viewDetail){
+            let info = feature.properties
+            let osm_id = ''
+            let osm_type = ''
+            if(info.source == 'openstreetmap'){
+                var get_number = /[0-9]/g
+                osm_id = info.id.match(get_number).join('')
+                var get_text = /[a-zA-Z]/
+                osm_type = info.id.match(get_text).join('').toUpperCase()
             }
-            wegeocoder.geocoder.getFeatureFromResultByLatLon = wegeocoder.getFeatureFromResultByLatLon
-            wegeocoder.geocoder._addAndGetCustomHtmlMarker = wegeocoder.overrideAddAndGetCustomHtmlMarker
-            wegeocoder.geocoder.showResultsSearch = wegeocoder.showResultsSearch
-            wegeocoder.geocoder.search = wegeocoder.overrideSearch
-            wegeocoder.geocoder._buildInputHTMLElement = wegeocoder.overrideBuildInputHTMLElement
-            wegeocoder.geocoder.updateListMarker = wegeocoder.updateListMarker
-            wegeocoder.initEventIconCross()
-            wegeocoder.initEventCloseDetailFrame()
-            // var originGoToFeatureLocation = this.geocoder._goToFeatureLocation
-            wegeocoder.geocoder._goToFeatureLocation = function(feature, viewDetail){
-                let info = feature.properties
-                let osm_id = ''
-                let osm_type = ''
-                if(info.source == 'openstreetmap'){
-                    var get_number = /[0-9]/g
-                    osm_id = info.id.match(get_number).join('')
-                    var get_text = /[a-zA-Z]/
-                    osm_type = info.id.match(get_text).join('').toUpperCase()
-                }
-                if(viewDetail){
-                    this._removeMarkers()
-                    let name = info.name
-                    let type = feature.geometry.type
-                    let lat = feature.geometry.coordinates[0]
-                    let lon = feature.geometry.coordinates[1]
-                    let address = [info.street, info.county, info.region, info.country]
-                    wegeocoder.place.setAttribute({name, type, lat, lon,address ,osm_id, osm_type})
-                    wegeocoder.place.showDetailFeature()
-                    this._updateMarkers(feature);
-                }
-                // default goToFeature
-                var cameraOpts = {
-                    center: feature.geometry.coordinates,
-                    zoom: this._getBestZoom(feature)
-                };
-                if (this._useFlyTo(cameraOpts)) {
-                    this._map.flyTo(cameraOpts);
-                } else {
-                    this._map.jumpTo(cameraOpts);
-                }
-                
-                
-                if (feature.properties.source === 'whosonfirst' && ['macroregion', 'region', 'macrocounty', 'county', 'locality', 'localadmin', 'borough', 'macrohood', 'neighbourhood', 'postalcode'].indexOf(feature.properties.layer) >= 0) {
-                    this._showPolygon(feature.properties, cameraOpts.zoom);
-                } else {
-                    this._removePolygon();
-                }
-                // wemapgl.urlController.updatePlaceParams({ })
+            if(viewDetail){
+                this._removeMarkers()
+                let name = info.name
+                let type = feature.geometry.type
+                let lat = feature.geometry.coordinates[0]
+                let lon = feature.geometry.coordinates[1]
+                let address = [info.street, info.county, info.region, info.country]
+                wegeocoder.place.setAttribute({name, type, lat, lon,address ,osm_id, osm_type})
+                wegeocoder.place.showDetailFeature()
+                this._updateMarkers(feature);
             }
-            document.getElementById('wemap-click-detail').addEventListener('click', (e) => {
-                wegeocoder.updateInfoFromUrl()
-            })  
+            // default goToFeature
+            var cameraOpts = {
+                center: feature.geometry.coordinates,
+                zoom: this._getBestZoom(feature)
+            };
+            if (this._useFlyTo(cameraOpts)) {
+                this._map.flyTo(cameraOpts);
+            } else {
+                this._map.jumpTo(cameraOpts);
+            }
+            
+            
+            if (feature.properties.source === 'whosonfirst' && ['macroregion', 'region', 'macrocounty', 'county', 'locality', 'localadmin', 'borough', 'macrohood', 'neighbourhood', 'postalcode'].indexOf(feature.properties.layer) >= 0) {
+                this._showPolygon(feature.properties, cameraOpts.zoom);
+            } else {
+                this._removePolygon();
+            }
+        }
+        document.getElementById('wemap-click-detail').addEventListener('click', (e) => {
+            wegeocoder.updateInfoFromUrl()
+        })  
 
-        });
     }
 
     showResultsSearch(result) {
@@ -505,7 +488,6 @@ export default class WeGeocoder {
         let resultList = results.querySelectorAll("li");
         resultList.forEach(function (result, index) {
             result.onmouseover = function (e) {
-                // self._selectFeature(features[index]);
                 self._goToFeatureLocation(features[index]);
             }
             result.onclick = function (e) {
@@ -626,7 +608,6 @@ export default class WeGeocoder {
         if (detail_feature) {
             document.getElementById("wemap-detail-feature").style.display = "none";
         }
-        // deleteAllUrlParams()
         wemapgl.urlController.deleteParams("place")
     }
     static hideResultSearch() {
