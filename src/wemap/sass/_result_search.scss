@@ -3137,7 +3137,7 @@ textarea.form-text_input {
     font-size: 13px;
 }
 
-#no-result {
+#wemap-no-result {
     height: 30px;
     width: 400px;
     position: absolute;
@@ -3153,6 +3153,7 @@ textarea.form-text_input {
     -ms-border-radius: 5px;
     -o-border-radius: 5px;
     border-radius: 5px;
+    display: none;
 }
 
 /* star review */

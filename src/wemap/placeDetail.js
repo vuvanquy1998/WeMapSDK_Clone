@@ -19,14 +19,14 @@ export default class PlaceDetail{
     // // addMarker(this.options.lat, this.options.long);
     // document.getElementById('no-result').style.display = 'none';
     // // document.getElementById('place').style.display = 'none'
-    document.getElementById("detail-feature").style.display = "block";
-    let featureName = document.getElementById("feature-name");
+    document.getElementById("wemap-detail-feature").style.display = "block";
+    let featureName = document.getElementById("wemap-feature-name");
     let type = this.options.type
     let lat = this.options.lat
     let long = this.options.lon
     let name = this.options.name
     if(this.options.type != 'null'){
-        featureName.innerHTML = name+ "<br>" + "<div class='feature-type'>" + type + "</div>";
+        featureName.innerHTML = name+ "<br>" + "<div class='wemap-feature-type'>" + type + "</div>";
     }else{
         featureName.innerHTML = name;
     }
@@ -77,68 +77,68 @@ export default class PlaceDetail{
         //     '}">' +
         //     website +
         //     " </a>";
-        //   featureWebsite.className = "detail-feature-element";
+        //   featureWebsite.className = "wemap-detail-feature-element";
         // }else{
         //   featureWebsite.innerHTML = "";
-        //   featureWebsite.classList.remove("detail-feature-element border-top");
+        //   featureWebsite.classList.remove("wemap-detail-feature-element wemap-border-top");
         // }
         // if (phone) {
         //   featurePhone.innerHTML = '<i class="fas fa-phone"></i>' + phone;
-        //   featurePhone.className = "detail-feature-element";
+        //   featurePhone.className = "wemap-detail-feature-element";
         // }else{
         //   featurePhone.innerHTML = "";
-        //   featurePhone.classList.remove("detail-feature-element");
+        //   featurePhone.classList.remove("wemap-detail-feature-element");
         // }
         // // if (inrternet_access) {
         // //   featureInternet_access.innerHTML = '<i class="fas fa-wifi"></i>' + inrternet_access;
-        // //   featureInternet_access.className = "detail-feature-element";
+        // //   featureInternet_access.className = "wemap-detail-feature-element";
         // // }else{
         // //   featureInternet_access.innerHTML = "";
-        // //   featureInternet_access.classList.remove("detail-feature-element");
+        // //   featureInternet_access.classList.remove("wemap-detail-feature-element");
         // // }
         // // if (fax) {
         // //   featureFax.innerHTML = '<i class="fas fa-fax"></i>' + fax;
-        // //   featureFax.className = "detail-feature-element";
+        // //   featureFax.className = "wemap-detail-feature-element";
         // // }else{
         // //   featureFax.innerHTML = "";
-        // //   featureFax.classList.remove("detail-feature-element");
+        // //   featureFax.classList.remove("wemap-detail-feature-element");
         // // }
         // // if (email) {
         // //   featureEmail.innerHTML = '<i class="fas fa-envelope"></i>' + email;
-        // //   featureEmail.className = "detail-feature-element";
+        // //   featureEmail.className = "wemap-detail-feature-element";
         // // }else{
         // //   featureEmail.innerHTML = "";
-        // //   featureEmail.classList.remove("detail-feature-element");
+        // //   featureEmail.classList.remove("wemap-detail-feature-element");
         // // }
         // // if (level) {
         // //   featureLevel.innerHTML = '<i class="fas fa-layer-group"></i>' + level;
-        // //   featureLevel.className = "detail-feature-element";
+        // //   featureLevel.className = "wemap-detail-feature-element";
         // // }else{
         // //   featureLevel.innerHTML = "";
-        // //   featureLevel.classList.remove("detail-feature-element");
+        // //   featureLevel.classList.remove("wemap-detail-feature-element");
         // // }
         // // if (smoking) {
         // //   featureSmoking.innerHTML = '<i class="fas fa-smoking-ban"></i>' + smoking;
-        // //   featureSmoking.className = "detail-feature-element";
+        // //   featureSmoking.className = "wemap-detail-feature-element";
         // // }else{
         // //   featureSmoking.innerHTML = "";
-        // //   featureSmoking.classList.remove("detail-feature-element");
+        // //   featureSmoking.classList.remove("wemap-detail-feature-element");
         // // }
         // // if (stars) {
         // //   featureStars.innerHTML = '<i class="fas fa-star"></i>' + stars;
-        // //   featureStars.className = "detail-feature-element";
+        // //   featureStars.className = "wemap-detail-feature-element";
         // // }else{
         // //   featureStars.innerHTML = "";
-        // //   featureStars.classList.remove("detail-feature-element");
+        // //   featureStars.classList.remove("wemap-detail-feature-element");
         // // }
         // if (description) {
         //   featureDescription.innerHTML = description;
         //   featureDescription.style.borderBottom = "1px solid lightgray";
-        //   featureDescription.className = "detail-feature-element";
+        //   featureDescription.className = "wemap-detail-feature-element";
         //   featureDescription.style.marginTop = "0px";
         // }else{
         //   featureDescription.innerHTML = "";
-        //   featureDescription.classList.remove("detail-feature-element");
+        //   featureDescription.classList.remove("wemap-detail-feature-element");
         // }
         // if (opening_hours) {
         //   let opening_hour = opening_hours
@@ -152,10 +152,10 @@ export default class PlaceDetail{
         //     .replace(/;/gi, "<br>");
         //   featureOpening_hours.innerHTML =
         //     '<i class="fas fa-hourglass-start"></i> <span>' +opening_hour +'</span>';
-        //   featureOpening_hours.className = "detail-feature-element";
+        //   featureOpening_hours.className = "wemap-detail-feature-element";
         // }else{
         //   featureOpening_hours.innerHTML = "";
-        //   featureOpening_hours.classList.remove("detail-feature-element");
+        //   featureOpening_hours.classList.remove("wemap-detail-feature-element");
         // }
       });
     }
