@@ -55,10 +55,7 @@ export default class PlaceDetail{
       var key = 'vpstPRxkBBTLaZkOaCfAHlqXtCR'
       API.lookup({osmId: osmid, osmType: osmtype, key: key}, (data) => {
 
-        console.log('detail')
         let detail = data
-        console.log(detail)
-
         // let website = detail.extratags.website;
         // let description = detail.extratags.description;
         // let phone = detail.extratags.phone;
@@ -159,9 +156,8 @@ export default class PlaceDetail{
         // }
       });
     }
-
     document.getElementById('feature-directions').onclick =  function(e){
-      console.log('direction')
+      WeGeocoder.hideDetailFeatureFrame()
       wemapgl.urlController.updateParams("route", {ox: null, oy: null, dx: lat, dy: long})
     }
     // wemapgl.urlController.updateParams("place", {name, type, lat, long, address, osmid, osmtype})
