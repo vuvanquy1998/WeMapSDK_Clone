@@ -186,6 +186,7 @@ export default class Reverse{
      * @param {Object} data 
      */
     updateUrlDetailFeatures(data){     
+        wemapgl.urlController.deleteParams('route')
         wemapgl.urlController.updateParams("place", 
             {
                 name: data.properties.name, 
@@ -252,6 +253,7 @@ export default class Reverse{
      */
     clickDirectionIcon(){
         document.getElementById('wemap-direction-icon').addEventListener('click', (e) => {
+            wemapgl.urlController.deleteParams("place")
             wemapgl.urlController.updateParams("route", {
                 dx: this.receivedData.geometry.coordinates[0],
                 dy: this.receivedData.geometry.coordinates[1],
