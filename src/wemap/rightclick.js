@@ -83,12 +83,18 @@ export default class RightClick {
         })
     }
     /**
-     * close right click menu
+     * close right click menu when left click map
      */
     closeMenu(){
         this.map.on('click', (e) => {
             this.displayUI('right-click-menu-container', 'none')
         })
+    }
+    /**
+     * close right click menu ui
+     */
+    closeMenuUI(){
+        this.displayUI('right-click-menu-container', 'none')
     }
     /**
      * reverse when click 'Đây là đâu?' option in right click menu

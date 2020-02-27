@@ -19,7 +19,7 @@
     }
   },
   "lookup": {
-    "osmTypeId": "http://apis.wemap.asia/we-tools/lookup?key=",
+    "osmTypeId": "https://apis.wemap.asia/we-tools/lookup?key=",
     "osmId": "https://apis.wemap.asia/we-tools/lookup/"
   },
   "map": {
