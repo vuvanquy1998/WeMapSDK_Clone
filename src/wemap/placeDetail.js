@@ -164,6 +164,6 @@ export default class PlaceDetail{
       console.log('direction')
       wemapgl.urlController.updateParams("route", {ox: null, oy: null, dx: lat, dy: long})
     }
-    wemapgl.urlController.updateParams("place", {name, type, lat, long, address, osmid, osmtype})
+    // wemapgl.urlController.updateParams("place", {name, type, lat, long, address, osmid, osmtype})
   }
 }

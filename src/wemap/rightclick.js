@@ -24,30 +24,30 @@ export default class RightClick {
      */
     initView() {
         let rightClick = document.createElement('div')
-        rightClick.innerHTML = '<div id = "right-click-menu-container"' + "style = 'display: none'>" +
+        rightClick.innerHTML = '<div id = "wemap-right-click-menu-container"' + "style = 'display: none'>" +
             '</div>'
         document.body.appendChild(rightClick)
         let showBottomDetail = document.createElement('div')
-        showBottomDetail.innerHTML = '<div id="place" style="display: none">' +
-            '<div class="class-pl">' +
-            '<div class="image-place">' +
-            '<img class="placeicon" id="preview-image" src="https://map.fimo.com.vn/assets/images/no_street.png">' +
+        showBottomDetail.innerHTML = '<div id="wemap-place" style="display: none">' +
+            '<div class="wemap-class-pl">' +
+            '<div class="wemap-image-place">' +
+            '<img class="wemap-placeicon" id="wemap-preview-image" src="https://map.fimo.com.vn/assets/images/no_street.png">' +
             '</div>' +
-            '<div class="add-place">' +
-            '<button class="click-detail" id="click-detail">' +
-            '<a class="placename" id="placename">a</a>' +
-            '<a class="placeadd" id="placeadd">a</a>' +
+            '<div class="wemap-add-place">' +
+            '<button class="wemap-click-detail" id="wemap-click-detail">' +
+            '<a class="wemap-placename" id="wemap-placename">a</a>' +
+            '<a class="wemap-placeadd" id="wemap-placeadd">a</a>' +
             '</button>' +
 
-            '<div class="placelatlon"><a href="#" id="placelatlon"></a></div>' +
+            '<div class="wemap-placelatlon"><a href="#" id="wemap-placelatlon"></a></div>' +
             '</div>' +
-            '<div class="image-direc">' +
-            '<a id="direction-icon">'+
+            '<div class="wemap-image-direc">' +
+            '<a id="wemap-direction-icon">'+
             '<img src="http://maps.gstatic.com/tactile/reveal/directions-1x-20150909.png">' +
             '</a>'+
             '</div>' +
-            '<div class="close-place">' +
-            '<div id="placeclose" style="color: black;"><i class="fa fa-times"></i></div>' +
+            '<div class="wemap-close-place">' +
+            '<div id="wemap-placeclose" style="color: black;"><i class="fa fa-times"></i></div>' +
             '</div>' +
             '</div>' +
             '</div>'
@@ -62,8 +62,8 @@ export default class RightClick {
             let mouseY = e.point.y;
             let maxWidth = window.innerWidth;
             let maxHeight = window.innerHeight;
-            let contextMenuWidth = document.getElementById("right-click-menu-container").clientWidth;
-            let contextMenuHeight = document.getElementById("right-click-menu-container").clientHeight;
+            let contextMenuWidth = document.getElementById("wemap-right-click-menu-container").clientWidth;
+            let contextMenuHeight = document.getElementById("wemap-right-click-menu-container").clientHeight;
             let translateX = 0;
             let translateY = 0;
 
@@ -77,8 +77,8 @@ export default class RightClick {
             } else {
                 translateY = mouseY;
             }
-            this.displayUI('right-click-menu-container', 'block')
-            document.getElementById("right-click-menu-container").style.transform = `translate(${translateX}px,${translateY}px)`
+            this.displayUI('wemap-right-click-menu-container', 'block')
+            document.getElementById("wemap-right-click-menu-container").style.transform = `translate(${translateX}px,${translateY}px)`
             this.clickedPoi = e;
         })
     }
@@ -87,21 +87,21 @@ export default class RightClick {
      */
     closeMenu(){
         this.map.on('click', (e) => {
-            this.displayUI('right-click-menu-container', 'none')
+            this.displayUI('wemap-right-click-menu-container', 'none')
         })
     }
     /**
      * close right click menu ui
      */
     closeMenuUI(){
-        this.displayUI('right-click-menu-container', 'none')
+        this.displayUI('wemap-right-click-menu-container', 'none')
     }
     /**
      * reverse when click 'Đây là đâu?' option in right click menu
      */
     onReverse(){
-        document.getElementById('right-click-reverse').addEventListener('click', (event) => {
-            this.displayUI('right-click-menu-container', 'none')
+        document.getElementById('wemap-right-click-reverse').addEventListener('click', (event) => {
+            this.displayUI('wemap-right-click-menu-container', 'none')
             wemapgl.reverse.rightClick(this.clickedPoi)
         })
     }
@@ -121,22 +121,22 @@ export default class RightClick {
     addMenuItem(id, text){
         let newRightClickItem = document.createElement('div')
         newRightClickItem.setAttribute('id', id)
-        newRightClickItem.setAttribute('class', 'right-click-menu-item')
+        newRightClickItem.setAttribute('class', 'wemap-right-click-menu-item')
         newRightClickItem.innerText = text
 
-        document.getElementById('right-click-menu-container').appendChild(newRightClickItem)
+        document.getElementById('wemap-right-click-menu-container').appendChild(newRightClickItem)
     }
     addMenuItemStart(){
-        this.addMenuItem('right-click-start', 'Điểm bắt đầu')
+        this.addMenuItem('wemap-right-click-start', 'Điểm bắt đầu')
     }
     addMenuItemEnd(){
-        this.addMenuItem('right-click-end', 'Điểm kết thúc')
+        this.addMenuItem('wemap-right-click-end', 'Điểm kết thúc')
     }
     addMenuItemReverse(){
-        this.addMenuItem('right-click-reverse', 'Đây là đâu ?')
+        this.addMenuItem('wemap-right-click-reverse', 'Đây là đâu ?')
     }
     updateUrlStart(){
-        document.getElementById('right-click-start').addEventListener('click', (e)=> {
+        document.getElementById('wemap-right-click-start').addEventListener('click', (e)=> {
             wemapgl.urlController.updateParams("route", {
                 ox: this.clickedPoi.lngLat.lng,
                 oy: this.clickedPoi.lngLat.lat,
@@ -145,7 +145,7 @@ export default class RightClick {
         })
     }
     updateUrlEnd(){
-        document.getElementById('right-click-end').addEventListener('click', (e)=> {
+        document.getElementById('wemap-right-click-end').addEventListener('click', (e)=> {
             wemapgl.urlController.updateParams("route", {
                 dx: this.clickedPoi.lngLat.lng,
                 dy: this.clickedPoi.lngLat.lat,
