@@ -198,9 +198,6 @@ export default class WeGeocoder {
                 self._goToFeatureLocation(self._selectedFeature, true);
                 return;
             }
-            //  if(self._results){
-            //     console.log(self._results)
-            //  }
             
             // Arrow down -> focus on the first result.
             if (self._eventMatchKey(e, self._keys.arrowDown) && self._results && self._results.features[0]) {
