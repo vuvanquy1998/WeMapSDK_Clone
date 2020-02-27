@@ -1,6 +1,5 @@
 import { getJSON } from '../util/ajax'
 import { default as config } from '../config.json'; 
-import PlaceDetail from './placeDetail'
 
 export default class Reverse{
     /**
@@ -180,31 +179,31 @@ export default class Reverse{
      */
     clickonIcon(data){
         this.displayUI('wemap-place', 'none')
-        this.showDetailFeatures(data)
+        this.updateUrlDetailFeatures(data)
     }
     /**
-     * show UI of icon
+     * update URL to showDetailFeature
      * @param {Object} data 
      */
-    showDetailFeatures(data){     
-        let place = new PlaceDetail({
-            name: data.properties.name, 
-            type: data.type, 
-            lat: data.geometry.coordinates[1], 
-            lon: data.geometry.coordinates[0],
-            address: [
-                data.properties.housenumber,
-                data.properties.street, 
-                data.properties.district, 
-                data.properties.city, 
-                data.properties.country
-            ],
-            osm_id: data.properties.osm_id, 
-            osm_type: data.properties.osm_type
-        });
-        place.showDetailFeature()
+    updateUrlDetailFeatures(data){     
+        wemapgl.urlController.updateParams("place", 
+            {
+                name: data.properties.name, 
+                type: data.type, 
+                lat: data.geometry.coordinates[1], 
+                lon: data.geometry.coordinates[0],
+                address: [
+                    data.properties.housenumber,
+                    data.properties.street, 
+                    data.properties.district, 
+                    data.properties.city, 
+                    data.properties.country
+                ],
+                osm_id: data.properties.osm_id, 
+                osm_type: data.properties.osm_type
+            }
+        )
     }
-
     /**
      * render UI when point has no data
      */
@@ -237,11 +236,7 @@ export default class Reverse{
     clickBottomCard(){
         document.getElementById('wemap-click-detail').addEventListener('click', (e) => {
             this.displayUI('wemap-place', 'none')
-            this.showDetailFeatures(this.receivedData)
-            // wemapgl.urlController.updateParams("route", {
-            //     dx: this.receivedData.geometry.coordinates[0],
-            //     dy: this.receivedData.geometry.coordinates[1],
-            // })
+            this.updateUrlDetailFeatures(this.receivedData)
         })  
     }
     /**
