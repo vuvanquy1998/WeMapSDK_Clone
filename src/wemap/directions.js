@@ -132,6 +132,7 @@ export default class WeDirections {
             self._checkActiveGeocode();
             self._addDirectionIcon();
             self._rightClickHandler();
+            self._directionsFeatureControl();
             self._activeDefaultDriveMode();
             self._onReverseInput();
             self._inputChange();
@@ -198,8 +199,8 @@ export default class WeDirections {
     _rightClickHandler() {
         const self = this;
         const direction = self.weDirection;
-        const startHere = document.getElementById('right-click-start');
-        const endHere = document.getElementById('right-click-end');
+        const startHere = document.getElementById('wemap-right-click-start');
+        const endHere = document.getElementById('wemap-right-click-end');
 
         startHere.addEventListener('click', function() {
             self.activeDirections();
@@ -216,6 +217,23 @@ export default class WeDirections {
             const urlParams = wemapgl.urlController.getParams();
             if (urlParams.dx && urlParams.dy) {
                 const coords = [urlParams.dx, urlParams.dy];
+                direction.actions.setDestinationFromCoordinates(coords);
+            }
+        });
+    }
+
+    _directionsFeatureControl() {
+        // feature-controls
+        const self = this;
+        const direction = self.weDirection;
+        const featureControl = document.getElementById('wemap-feature-controls');
+
+        featureControl.addEventListener('click', function() {
+            self.activeDirections();
+            wemapgl.rightClick.closeMenuUI();
+            const urlParams = wemapgl.urlController.getParams();
+            if (urlParams.x && urlParams.y) {
+                const coords = [urlParams.x, urlParams.y];
                 direction.actions.setDestinationFromCoordinates(coords);
             }
         });
@@ -312,7 +330,6 @@ export default class WeDirections {
     _inputChange() {
         const self = this;
         const direction = self.weDirection;
-        const directionSelector = document.getElementById('mapbox-directions-form-area');
 
         const directionSelectorAll = document.querySelectorAll('.mapboxgl-ctrl-directions.mapboxgl-ctrl .mapbox-directions-component.mapbox-directions-inputs')[0];
 
@@ -379,7 +396,7 @@ export default class WeDirections {
         const self = this;
         const direction = self.weDirection;
 
-        const directionSelector = document.getElementById('direction-icon');
+        const directionSelector = document.getElementById('wemap-direction-icon');
         directionSelector.addEventListener('click', function(e) {
             self.activeDirections();
             const urlParams = wemapgl.urlController.getParams();
