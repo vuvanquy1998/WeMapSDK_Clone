@@ -1,8 +1,6 @@
 import { getJSON } from '../util/ajax'
 import { default as config } from '../config.json'; 
 import PlaceDetail from './placeDetail'
-import RightClick from './rightclick'
-import Url from './url.js'
 
 export default class Reverse{
     /**
@@ -34,7 +32,7 @@ export default class Reverse{
      * turn off reverse
      */
     offReverse(){
-        this.displayUI("place", "none")
+        this.displayUI("wemap-place", "none")
         this.on = false;
     }
     /**
@@ -108,6 +106,7 @@ export default class Reverse{
     onClick(e){
         let features = this.map.queryRenderedFeatures(e.point);
         this.getReverseData(e).then(data => {
+            console.log(data)
             if(data.features.length == 0){
                 this.showUiNoData(e.lngLat.lat, e.lngLat.lng)
             }else{
@@ -137,8 +136,8 @@ export default class Reverse{
      * @param {Object} data 
      */
     clickoutIcon(data, originalCoordinates){
-        this.displayUI('detail-feature', 'none')                
-        this.displayUI('place', 'block')    
+        //this.displayUI('wemap-detail-feature', 'none')                
+        this.displayUI('wemap-place', 'block')    
 
         let originalLat = originalCoordinates.lat;
         let originalLon = originalCoordinates.lng;
@@ -150,6 +149,7 @@ export default class Reverse{
             lat: data.geometry.coordinates[1],
             lon: data.geometry.coordinates[0]
         })
+        console.log(distance)
         let address = [data.properties.name, data.properties.street, data.properties.district, data.properties.city, data.properties.country]
 
         if(distance > 20){
@@ -161,7 +161,7 @@ export default class Reverse{
         for(let i = 0; i < 5; i++){
             let unit = address[i]
             if(unit){
-                document.getElementById('placename').innerHTML = unit
+                document.getElementById('wemap-placename').innerHTML = unit
                 lastI = i
                 break
             }
@@ -172,8 +172,8 @@ export default class Reverse{
                 secondLine.push(unit)
             }
         }
-        document.getElementById('placeadd').innerHTML = secondLine.join(', ')
-        document.getElementById('placelatlon').innerHTML = Number(data.geometry.coordinates[0]).toFixed(7)+' ,'+ Number(data.geometry.coordinates[1]).toFixed(7)    
+        document.getElementById('wemap-placeadd').innerHTML = secondLine.join(', ')
+        document.getElementById('wemap-placelatlon').innerHTML = Number(data.geometry.coordinates[0]).toFixed(7)+' ,'+ Number(data.geometry.coordinates[1]).toFixed(7)    
         this.receivedData = data                          
     }
     /**
@@ -181,7 +181,7 @@ export default class Reverse{
      * @param {Object} data 
      */
     clickonIcon(data){
-        this.displayUI('place', 'none')
+        this.displayUI('wemap-place', 'none')
         this.showDetailFeatures(data)
     }
     /**
@@ -212,12 +212,12 @@ export default class Reverse{
      */
 
     showUiNoData(lat, lon){
-        this.displayUI('detail-feature', 'none')
-        this.displayUI('place', 'block')
+        //this.displayUI('wemap-detail-feature', 'none')
+        this.displayUI('wemap-place', 'block')
 
-        document.getElementById('placename').innerHTML = "Không có thông tin"
-        document.getElementById('placeadd').innerHTML = "Không có thông tin"
-        document.getElementById('placelatlon').innerHTML = Number(lon).toFixed(7)+' ,'+ Number(lat).toFixed(7)
+        document.getElementById('wemap-placename').innerHTML = "Không có thông tin"
+        document.getElementById('wemap-placeadd').innerHTML = "Không có thông tin"
+        document.getElementById('wemap-placelatlon').innerHTML = Number(lon).toFixed(7)+' ,'+ Number(lat).toFixed(7)
     }
     /**
      * 
@@ -237,36 +237,35 @@ export default class Reverse{
      * show feature detail when click reverse bottom card
      */
     clickBottomCard(){
-        document.getElementById('click-detail').addEventListener('click', (e) => {
-            this.displayUI('place', 'none')
+        document.getElementById('wemap-click-detail').addEventListener('click', (e) => {
+            this.displayUI('wemap-place', 'none')
             this.showDetailFeatures(this.receivedData)
+            // wemapgl.urlController.updateParams("route", {
+            //     dx: this.receivedData.geometry.coordinates[0],
+            //     dy: this.receivedData.geometry.coordinates[1],
+            // })
         })  
     }
     /**
      * close reverse bottom card
      */
     closeBottomCard(){
-        document.getElementById('placeclose').addEventListener('click', (e) => {
-            this.displayUI('place', 'none')
+        document.getElementById('wemap-placeclose').addEventListener('click', (e) => {
+            this.displayUI('wemap-place', 'none')
         })
     }
     /**
      * change url when click direction icon
      */
     clickDirectionIcon(){
-        document.getElementById('direction-icon').addEventListener('click', (e) => {
-            // wemapgl.urlController.updateRouteParams({
-            //     dx: this.receivedData.geometry.coordinates[0],
-            //     dy: this.receivedData.geometry.coordinates[1],
-            //     action: true
-            // })
+        document.getElementById('wemap-direction-icon').addEventListener('click', (e) => {
             wemapgl.urlController.updateParams("route", {
                 dx: this.receivedData.geometry.coordinates[0],
                 dy: this.receivedData.geometry.coordinates[1],
-                action: true
             })
         })
     }
+
     /**
      * change style of html element by id
      * @param {*} id 

@@ -1,4 +1,4 @@
-#place {
+#wemap-place {
     z-index: 9998;
     height: 72px;
     min-height: 10px;
@@ -12,32 +12,32 @@
     border-radius: 5px;
     box-sizing: border-box;
 }
-.class-pl {
+.wemap-class-pl {
     display: flex;
 }
-.image-place {
+.wemap-image-place {
     height: 64px;
     width: 96px;
     margin: 4px;
     position: relative;
     background-size: 96px 64px;
 }
-.add-place {
+.wemap-add-place {
     padding: 8px;
     display: flex;
     flex-direction: column;
 }
-.image-direc img {
+.wemap-image-direc img {
     margin-right: 5px;
     padding: 22px;
     opacity: 0.7;
     cursor: pointer;
 }
 
-.image-direc img:hover {
+.wemap-image-direc img:hover {
     opacity: 1;
 }
-#placeclose {
+#wemap-placeclose {
     position: absolute;
     right: 5px;
     top: -1px;
@@ -47,12 +47,12 @@
     opacity: 0.54;
 }
 
-#placeclose:hover {
+#wemap-placeclose:hover {
     font-weight: bold;
     opacity: 1;
     cursor: pointer;
 }
-#place>.placeicon {
+#wemap-place>.wemap-placeicon {
     height: 64px;
     width: 96px;
     margin: 4px;
@@ -60,7 +60,7 @@
     background-size: 96px 64px;
     overflow: hidden;
 }
-.placename {
+.wemap-placename {
     font-size: 12px;
     font-family: roboto;
     max-width: 192px;
@@ -73,7 +73,7 @@
     float: left;
     padding-bottom: 6px;
 }
-.placeadd {
+.wemap-placeadd {
     font-size: 12px;
     font-family: roboto;
     overflow: hidden;
@@ -82,7 +82,7 @@
     text-decoration: none;
     color: black;
     float: left;
-    max-width: 192px;
+    max-width: 170px;
     padding-bottom: 6px;
 }
 .fa-times:before {
@@ -91,7 +91,7 @@
     opacity: 0.6;
     font-size: 14px;
 }
-.placelatlon {
+.wemap-placelatlon {
     font-size: 12px;
     font-family: roboto;
     color: #999999;
@@ -99,12 +99,13 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    padding-left: 7px;
 }
 
-.placelatlon:hover {
+.wemap-placelatlon:hover {
     color: blue;
 }
-.click-detail {
+.wemap-click-detail {
     display: flex;
     flex-direction: column;
     width: 192px;
@@ -114,10 +115,10 @@
     cursor: pointer;
 }
 
-.click-detail a:hover, .click-detail a:focus {
+.wemap-click-detail a:hover, .wemap-click-detail a:focus {
     color: blue;
 }
-.marker-arrow {
+.wemap-marker-arrow {
     width: 30px;
     height: 30px;
     border-radius: 50% 50% 50% 0;
@@ -125,7 +126,7 @@
     transform: rotate(-45deg);
     margin: -36px 0 0 0;
 }
-.marker-arrow::after {
+.wemap-marker-arrow::after {
     content: '';
     width: 14px;
     height: 14px;
