@@ -226,8 +226,7 @@ export default class WeDirections {
         // feature-controls
         const self = this;
         const direction = self.weDirection;
-        const featureControl = document.getElementById('wemap-feature-controls');
-        // const featureControl = document.getElementById('feature-controls');
+        const featureControl = document.getElementById('wemap-feature-directions');
 
         featureControl.addEventListener('click', function() {
             self.activeDirections();

@@ -157,7 +157,7 @@ export default class PlaceDetail{
         // }
       });
     }
-    document.getElementById('wemap-feature-controls').onclick =  function(e){
+    document.getElementById('wemap-feature-directions').onclick =  function(e){
       WeGeocoder.hideDetailFeatureFrame()
       wemapgl.urlController.updateParams("route", {ox: null, oy: null, dx: lat, dy: long})
     }
