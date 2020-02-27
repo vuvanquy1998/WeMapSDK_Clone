@@ -61,7 +61,7 @@ export default class WeGeocoder {
             }
             catch(err) {
                 window.addEventListener('DOMContentLoaded', function() {
-                geocoder._customHtmlMarkers.push(geocoder._addAndGetCustomHtmlMarker([info.lon, info.lat]));
+                 geocoder._customHtmlMarkers.push(geocoder._addAndGetCustomHtmlMarker([info.lon, info.lat]));
                 })
              }
          }
