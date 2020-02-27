@@ -16,9 +16,10 @@ export default class WeGeocoder {
         WeGeocoder.min_chars = this.options.suggestion.min_chars
         this.geocoder = this.init(this.options)
         this.resultAutocompele = null
+        this.place = new PlaceDetail()
         this.initMultiView()
         this.initEvent()
-        this.place = this.updateInfoFromUrl()
+        
         return this.geocoder
     }
 
@@ -53,7 +54,7 @@ export default class WeGeocoder {
             // }
             place.setAttribute({
                 name: info.name, type: info.type,
-                lat: info.lat, lon: info.long, address: info.address, osm_id: info.osmid, osm_type: info.osmtype
+                lat: info.lat, lon: info.lon, address: info.address, osm_id: info.osmid, osm_type: info.osmtype
             });
             place.showDetailFeature()
             // var cameraOpts = {
@@ -323,6 +324,7 @@ export default class WeGeocoder {
         if(!this.geocoder){
             return
         }
+        this.place.updateInfoFromUrl()
         var originBuildAndGetResult = this.geocoder._buildAndGetResult
 
         let wegeocoder = this
