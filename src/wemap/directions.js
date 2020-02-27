@@ -227,6 +227,7 @@ export default class WeDirections {
         const self = this;
         const direction = self.weDirection;
         const featureControl = document.getElementById('wemap-feature-controls');
+        // const featureControl = document.getElementById('feature-controls');
 
         featureControl.addEventListener('click', function() {
             self.activeDirections();
@@ -397,13 +398,22 @@ export default class WeDirections {
         const direction = self.weDirection;
 
         const directionSelector = document.getElementById('wemap-direction-icon');
+
+        let o = document.querySelectorAll('#mapbox-directions-origin-input input')[0];
+        let d = document.querySelectorAll('#mapbox-directions-destination-input input')[0];
+
         directionSelector.addEventListener('click', function(e) {
             self.activeDirections();
             const urlParams = wemapgl.urlController.getParams();
             if (urlParams.dx && urlParams.dy) {
                 const coords = [urlParams.dx, urlParams.dy];
                 direction.actions.setDestinationFromCoordinates(coords);
-                wemapgl.reverse.offReverse();
+                // wemapgl.reverse.offReverse();
+                if (o.value && d.value) {
+                    wemapgl.reverse.onReverse();
+                } else {
+                    wemapgl.reverse.offReverse();
+                }
             }
         });
     }
