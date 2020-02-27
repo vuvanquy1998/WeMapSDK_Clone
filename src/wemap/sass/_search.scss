@@ -85,8 +85,8 @@ button {
 .fa-times:before {
   content: "\f00d";
   color: black;
-  opacity: 0.6;
-  font-size: 14px;
+  opacity: 0.8;
+  font-size: 20px;
 }
 #wemap-detail-feature {
   display: none;
@@ -278,6 +278,8 @@ i {
 }
 #wemap-icon-cross-noresult {
     float: right;
+    cursor: pointer;
+    display: none;
 }
 
 #wemap-results-search {

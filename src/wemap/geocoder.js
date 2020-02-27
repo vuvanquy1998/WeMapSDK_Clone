@@ -287,17 +287,7 @@ export default class WeGeocoder {
     }
 
     initEventIconCross(){
-        var originBuildResultsListHTMLElement = this.geocoder._buildResultsListHTMLElement
-        this.geocoder._buildResultsListHTMLElement = function(){
-            var resultsListEl = originBuildResultsListHTMLElement.call(this)
-            resultsListEl.hideAll = function (){
-                resultsListEl.style.display= 'none';
-            }
-            resultsListEl.showAll = function (){
-                resultsListEl.style.display= 'block';
-            }
-            return resultsListEl
-        }
+        
         var originBuildIconCross = this.geocoder._buildIconCrossHTMLElement
         this.geocoder._buildIconCrossHTMLElement = function(){
             let iconCrossEl = originBuildIconCross.call(this)
@@ -306,6 +296,7 @@ export default class WeGeocoder {
                 self._results = null
                 WeGeocoder.hideDetailFeatureFrame();
                 WeGeocoder.hideResultSearch();
+                WeGeocoder.hideNoResult()
             });
             return iconCrossEl
         }
@@ -318,7 +309,7 @@ export default class WeGeocoder {
         document.getElementById('wemap-close-detail-button').addEventListener('click', function(){
             geocoder._removeMarkers()
             if(geocoder._results && geocoder._results.features.length > 0){
-                geocoder._updateMarkers()
+                geocoder.updateListMarker()
             }
             WeGeocoder.hideDetailFeatureFrame()
         })
@@ -396,6 +387,17 @@ export default class WeGeocoder {
         wegeocoder.geocoder._buildInputHTMLElement = wegeocoder.overrideBuildInputHTMLElement
         wegeocoder.geocoder.updateListMarker = wegeocoder.updateListMarker
         wegeocoder.initEventIconCross()
+        var originBuildResultsListHTMLElement = wegeocoder.geocoder._buildResultsListHTMLElement
+        wegeocoder.geocoder._buildResultsListHTMLElement = function(){
+            var resultsListEl = originBuildResultsListHTMLElement.call(this)
+            resultsListEl.hideAll = function (){
+                resultsListEl.style.display= 'none';
+            }
+            resultsListEl.showAll = function (){
+                resultsListEl.style.display= 'block';
+            }
+            return resultsListEl
+        }
         wegeocoder.initEventCloseDetailFrame()
         wegeocoder.geocoder._goToFeatureLocation = function(feature, viewDetail){
             let info = feature.properties

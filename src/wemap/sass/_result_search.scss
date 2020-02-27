@@ -3138,15 +3138,15 @@ textarea.form-text_input {
 }
 
 #wemap-no-result {
-    height: 30px;
+    height: 35px;
     width: 400px;
     position: absolute;
     margin-left: 20px;
     margin-top: 70px;
     background: white;
-    padding: 7px;
+    color: #444343;
+    padding: 10px;
     text-align: center;
-    color: #b1aeae;
     border: 2px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -3154,6 +3154,8 @@ textarea.form-text_input {
     -o-border-radius: 5px;
     border-radius: 5px;
     display: none;
+    box-shadow: 2px 4px 3px rgba(0, 0, 0, 0.2), 3px 1px 1px rgba(0, 0, 0, 0.02);
+    
 }
 
 /* star review */
