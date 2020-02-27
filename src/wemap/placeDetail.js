@@ -2,7 +2,7 @@ import API from "./api";
 import WeGeocoder from "./geocoder";
 
 export default class PlaceDetail{
-  // name, type, lat, long, address, osm_id, osm_type
+  // name, type, lat, lon, address, osm_id, osm_type
   constructor(options){
     options = options ||{}
     this.options = options
@@ -16,15 +16,16 @@ export default class PlaceDetail{
    * show detail Feature
   */
   showDetailFeature(){
-    // // addMarker(this.options.lat, this.options.long);
+    // // addMarker(this.options.lat, this.options.lon);
     // document.getElementById('no-result').style.display = 'none';
     // // document.getElementById('place').style.display = 'none'
     document.getElementById("wemap-detail-feature").style.display = "block";
     let featureName = document.getElementById("wemap-feature-name");
     let type = this.options.type
     let lat = this.options.lat
-    let long = this.options.lon
+    let lon = this.options.lon
     let name = this.options.name
+    console.log(this.options)
     if(this.options.type != 'null'){
         featureName.innerHTML = name+ "<br>" + "<div class='wemap-feature-type'>" + type + "</div>";
     }else{
@@ -34,7 +35,7 @@ export default class PlaceDetail{
     var address_result = WeGeocoder.getAddress(address)
     let featureCoordinates = document.getElementById("feature-coordinates");
     featureCoordinates.innerHTML =
-        '<i class="fa fa-compass"></i>  ' + lat + ", " + long;
+        '<i class="fa fa-compass"></i>  ' + lat + ", " + lon;
     let featureLocation = document.getElementById("feature-location");
     featureLocation.innerHTML = '<i class="fa fa-map"></i>  ' + address_result;
     
@@ -158,8 +159,8 @@ export default class PlaceDetail{
     }
     document.getElementById('feature-directions').onclick =  function(e){
       WeGeocoder.hideDetailFeatureFrame()
-      wemapgl.urlController.updateParams("route", {ox: null, oy: null, dx: lat, dy: long})
+      wemapgl.urlController.updateParams("route", {ox: null, oy: null, dx: lat, dy: lon})
     }
-    wemapgl.urlController.updateParams("place", {name, type, lat, long, address, osmid, osmtype})
+    // wemapgl.urlController.updateParams("place", {name, type, lat, lon, address, osmid, osmtype})
   }
 }
