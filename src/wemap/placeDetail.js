@@ -50,7 +50,6 @@ export default class PlaceDetail{
     let lat = this.options.lat
     let lon = this.options.lon
     let name = this.options.name
-    console.log(this.options)
     if(this.options.type != 'null'){
         featureName.innerHTML = name+ "<br>" + "<div class='wemap-feature-type'>" + type + "</div>";
     }else{
