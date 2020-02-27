@@ -57,7 +57,6 @@ function PeliasGeocoder(opts) {
 }
 
 PeliasGeocoder.prototype.onAdd = function (map) {
-  console.log('on add')
   this._map = map;
 
   var wrapperEl = this._createElement({class: 'pelias-ctrl mapboxgl-ctrl'});
@@ -571,7 +570,6 @@ PeliasGeocoder.prototype._addOrRemoveClassToElement = function (element, add, cl
 };
 
 PeliasGeocoder.prototype._useFlyTo = function (cameraOpts) {
-  console.log(cameraOpts)
   if (this.opts.flyTo === 'hybrid') {
     return this._areNear(cameraOpts.center, this._coordinatesToArray(this._map.getCenter()), this._getFlyToToleranceByZoom(this._map.getZoom()));
   }

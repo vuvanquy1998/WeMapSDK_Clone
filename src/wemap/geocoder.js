@@ -47,21 +47,23 @@ export default class WeGeocoder {
 
     updateInfoFromUrl(){
         let info = wemapgl.urlController.getParams()
-        if (info.lat) {
+        let lat = parseFloat(info.lat)
+        let lon = parseFloat(info.lon)
+        if (lat) {
             this.place.setAttribute({
                 name: info.name, type: info.type,
-                lat: info.lat, lon: info.lon, address: info.address, osm_id: info.osmid, osm_type: info.osmtype
+                lat: lat, lon: lon, address: info.address, osm_id: info.osmid, osm_type: info.osmtype
             });
             this.geocoder._removeMarkers()
             this.geocoder._results = null
             this.place.showDetailFeature()
             let geocoder = this.geocoder
             try {
-                geocoder._customHtmlMarkers.push(geocoder._addAndGetCustomHtmlMarker([info.lon, info.lat]));
+                geocoder._customHtmlMarkers.push(geocoder._addAndGetCustomHtmlMarker([lon, lat]));
             }
             catch(err) {
                 window.addEventListener('DOMContentLoaded', function() {
-                 geocoder._customHtmlMarkers.push(geocoder._addAndGetCustomHtmlMarker([info.lon, info.lat]));
+                    geocoder._customHtmlMarkers.push(geocoder._addAndGetCustomHtmlMarker([lon, lat]));
                 })
              }
          }
@@ -113,33 +115,34 @@ export default class WeGeocoder {
 
     overrideAddAndGetCustomHtmlMarker(coordinates) {
         let self = this
+
         let marker = new mapboxgl.Marker(this.opts.marker.icon.cloneNode(true))
             .setLngLat(coordinates)
             .addTo(this._map)
-            var popup = new mapboxgl.Popup({
+        var popup = new mapboxgl.Popup({
             closeButton: false,
             closeOnClick: false 
-            });
-            
-            let feature = this.getFeatureFromResultByLatLon(coordinates)
-            if(!feature){
-                return marker
-            }
-            marker.setPopup(popup)
-            let address = [feature.properties.street, feature.properties.county,
-                feature.properties.region, feature.properties.country]
-            address = WeGeocoder.getAddress(address)
-            let viewPopup = '<div class="viewPopup">'+
-            '<div class="popupname">' + feature.properties.name+ '</div>'+
-            '<div class="popupaddress">' + address + '</div>'+
-            '<div class="popuplatlon">' + feature.geometry.coordinates[0] + ', ' + feature.geometry.coordinates[1] + '</div>'+
-            '</div>'
-            popup.setHTML(viewPopup)
-            marker._map.off('click', marker._onMapClick);
-            marker._map.off('mousedown', marker._addDragHandler);
-            marker._map.off('touchstart', marker._addDragHandler);
-            marker._map.off('mousemove', marker._onMove);
-            marker._element.onmouseenter =  function(e){
+        });
+        
+        let feature = this.getFeatureFromResultByLatLon(coordinates)
+        if(!feature){
+            return marker
+        }
+        marker.setPopup(popup)
+        let address = [feature.properties.street, feature.properties.county,
+            feature.properties.region, feature.properties.country]
+        address = WeGeocoder.getAddress(address)
+        let viewPopup = '<div class="viewPopup">'+
+        '<div class="popupname">' + feature.properties.name+ '</div>'+
+        '<div class="popupaddress">' + address + '</div>'+
+        '<div class="popuplatlon">' + feature.geometry.coordinates[0] + ', ' + feature.geometry.coordinates[1] + '</div>'+
+        '</div>'
+        popup.setHTML(viewPopup)
+        marker._map.off('click', marker._onMapClick);
+        marker._map.off('mousedown', marker._addDragHandler);
+        marker._map.off('touchstart', marker._addDragHandler);
+        marker._map.off('mousemove', marker._onMove);
+        marker._element.onmouseenter =  function(e){
             const targetElement = e.target;
             const element = marker._element;
         
@@ -149,16 +152,16 @@ export default class WeGeocoder {
                 let popup = marker._popup;
                 popup.addTo(marker._map);
             }
-            };
-            
-            marker._element.onmouseout =  function(e){
-            marker._popup.remove()
-            };
-            marker._element.onclick =  function(e){
-            self._goToFeatureLocation(feature, true)
-            };
+        };
         
-            return marker
+        marker._element.onmouseout =  function(e){
+            marker._popup.remove()
+        };
+        marker._element.onclick =  function(e){
+            self._goToFeatureLocation(feature, true)
+        };
+    
+        return marker
         };
         
 
@@ -189,6 +192,10 @@ export default class WeGeocoder {
         inputEl.addEventListener("focus", function(e){
             self._resultsListEl.showAll();
             // document.getElementById('wemap-close-detail-button')
+            self._removeMarkers()
+            if(self._results && self._results.features.length > 0){
+                self._updateMarkers()
+            }
             self.updateListMarker()
             WeGeocoder.hideDetailFeatureFrame()
         })
@@ -269,6 +276,14 @@ export default class WeGeocoder {
             }
         })
         return inputEl
+    }
+
+    initEventDirection(){
+        document.getElementById('wemap-feature-directions').onclick =  function(e){
+            WeGeocoder.hideDetailFeatureFrame()
+            this.geocoder._clearAll()
+            wemapgl.urlController.updateParams("route", {ox: null, oy: null, dx: lat, dy: lon})
+        }
     }
 
     initEventIconCross(){
@@ -396,8 +411,8 @@ export default class WeGeocoder {
                 this._removeMarkers()
                 let name = info.name
                 let type = feature.geometry.type
-                let lat = feature.geometry.coordinates[0]
-                let lon = feature.geometry.coordinates[1]
+                let lat = feature.geometry.coordinates[1]
+                let lon = feature.geometry.coordinates[0]
                 let address = [info.street, info.county, info.region, info.country]
                 wegeocoder.place.setAttribute({name, type, lat, lon,address ,osm_id, osm_type})
                 wegeocoder.place.showDetailFeature()
@@ -594,6 +609,20 @@ export default class WeGeocoder {
             '        <div id="feature-phone">'+
             '        </div>'+
             '        <div id="feature-opening-hours">'+
+            '        </div>'+
+            '        <div id="feature-internt-access">'+
+            '        </div>'+
+            '        <div id="feature-fax">'+
+            '        </div>'+
+            '        <div id="feature-email">'+
+            '        </div>'+
+            '        <div id="feature-level">'+
+            '        </div>'+
+            '        <div id="feature-smoking">'+
+            '        </div>'+
+            '        <div id="feature-stars">'+
+            '        </div>'+
+            '        <div id="feature-smoking">'+
             '        </div>'+
             '    </div>'+
             '</div>'
