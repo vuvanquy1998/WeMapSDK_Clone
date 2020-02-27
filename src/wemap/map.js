@@ -43,6 +43,17 @@ export default class WeMap {
         // disable attribution control by default
         mapboxOptions.attributionControl = false;
 
+        // load WeMap's default center, zoom level
+        switch(mapboxOptions.center) {
+            case null: case undefined: case []:
+                mapboxOptions.center = config.map.center;
+        }
+
+        switch(mapboxOptions.zoom) {
+            case null: case undefined:
+                mapboxOptions.zoom = config.map.zoom;
+        }
+
         // init mapbox
         this.map = new wemapgl.Map(mapboxOptions);
 
