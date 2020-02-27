@@ -106,7 +106,6 @@ export default class Reverse{
     onClick(e){
         let features = this.map.queryRenderedFeatures(e.point);
         this.getReverseData(e).then(data => {
-            console.log(data)
             if(data.features.length == 0){
                 this.showUiNoData(e.lngLat.lat, e.lngLat.lng)
             }else{
@@ -149,7 +148,6 @@ export default class Reverse{
             lat: data.geometry.coordinates[1],
             lon: data.geometry.coordinates[0]
         })
-        console.log(distance)
         let address = [data.properties.name, data.properties.street, data.properties.district, data.properties.city, data.properties.country]
 
         if(distance > 20){
