@@ -16,7 +16,7 @@ export default class PlaceDetail{
    * show detail Feature
   */
   showDetailFeature(){
-    // // addMarker(this.options.lat, this.options.lon);
+    // // addMarker(this.options.lat, this.options.long);
     // document.getElementById('no-result').style.display = 'none';
     // // document.getElementById('place').style.display = 'none'
     document.getElementById("wemap-detail-feature").style.display = "block";
@@ -157,10 +157,18 @@ export default class PlaceDetail{
         // }
       });
     }
-    document.getElementById('feature-directions').onclick =  function(e){
+    document.getElementById('wemap-feature-directions').onclick =  function(e){
       WeGeocoder.hideDetailFeatureFrame()
       wemapgl.urlController.updateParams("route", {ox: null, oy: null, dx: lat, dy: lon})
     }
-    // wemapgl.urlController.updateParams("place", {name, type, lat, lon, address, osmid, osmtype})
+
+    // wemapgl.urlController.updateParams("place", {name, type, lat, long, address, osmid, osmtype})
   }
+
+    // _showDetailFeature() {
+    //   // TODO: Need fix
+    //     // document.getElementById("wemap-detail-feature").style.display = "block";
+    //     // wemapgl.urlController.updateParams("route", {ox: null, oy: null, dx: lat, dy: long})
+
+    // }
 }

@@ -577,7 +577,7 @@ export default class WeGeocoder {
             '    </div>'+
             '</div>'+
             '<div id="wemap-feature-controls">'+
-            '    <div class="wemap-feature-control" id="feature-directions">'+
+            '    <div class="wemap-feature-control" id="wemap-feature-directions">'+
             '        <i class="fa fa-arrow-right "></i><span>Chỉ đường</span>'+
             '    </div>'+
             '    <div class="wemap-feature-control">'+

@@ -110,7 +110,9 @@ export default class Geocoder {
         URLAutoComplete = this.api + encodeURIComponent(q.trim()) + '.json?' + options.join('&');
         // this.request.open('GET', this.api + encodeURIComponent(q.trim()) + '.json?' + options.join('&'), true);
     } else {
-        URLAutoComplete = this.api + encodeURIComponent(q.trim()) + '&key=' + accessToken + '&boundary.country=VNM';
+        URLAutoComplete = this.api + encodeURIComponent(q.trim()) + '&key=' + accessToken
+            + '&boundary.country=VNM'
+            + '&focus.point.lat=' + this._map.getCenter().lat + '&focus.point.lon=' + this._map.getCenter().lng;
     }
 
     this.request.open('GET', URLAutoComplete , true);
