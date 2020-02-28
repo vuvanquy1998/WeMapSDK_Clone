@@ -170,7 +170,7 @@ export default class PlaceDetail{
     }
     
     
-    // wemapgl.urlController.updateParams("place", {name, type, lat, lon, address, osmid, osmtype})
+    wemapgl.urlController.updateParams("place", {name, type, lat, lon, address, osmid, osmtype})
   // }
 
     // _showDetailFeature() {
