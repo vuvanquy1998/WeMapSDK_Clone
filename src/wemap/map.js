@@ -3,6 +3,7 @@ import RightClick from './rightclick';
 import UrlController from './url';
 
 import { default as config } from '../config.json';
+import API from './api';
 
 export default class WeMap {
     /**
@@ -92,6 +93,13 @@ export default class WeMap {
             compact: false,
             customAttribution: ["© WeMap"]
         }));
-    }
 
+    //    this.testApi();
+    }
+    // testApi() {
+    //     API.lookup({osmId: '165367635', osmType: 'W', key: this.options.key}, (data) =>{
+    //         console.log("123");
+    //         console.log(data);
+    //     })
+    // }
 }

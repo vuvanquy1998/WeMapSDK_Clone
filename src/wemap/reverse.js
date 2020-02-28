@@ -227,7 +227,7 @@ export default class Reverse{
             this.marker.remove();
         }
         let iconMarkerEl = document.createElement("div");
-        iconMarkerEl.innerHTML = "<div class='wemap-marker-arrow'></div>"
+        iconMarkerEl.innerHTML = "<div class='wemap-marker-arrow wemap-background-color-red'></div>"
                     + "<div class='wemap-marker-pulse'></div>";
         this.marker = new wemapgl.Marker(iconMarkerEl).setLngLat([lon, lat]).addTo(this.map);
     }
@@ -237,6 +237,7 @@ export default class Reverse{
     clickBottomCard(){
         document.getElementById('wemap-click-detail').addEventListener('click', (e) => {
             this.displayUI('wemap-place', 'none')
+            this.marker.remove();
             this.updateUrlDetailFeatures(this.receivedData)
         })  
     }

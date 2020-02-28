@@ -16,7 +16,7 @@ export default class API {
             url: url,
             method: 'GET'
         }, (error, data) => {
-            callback(data);
+             callback(data);
         });
     }
 }

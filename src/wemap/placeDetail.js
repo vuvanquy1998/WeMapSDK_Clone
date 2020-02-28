@@ -70,17 +70,20 @@ export default class PlaceDetail{
         
         if (result && result[0] && result[0].extratags) {
           let data = result[0].extratags
-          console.log(data)
-          let website = data.extratags.website;
-          let description = data.extratags.description;
-          let phone = data.extratags.phone;
-          let fax = data.extratags.fax;
-          let email = data.extratags.email
-          let level = data.extratags.level
-          let smoking = data.extratags.smoking
-          let stars = data.extratags.stars
-          let opening_hours = data.extratags.opening_hours;
-          let inrternet_access = data.extratags.inrternet_access;
+          // console.log(data.extratags.opening_hours)
+
+          let website = data.website;
+          let description = data.description;
+          let phone = data.phone;
+          let fax = data.fax;
+          let email = data.email
+          let level = data.level
+          let smoking = data.smoking
+          let stars = data.stars
+          let opening_hours = data.opening_hours;
+          let inrternet_access = data.inrternet_access;
+          // console.log(opening_hours)
+
           if (website) {
             featureWebsite.innerHTML =
               '<i class="fas fa-home"></i>' +
@@ -89,14 +92,17 @@ export default class PlaceDetail{
               '}">' +
               website +
               " </a>";
+              
             featureWebsite.className = "wemap-detail-feature-element";
-          }else{
+          }else{ 
             featureWebsite.innerHTML = "";
-            featureWebsite.classList.remove("wemap-detail-feature-element wemap-border-top");
+            featureWebsite.classList.remove("wemap-detail-feature-element");
+            featureWebsite.classList.remove("wemap-border-top");
           }
           if (phone) {
             featurePhone.innerHTML = '<i class="fas fa-phone"></i>' + phone;
             featurePhone.className = "wemap-detail-feature-element";
+            
           }else{
             featurePhone.innerHTML = "";
             featurePhone.classList.remove("wemap-detail-feature-element");
@@ -151,6 +157,8 @@ export default class PlaceDetail{
           }else{
             featureDescription.innerHTML = "";
             featureDescription.classList.remove("wemap-detail-feature-element");
+            
+
           }
           if (opening_hours) {
             let opening_hour = opening_hours
@@ -162,8 +170,9 @@ export default class PlaceDetail{
               .replace(/Sa/gi, "Thứ 7")
               .replace(/Su/gi, "Chủ nhật")
               .replace(/;/gi, "<br>");
+
             featureOpening_hours.innerHTML =
-              '<i class="fas fa-hourglass-start"></i> <span>' +opening_hour +'</span>';
+              '<i class="fas fa fa-clock-o"></i> <span>' +opening_hour +'</span>';
             featureOpening_hours.className = "wemap-detail-feature-element";
           }else{
             featureOpening_hours.innerHTML = "";
