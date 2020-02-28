@@ -14,7 +14,15 @@ export default class PlaceDetail{
     this.options = options
   }
   
-
+  initEventDirection(lat, lon){
+    
+    document.getElementById('wemap-feature-directions').onclick =  function(e){
+        WeGeocoder.hideDetailFeatureFrame()
+        // this.geocoder._clearAll()
+        
+        wemapgl.urlController.updateParams("route", {ox: null, oy: null, dx: lat, dy: lon})
+    }
+  }
 
 
   /**
@@ -187,6 +195,6 @@ export default class PlaceDetail{
     //   // TODO: Need fix
     //     // document.getElementById("wemap-detail-feature").style.display = "block";
     //     // wemapgl.urlController.updateParams("route", {ox: null, oy: null, dx: lat, dy: long})
-
+    this.initEventDirection(this.options.lat, this.options.lon)
     }
 }

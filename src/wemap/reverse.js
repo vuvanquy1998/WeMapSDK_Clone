@@ -147,6 +147,9 @@ export default class Reverse{
             lat: data.geometry.coordinates[1],
             lon: data.geometry.coordinates[0]
         })
+        console.log(data)
+        console.log(address)
+
         let address = [data.properties.name, data.properties.street, data.properties.district, data.properties.city, data.properties.country]
 
         if(distance > 20){
@@ -212,7 +215,7 @@ export default class Reverse{
     showUiNoData(lat, lon){
         //this.displayUI('wemap-detail-feature', 'none')
         this.displayUI('wemap-place', 'block')
-
+        this.receivedData = {}
         document.getElementById('wemap-placename').innerHTML = "Không có thông tin"
         document.getElementById('wemap-placeadd').innerHTML = "Không có thông tin"
         document.getElementById('wemap-placelatlon').innerHTML = Number(lon).toFixed(7)+' ,'+ Number(lat).toFixed(7)
@@ -238,7 +241,11 @@ export default class Reverse{
         document.getElementById('wemap-click-detail').addEventListener('click', (e) => {
             this.displayUI('wemap-place', 'none')
             this.marker.remove();
-            this.updateUrlDetailFeatures(this.receivedData)
+            console.log(this.receivedData)
+            if(Object.keys(this.receivedData).length){
+                this.updateUrlDetailFeatures(this.receivedData)
+            }
+            
         })  
     }
     /**
