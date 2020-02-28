@@ -288,6 +288,8 @@ export default class WeGeocoder {
         document.getElementById('wemap-feature-directions').onclick =  function(e){
             // WeGeocoder.hideDetailFeatureFrame()
             // this.geocoder._clearAll()
+            WeGeocoder.hideResultSearch()
+            WeGeocoder.hideNoResult()
             wegeocoder.geocoder._removeMarkers()
             // wemapgl.urlController.updateParams("route", {ox: null, oy: null, dx: lat, dy: lon})
         }
