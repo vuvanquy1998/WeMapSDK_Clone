@@ -186,7 +186,7 @@ export default class Reverse{
      * @param {Object} data 
      */
     updateUrlDetailFeatures(data){     
-        wemapgl.urlController.deleteParams('route')
+        // wemapgl.urlController.deleteParams('route')
         wemapgl.urlController.updateParams("place", 
             {
                 name: data.properties.name, 
