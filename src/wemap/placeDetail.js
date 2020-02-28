@@ -63,15 +63,13 @@ export default class PlaceDetail{
     let osmtype = this.options.osm_type
     
     if(osmid){
-      console.log('has osm id')
-      var key = this.key
+      // console.log('has osm id')
+      const key = this.key
       API.lookup({osmId: osmid, osmType: osmtype, key: key}, (result) => {
-        console.log(result)
+        // console.log(result)
         
         if (result && result[0] && result[0].extratags) {
           let data = result[0].extratags
-          // console.log(data.extratags.opening_hours)
-
           let website = data.website;
           let description = data.description;
           let phone = data.phone;
@@ -82,8 +80,6 @@ export default class PlaceDetail{
           let stars = data.stars
           let opening_hours = data.opening_hours;
           let inrternet_access = data.inrternet_access;
-          // console.log(opening_hours)
-
           if (website) {
             featureWebsite.innerHTML =
               '<i class="fas fa-home"></i>' +
