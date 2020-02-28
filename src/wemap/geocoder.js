@@ -278,6 +278,11 @@ export default class WeGeocoder {
         return inputEl
     }
 
+    initEventClickBottomCard(){
+        document.getElementById('wemap-click-detail').addEventListener('click', (e) => {
+            this.updateInfoFromUrl()
+        })  
+    }
     initEventDirection(){
         document.getElementById('wemap-feature-directions').onclick =  function(e){
             WeGeocoder.hideDetailFeatureFrame()
@@ -387,6 +392,7 @@ export default class WeGeocoder {
         wegeocoder.geocoder._buildInputHTMLElement = wegeocoder.overrideBuildInputHTMLElement
         wegeocoder.geocoder.updateListMarker = wegeocoder.updateListMarker
         wegeocoder.initEventIconCross()
+        wegeocoder.initEventClickBottomCard()
         var originBuildResultsListHTMLElement = wegeocoder.geocoder._buildResultsListHTMLElement
         wegeocoder.geocoder._buildResultsListHTMLElement = function(){
             var resultsListEl = originBuildResultsListHTMLElement.call(this)
@@ -438,9 +444,7 @@ export default class WeGeocoder {
                 this._removePolygon();
             }
         }
-        document.getElementById('wemap-click-detail').addEventListener('click', (e) => {
-            wegeocoder.updateInfoFromUrl()
-        })  
+        
 
     }
 
