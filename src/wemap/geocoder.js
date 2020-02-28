@@ -332,6 +332,7 @@ export default class WeGeocoder {
         if(!wegeocoder.geocoder){
             return
         }
+
         wegeocoder.updateInfoFromUrl()
         var originBuildAndGetResult = wegeocoder.geocoder._buildAndGetResult
         
@@ -668,4 +669,13 @@ export default class WeGeocoder {
         }
     }
 
+    static removeAllMarker() {
+        // .mapboxgl-marker.mapboxgl-marker-anchor-center
+        const markers = document.querySelectorAll('div.mapboxgl-marker.mapboxgl-marker-anchor-center');
+        markers.forEach(ele => {
+            ele.remove();
+            wemapgl.WeGeocoder.hideResultSearch();
+            wemapgl.WeGeocoder.hideNoResult();
+        });
+    }
 }

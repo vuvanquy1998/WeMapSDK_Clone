@@ -439,6 +439,7 @@ export default class WeDirections {
             directionOpen.addEventListener('click', () => {
                 // console.log('Active direction');
                 self.activeDirections();
+                wemapgl.WeGeocoder.removeAllMarker();
             });
         }
 
