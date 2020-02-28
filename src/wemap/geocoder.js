@@ -7,7 +7,7 @@ export default class WeGeocoder {
         this.options = options
         this.options.params = {'key': this.options.key}
         this.options.url = config.search.url
-        delete this.options.key
+        
         this.options.suggestion.min_chars |= 4
         if(!this.options.marker){
             this.options.marker = {}
@@ -16,10 +16,10 @@ export default class WeGeocoder {
         WeGeocoder.min_chars = this.options.suggestion.min_chars
         this.geocoder = this.init(this.options)
         this.resultAutocompele = null
-        this.place = new PlaceDetail()
+        this.place = new PlaceDetail({key: this.options.key})
         this.initMultiView()
         this.initEvent()
-        
+        delete this.options.key
         return this.geocoder
     }
 
