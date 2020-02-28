@@ -1,5 +1,6 @@
 import {default as config} from '../config.json';
 import MapboxDirections from '../mapbox-gl-directions/dist/mapbox-gl-directions';
+import WeGeocode from '../mapbox-gl-directions/dist/mapbox-gl-directions';
 
 /**
  * WeDirections show direction
