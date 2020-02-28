@@ -287,6 +287,7 @@ export default class WeGeocoder {
         document.getElementById('wemap-feature-directions').onclick =  function(e){
             WeGeocoder.hideDetailFeatureFrame()
             this.geocoder._clearAll()
+            this.geocoder._removeMarkers()
             wemapgl.urlController.updateParams("route", {ox: null, oy: null, dx: lat, dy: lon})
         }
     }
@@ -393,6 +394,7 @@ export default class WeGeocoder {
         wegeocoder.geocoder.updateListMarker = wegeocoder.updateListMarker
         wegeocoder.initEventIconCross()
         wegeocoder.initEventClickBottomCard()
+        wegeocoder.initEventDirection()
         var originBuildResultsListHTMLElement = wegeocoder.geocoder._buildResultsListHTMLElement
         wegeocoder.geocoder._buildResultsListHTMLElement = function(){
             var resultsListEl = originBuildResultsListHTMLElement.call(this)
