@@ -1,0 +1,18 @@
+#wemap-preview-image {
+    background-image: url("../img/place-icon.png"); /* The image used */
+    background-color: #e6e6e6; /* Used if the image is unavailable */
+    height: 100%;
+    width: 100%;
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover; /* Resize the background image to cover the entire container */
+}
+
+#wemap-click-detail {
+    #wemap-placeadd {
+        font-family: Roboto, Arial, sans-serif, inherit;
+        max-width: 210px;
+    }
+}
+
+

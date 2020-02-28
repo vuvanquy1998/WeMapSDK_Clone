@@ -31,7 +31,7 @@ export default class RightClick {
         showBottomDetail.innerHTML = '<div id="wemap-place" style="display: none">' +
             '<div class="wemap-class-pl">' +
             '<div class="wemap-image-place">' +
-            '<img class="wemap-placeicon" id="wemap-preview-image" src="https://map.fimo.com.vn/assets/images/no_street.png">' +
+            '<img class="wemap-placeicon" id="wemap-preview-image">' +
             '</div>' +
             '<div class="wemap-add-place">' +
             '<button class="wemap-click-detail" id="wemap-click-detail">' +
