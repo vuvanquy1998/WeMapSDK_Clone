@@ -63,14 +63,14 @@ export default class PlaceDetail{
     let osmtype = this.options.osm_type
     
     if(osmid){
-      console.log('has osm id')
-      var key = this.key
+      // console.log('has osm id')
+      const key = this.key
       API.lookup({osmId: osmid, osmType: osmtype, key: key}, (result) => {
-        console.log(result)
+        // console.log(result)
         
         if (result && result[0] && result[0].extratags) {
           let data = result[0].extratags
-          console.log(data)
+          // console.log(data)
           let website = data.extratags.website;
           let description = data.extratags.description;
           let phone = data.extratags.phone;
