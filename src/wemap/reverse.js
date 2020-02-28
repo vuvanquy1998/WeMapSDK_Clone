@@ -147,8 +147,6 @@ export default class Reverse{
             lat: data.geometry.coordinates[1],
             lon: data.geometry.coordinates[0]
         })
-        console.log(data)
-        console.log(address)
 
         let address = [data.properties.name, data.properties.street, data.properties.district, data.properties.city, data.properties.country]
 
@@ -241,7 +239,6 @@ export default class Reverse{
         document.getElementById('wemap-click-detail').addEventListener('click', (e) => {
             this.displayUI('wemap-place', 'none')
             this.marker.remove();
-            console.log(this.receivedData)
             if(Object.keys(this.receivedData).length){
                 this.updateUrlDetailFeatures(this.receivedData)
             }
