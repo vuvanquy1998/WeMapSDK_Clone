@@ -450,8 +450,7 @@ export default class WeGeocoder {
                 this._removePolygon();
             }
         }
-        
-
+        wegeocoder.clickedToResultLists()
     }
 
     showResultsSearch(result) {
@@ -676,6 +675,17 @@ export default class WeGeocoder {
             ele.remove();
             wemapgl.WeGeocoder.hideResultSearch();
             wemapgl.WeGeocoder.hideNoResult();
+        });
+    }
+
+    clickedToResultLists() {
+        // .pelias-ctrl-results.pelias-ctrl-shadow
+        window.addEventListener('DOMContentLoaded', function() {
+            const peliasSelector =
+                document.querySelectorAll('div.pelias-ctrl-results.pelias-ctrl-shadow')[0];
+            peliasSelector.addEventListener('click', () => {
+                wemapgl.reverse.removeMarkerAndHideUI();
+            });
         });
     }
 }

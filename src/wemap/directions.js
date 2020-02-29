@@ -440,6 +440,7 @@ export default class WeDirections {
                 // console.log('Active direction');
                 self.activeDirections();
                 wemapgl.WeGeocoder.removeAllMarker();
+                wemapgl.WeGeocoder.hideDetailFeatureFrame();
             });
         }
 

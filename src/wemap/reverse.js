@@ -243,7 +243,14 @@ export default class Reverse{
                 this.updateUrlDetailFeatures(this.receivedData)
             }
             
-        })  
+        })
+    }
+
+    removeMarkerAndHideUI() {
+        this.displayUI('wemap-place', 'none');
+        if (this.marker) {
+            this.marker.remove();
+        }
     }
     /**
      * close reverse bottom card
