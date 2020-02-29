@@ -288,7 +288,7 @@ export default class WeDirections {
         // Active traffic mode
         if (mode === 'traffic') {
             traffic.checked = true;
-        } else if (mode === 'driving') {
+        } else if (mode === 'driving' || mode === 'default') {
             driving.checked = true;
         } else if (mode === 'walking') {
             walking.checked = true;
@@ -476,7 +476,9 @@ export default class WeDirections {
             document.querySelectorAll('div.mapboxgl-ctrl-directions.mapboxgl-ctrl')[0];
 
         directionSelector.classList.remove("hide");
-        peliasSelector.classList.add("hide");
+        if(peliasSelector) {
+            peliasSelector.classList.add("hide");
+        }
         // interactive
         direction.interactive(true);
         direction._map._interactive = true;

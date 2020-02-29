@@ -35,13 +35,13 @@
     });
 
     let wd =  new wemapgl.WeDirections({
-        mode: 'cycling',
+        mode: 'default',
         key: "vpstPRxkBBTLaZkOaCfAHlqXtCR",
         engine: 'osrm',
         // interactive: true, // Enable action Directions, default: false
-        geocoder: {
-            engine: 'pelias',
-        }
+        // geocoder: {
+        //     engine: 'pelias',
+        // }
     });
 
     map.addControl(wd, 'top-left');

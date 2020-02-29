@@ -32,7 +32,8 @@ export default class PlaceDetail{
     // // addMarker(this.options.lat, this.options.long);
     // document.getElementById('no-result').style.display = 'none';
     // // document.getElementById('place').style.display = 'none'
-    document.getElementById("wemap-detail-feature").style.display = "block";
+    const featureDetail = document.getElementById("wemap-detail-feature");
+    featureDetail.style.display = "block";
     let featureName = document.getElementById("wemap-feature-name");
     let type = this.options.type
     let lat = this.options.lat
