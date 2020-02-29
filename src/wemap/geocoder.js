@@ -469,11 +469,12 @@ export default class WeGeocoder {
                 WeGeocoder.hideNoResult()
             })
             return 
-        }   
+        }
         WeGeocoder.hideNoResult()
         WeGeocoder.showResultSearch()
 
         let features = result.features;
+        self._goToFeatureLocation(features[0])
         let resultFeatures = '';
         features.forEach(function (feature, i) {
             if (i < features.length) {

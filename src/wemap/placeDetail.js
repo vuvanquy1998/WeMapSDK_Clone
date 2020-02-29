@@ -22,6 +22,7 @@ export default class PlaceDetail{
         WeGeocoder.removeAllMarker()
         WeGeocoder.hideResultSearch()
             WeGeocoder.hideNoResult()
+        WeGeocoder.hideResultAutocompele()
         wemapgl.urlController.updateParams("route", {ox: null, oy: null, dx: lat, dy: lon})
     }
   }
