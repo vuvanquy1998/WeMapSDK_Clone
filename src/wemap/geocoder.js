@@ -291,6 +291,7 @@ export default class WeGeocoder {
             WeGeocoder.hideResultSearch()
             WeGeocoder.hideNoResult()
             wegeocoder.geocoder._removeMarkers()
+            WeGeocoder.removeAllMarker()
             // wemapgl.urlController.updateParams("route", {ox: null, oy: null, dx: lat, dy: lon})
         }
     }

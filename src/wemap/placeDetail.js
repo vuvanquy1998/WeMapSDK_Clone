@@ -19,7 +19,9 @@ export default class PlaceDetail{
     document.getElementById('wemap-feature-directions').onclick =  function(e){
         WeGeocoder.hideDetailFeatureFrame()
         // this.geocoder._clearAll()
-        
+        WeGeocoder.removeAllMarker()
+        WeGeocoder.hideResultSearch()
+            WeGeocoder.hideNoResult()
         wemapgl.urlController.updateParams("route", {ox: null, oy: null, dx: lat, dy: lon})
     }
   }
