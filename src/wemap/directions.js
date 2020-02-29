@@ -228,15 +228,17 @@ export default class WeDirections {
         const direction = self.weDirection;
         const featureControl = document.getElementById('wemap-feature-directions');
 
-        featureControl.addEventListener('click', function() {
-            self.activeDirections();
-            wemapgl.rightClick.closeMenuUI();
-            const urlParams = wemapgl.urlController.getParams();
-            if (urlParams.x && urlParams.y) {
-                const coords = [urlParams.x, urlParams.y];
-                direction.actions.setDestinationFromCoordinates(coords);
-            }
-        });
+        if (featureControl) {
+            featureControl.addEventListener('click', function() {
+                self.activeDirections();
+                wemapgl.rightClick.closeMenuUI();
+                const urlParams = wemapgl.urlController.getParams();
+                if (urlParams.x && urlParams.y) {
+                    const coords = [urlParams.x, urlParams.y];
+                    direction.actions.setDestinationFromCoordinates(coords);
+                }
+            });
+        }
     }
 
     /**
