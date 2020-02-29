@@ -223,6 +223,7 @@ export default class WeDirections {
         });
     }
 
+    // TODO: recheck
     _clickResultSearchHandler() {
         const self = this;
         const direction = self.weDirection;
