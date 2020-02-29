@@ -136,6 +136,7 @@ export default class WeDirections {
             self._activeDefaultDriveMode();
             self._onReverseInput();
             self._inputChange();
+            self._clickResultSearchHandler();
             self._urlPreChecking();
             self._urlCheckChange();
         });
@@ -219,6 +220,30 @@ export default class WeDirections {
                 const coords = [urlParams.dx, urlParams.dy];
                 direction.actions.setDestinationFromCoordinates(coords);
             }
+        });
+    }
+
+    _clickResultSearchHandler() {
+        const self = this;
+        const direction = self.weDirection;
+        // .f-control.feature-directions
+        // const peliasSelector =
+        //     document.querySelectorAll('div.pelias-ctrl.mapboxgl-ctrl')[0];
+        // .pelias-ctrl-results.pelias-ctrl-shadow
+        let searchPelias = document.querySelectorAll(".pelias-ctrl-results.pelias-ctrl-shadow")[0];
+        searchPelias.addEventListener('change', function () {
+            let elements = document.getElementsByClassName("wemap-directions");
+            console.log(elements);
+            elements.forEach(element => {
+                console.log('element: ', element);
+                element.addEventListener('click', function () {
+                    const urlParams = wemapgl.urlController.getParams();
+                    if (urlParams.x && urlParams.y) {
+                        const coords = [urlParams.x, urlParams.y];
+                        direction.actions.setDestinationFromCoordinates(coords);
+                    }
+                });
+            });
         });
     }
 

@@ -480,7 +480,7 @@ export default class WeGeocoder {
             if (i < features.length) {
             resultFeatures = resultFeatures + '<li class="js-poicard poicard">' +
                 '<div class="f-control feature-directions">' +
-                '<i id="directions" class="fa fa-arrow-right"  class="routing-button">' + '</i>' +
+                '<i class="fa fa-arrow-right wemap-directions"  class="routing-button">' + '</i>' +
                 '<div class="result-way">' + 'Đường đi' + '</div>' +
                 '</div>' +
                 '<div class="poicard-info w_rating">' +
@@ -538,22 +538,25 @@ export default class WeGeocoder {
             if (e.stopPropagation) e.stopPropagation();
             }
             let routing = result.querySelector('.f-control');
+
             routing.onclick = function (e) {
-            if (!e) var e = window.event;
-            e.cancelBubble = true;
-            if (e.stopPropagation) e.stopPropagation();
-            navigator.geolocation.getCurrentPosition(function (currentLocation) {
-                var a = document.getElementById('lat-log');
-                var coordinates = a.textContent.replace(/\s/g, '');
-                url = window.location.host
-                + '?x=' + viewX
-                + '&y=' + viewY
-                + '&z=' + viewZ
-                + '&x1=' + currentLocation.coords.longitude + "&y1=" + currentLocation.coords.latitude
-                + '&x2=' + coordinates.split(",")[0] + '&y2=' + coordinates.split(",")[1];
-                window.open(url, "_self");
-            });
-        
+                if (!e) var e = window.event;
+                e.cancelBubble = true;
+                if (e.stopPropagation) e.stopPropagation();
+                let urlInfo = wemapgl.urlController.getParams();
+                wemapgl.urlController.updateParams("route", {dx: urlInfo.x , dy: urlInfo.y })
+            // navigator.geolocation.getCurrentPosition(function (currentLocation) {
+            //     var a = document.getElementById('lat-log');
+            //     var coordinates = a.textContent.replace(/\s/g, '');
+            //     url = window.location.host
+            //     + '?x=' + viewX
+            //     + '&y=' + viewY
+            //     + '&z=' + viewZ
+            //     + '&x1=' + currentLocation.coords.longitude + "&y1=" + currentLocation.coords.latitude
+            //     + '&x2=' + coordinates.split(",")[0] + '&y2=' + coordinates.split(",")[1];
+            //     window.open(url, "_self");
+            // });
+
             }
             let star = result.querySelector('.stars');
             star.onclick = function (e) {
@@ -664,7 +667,7 @@ export default class WeGeocoder {
     static hideResultAutocompele() {
         let resultAutocompele = document.getElementsByClassName(
             "pelias-ctrl-results-list"
-        );
+        )[0];
         if (resultAutocompele) {
             resultAutocompele.style.display = "none";
         }
