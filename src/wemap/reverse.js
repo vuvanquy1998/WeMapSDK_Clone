@@ -14,6 +14,7 @@ export default class Reverse{
         this.pointLayers = [];
         this.receivedData = {};
         this.marker;
+        this.polygon = false;
   
         this.getStyle();
         this.leftClick();
@@ -67,19 +68,36 @@ export default class Reverse{
         })
     }
     /**
-     * get reverse data object by e.lngLat
+     * get reverse data by e.lngLat
      * @param {*} e 
      */
     getReverseData(e){
         return new Promise((res, rej) => {
             getJSON({
-                url:`${config.reverse}${this.key}&lat=${e.lngLat.lat}&lon=${e.lngLat.lng}`,
+                // url:`${config.reverse}${this.key}&lat=${e.lngLat.lat}&lon=${e.lngLat.lng}`,
+                url: `https://apis.wemap.asia/geocode-1/reverse?point.lat=${e.lngLat.lat}&point.lon=${e.lngLat.lng}&key=vpstPRxkBBTLaZkOaCfAHlqXtCR`,
                 method: 'GET'
             }, (err, data) => {
                 if(err) rej(err)
                 else res(data)
             })
         })
+    }
+    /**
+     * get reverse polygon when the first reverse returns distance > 20m
+     * @param {*} e 
+     */
+    getReversePolygonData(e){
+        return new Promise((res, rej) => {
+            getJSON({
+                // url:`${config.reverse}${this.key}&lat=${e.lngLat.lat}&lon=${e.lngLat.lng}`,
+                url: `https://apis.wemap.asia/we-tools/pip/${e.lngLat.lng}/${e.lngLat.lat}?key=vpstPRxkBBTLaZkOaCfAHlqXtCR`,
+                method: 'GET'
+            }, (err, data) => {
+                if(err) rej(err)
+                else res(data)
+            })
+        })  
     }
     /**
      * handle reverse event of left click
@@ -103,56 +121,77 @@ export default class Reverse{
      * @param {Object} e 
      */
     onClick(e){
-        let features = this.map.queryRenderedFeatures(e.point);
+        let isIcon = this.isIcon(e);
         this.getReverseData(e).then(data => {
-            if(data.features.length == 0){
-                this.showUiNoData(e.lngLat.lat, e.lngLat.lng)
-            }else{
-                if(features.length == 0){
-                    this.clickoutIcon(data.features[0], e.lngLat)
-                }else{
-                    let notPointLayer = 0
+            console.log('first reverse', data)
+            let allPoints = data.features;
+            let nPoints = allPoints.length;
 
-                    features.forEach((feature,index) => {
-                        if(this.pointLayers.includes(feature.layer.id)){
-                            this.clickonIcon(data.features[0]);
-                            notPointLayer += 1
-                        }
-                    });
-
-                    if(notPointLayer == 0){
-                        this.clickoutIcon(data.features[0], e.lngLat)
-                    }
+            let notIconAndFarDistance = false;
+            if(nPoints != 0 && !isIcon){
+                let satisfied = this.checkDistance(allPoints[0])
+                if(!satisfied){
+                    notIconAndFarDistance = true;
                 }
+            }
+
+            if(nPoints == 0 || notIconAndFarDistance){
+                this.getReversePolygonData(e).then(secondData => {
+                    console.log(secondData)
+                    if(secondData.error){
+                        this.showUiNoData(e.lngLat.lat, e.lngLat.lng);
+                    }else{
+                        this.polygon = true;
+                        this.clickoutIcon({
+                            locality: secondData.locality[0].name,
+                            county: secondData.county[0].name,
+                            region: secondData.region[0].name,
+                            country: secondData.country[0].name,
+                            continent: secondData.continent[0].name,
+                            geometry:{coordinates: [e.lngLat.lng, e.lngLat.lat]}, 
+                        })
+                    }
+                })
+            }else if(!isIcon){
+                this.polygon = false;
+                this.clickoutIcon(allPoints[0]);
+            }else{
+                this.clickonIcon(allPoints[0]);
             }
             this.addMarker(e.lngLat.lng, e.lngLat.lat)
         })
         .catch(err => console.log(err))
     }
     /**
+     * check if click event is clicking on icon or not
+     * @param {*} e 
+     */
+    isIcon(e){
+        let features = this.map.queryRenderedFeatures(e.point);
+        let isIcon = false;
+        for(let i = 0; i < features.length; i++){
+            if(this.pointLayers.includes(features[i].layer.id)){
+                isIcon = true;
+                break;
+            }
+        }
+        return isIcon;
+    }
+    /**
      * render ui when clicked point is not an icon
      * @param {Object} data 
      */
-    clickoutIcon(data, originalCoordinates){
-        //this.displayUI('wemap-detail-feature', 'none')                
-        this.displayUI('wemap-place', 'block')    
-
-        let originalLat = originalCoordinates.lat;
-        let originalLon = originalCoordinates.lng;
-
-        let distance = this.getDistance({
-            lat: originalLat,
-            lon: originalLon
-        }, {
-            lat: data.geometry.coordinates[1],
-            lon: data.geometry.coordinates[0]
-        })
-        let address = [data.properties.name, data.properties.street, data.properties.district, data.properties.city, data.properties.country]
-
-        if(distance > 20){
-            address.shift();
+    clickoutIcon(data){
+        //this.displayUI('wemap-detail-feature', 'none')    
+        wemapgl.urlController.deleteParams('route')          
+        wemapgl.urlController.deleteParams('place')  
+        this.displayUI('wemap-place', 'block');
+        let address = [];
+        if(this.polygon){
+            address = [data.locality, data.county, data.region, data.country, data.continent]
+        }else{
+            address = [data.properties.name, data.properties.street, data.properties.district, data.properties.city, data.properties.country]
         }
-
         let secondLine = []
         let lastI = 0
         for(let i = 0; i < 5; i++){
@@ -174,11 +213,23 @@ export default class Reverse{
         this.receivedData = data                          
     }
     /**
+     * check whether the reverse data returns distance < 20m 
+     * @param {*} data 
+     */
+    checkDistance(data){
+        let satisfied = false;
+        if(data.properties.distance <= 0.02){
+            satisfied = true;
+        }
+        return satisfied;
+    }
+    /**
      * render ui when a icon is clicked
      * @param {Object} data 
      */
     clickonIcon(data){
         this.displayUI('wemap-place', 'none')
+        this.polygon = false
         this.updateUrlDetailFeatures(data)
     }
     /**
@@ -186,9 +237,16 @@ export default class Reverse{
      * @param {Object} data 
      */
     updateUrlDetailFeatures(data){     
-        wemapgl.urlController.deleteParams('route')
-        wemapgl.urlController.updateParams("place", 
-            {
+        let urlParams = {}
+        if(this.polygon){
+            urlParams = {
+                name: data.locality,
+                address: [data.county, data.region, data.country, data.continent],
+                lat: data.geometry.coordinates[1],
+                lon: data.geometry.coordinates[0]
+            }
+        }else{
+            urlParams = {
                 name: data.properties.name, 
                 type: data.type, 
                 lat: data.geometry.coordinates[1], 
@@ -203,7 +261,9 @@ export default class Reverse{
                 osm_id: data.properties.osm_id, 
                 osm_type: data.properties.osm_type
             }
-        )
+        }
+        wemapgl.urlController.deleteParams('route')
+        wemapgl.urlController.updateParams("place", urlParams)
     }
     /**
      * render UI when point has no data
@@ -269,23 +329,4 @@ export default class Reverse{
     displayUI(id, text){
         document.getElementById(id).style.display = text;
     }
-    /**
-     * calculate distance between 2 points
-     */
-    getDistance(p1, p2){
-        let R = 6378137; 
-        let dLat = rad(p2.lat - p1.lat);
-        let dLong = rad(p2.lon - p1.lon);
-        let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(rad(p1.lat)) * Math.cos(rad(p2.lat)) *
-            Math.sin(dLong / 2) * Math.sin(dLong / 2);
-        let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        let d = R * c;
-        return d;
-
-        function rad(x){
-            return x * Math.PI /180;
-        }
-    }
-
 }
