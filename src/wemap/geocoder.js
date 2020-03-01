@@ -85,9 +85,9 @@ export default class WeGeocoder {
      * update list marker from results
      */
     updateListMarker(){
-        let resuls = this._results
-        if(resuls){
-            let features = this._removeDuplicates(resuls.features);
+        let results = this._results
+        if(results){
+            let features = this._removeDuplicates(results.features);
             if (this.opts.marker && this.opts.marker.multiple) {
                 this._updateMarkers(features);
             }
@@ -120,45 +120,35 @@ export default class WeGeocoder {
         let marker = new mapboxgl.Marker(this.opts.marker.icon.cloneNode(true))
             .setLngLat(coordinates)
             .addTo(this._map)
-        var popup = new mapboxgl.Popup({
-            closeButton: false,
-            closeOnClick: false 
-        });
-        
         let feature = this.getFeatureFromResultByLatLon(coordinates)
         if(!feature){
             return marker
         }
-        marker.setPopup(popup)
         let address = [feature.properties.street, feature.properties.county,
             feature.properties.region, feature.properties.country]
         address = WeGeocoder.getAddress(address)
-        let viewPopup = '<div class="viewPopup">'+
-        '<div class="popupname">' + feature.properties.name+ '</div>'+
+        let viewPopup = document.createElement('div')
+        viewPopup.classList.add('viewPopup')
+        viewPopup.innerHTML = '<div class="popupname">' + feature.properties.name+ '</div>'+
         '<div class="popupaddress">' + address + '</div>'+
-        '<div class="popuplatlon">' + feature.geometry.coordinates[0] + ', ' + feature.geometry.coordinates[1] + '</div>'+
-        '</div>'
-        popup.setHTML(viewPopup)
+        '<div class="popuplatlon">' + feature.geometry.coordinates[0] + ', ' + feature.geometry.coordinates[1] + '</div>'
         marker._map.off('click', marker._onMapClick);
         marker._map.off('mousedown', marker._addDragHandler);
         marker._map.off('touchstart', marker._addDragHandler);
         marker._map.off('mousemove', marker._onMove);
-        marker._element.onmouseenter =  function(e){
+        let markerElement = marker._element
+        markerElement.appendChild(viewPopup)
+        let markerIcon = markerElement.firstChild
+        markerIcon.onmouseenter =  function(e){
             const targetElement = e.target;
-            const element = marker._element;
-        
-            if (marker._popup && (targetElement === element || element.contains((targetElement)))) {
-                // marker.togglePopup();
-        
-                let popup = marker._popup;
-                popup.addTo(marker._map);
+            if (targetElement === markerElement || markerElement.contains(targetElement)) {
+                viewPopup.style.display = 'block'
             }
         };
-        
-        marker._element.onmouseout =  function(e){
-            marker._popup.remove()
+        markerIcon.onmouseleave =  function(e){
+            viewPopup.style.display = 'none'
         };
-        marker._element.onclick =  function(e){
+        markerIcon.onclick =  function(e){
             self._goToFeatureLocation(feature, true)
         };
     
