@@ -1,5 +1,6 @@
 import { getJSON } from '../util/ajax'
 import { default as config } from '../config.json'; 
+import WeGeocoder from './geocoder';
 
 export default class Reverse{
     /**
@@ -265,7 +266,7 @@ export default class Reverse{
      */
     clickDirectionIcon(){
         document.getElementById('wemap-direction-icon').addEventListener('click', (e) => {
-            wemapgl.urlController.deleteParams("place")
+            WeGeocoder.hideAll()
             if(Object.keys(this.receivedData).length){
                 wemapgl.urlController.updateParams("route", {
                     dx: this.receivedData.geometry.coordinates[0],

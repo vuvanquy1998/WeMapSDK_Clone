@@ -187,7 +187,6 @@ export default class WeGeocoder {
         inputEl.type = 'text';
         inputEl.placeholder = this.opts.placeholder;
         inputEl.addEventListener("focus", function(e){
-            console.log('focus')
             self._resultsListEl.showAll();
             self._removeMarkers()
             if(self._results && self._results.features.length > 0){
@@ -281,16 +280,8 @@ export default class WeGeocoder {
         })  
     }
     static initEventDirection(lat, lon){
-        let wegeocoder = this
-        document.getElementById('wemap-feature-directions').onclick =  function(e){
-            // WeGeocoder.hideDetailFeatureFrame()
-            // this.geocoder._clearAll()
-            // WeGeocoder.hideResultSearch()
-            // WeGeocoder.hideNoResult()
-            // WeGeocoder.removeAllMarker()
-            WeGeocoder.hideAll()
-            wemapgl.urlController.updateParams("route", {ox: null, oy: null, dx: lat, dy: lon})
-        }
+        WeGeocoder.hideAll()
+        wemapgl.urlController.updateParams('route', {dx: lat, dy: lon})
     }
 
     initEventIconCross(){
@@ -305,6 +296,7 @@ export default class WeGeocoder {
                 WeGeocoder.hideResultSearch();
                 WeGeocoder.hideNoResult()
                 WeGeocoder.removeAllMarker()
+
             });
             return iconCrossEl
         }
@@ -628,7 +620,6 @@ export default class WeGeocoder {
                 this._map.jumpTo(cameraOpts);
             }
             
-            
             if (feature.properties.source === 'whosonfirst' && ['macroregion', 'region', 'macrocounty', 'county', 'locality', 'localadmin', 'borough', 'macrohood', 'neighbourhood', 'postalcode'].indexOf(feature.properties.layer) >= 0) {
                 this._showPolygon(feature.properties, cameraOpts.zoom);
             } else {
@@ -659,10 +650,8 @@ export default class WeGeocoder {
      * hide view show info feature
      */
     static hideDetailFeatureFrame() {
-        console.log('hide detail')
         let detail_feature = document.getElementById("wemap-detail-feature");
         if (detail_feature) {
-            console.log('hide detail success')
             document.getElementById("wemap-detail-feature").style.display = "none";
         }
         wemapgl.urlController.deleteParams("place")
@@ -706,7 +695,6 @@ export default class WeGeocoder {
      * remove all marker
      */
     static removeAllMarker() {
-        // .mapboxgl-marker.mapboxgl-marker-anchor-center
         const markers = document.querySelectorAll('div.mapboxgl-marker.mapboxgl-marker-anchor-center');
         markers.forEach(ele => {
             ele.remove();
@@ -716,12 +704,10 @@ export default class WeGeocoder {
     }
 
     static hideAll(){
-       WeGeocoder.hideDetailFeatureFrame()
         let iconCross = document.getElementsByClassName('pelias-ctrl-icon-cross')[0]
         iconCross.click()
     }
     clickedToResultLists() {
-        // .pelias-ctrl-results.pelias-ctrl-shadow
         window.addEventListener('DOMContentLoaded', function() {
             const peliasSelector =
                 document.querySelectorAll('div.pelias-ctrl-results.pelias-ctrl-shadow')[0];
