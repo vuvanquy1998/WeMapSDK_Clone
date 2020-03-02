@@ -106,6 +106,7 @@ export default class Reverse{
     leftClick(){
         this.map.on('click', (e) => {
             if(this.on){
+                console.log('click map')
                 this.onClick(e)
             }
         })

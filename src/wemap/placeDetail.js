@@ -34,7 +34,7 @@ export default class PlaceDetail {
         let featureLocation = document.getElementById("feature-location");
         let featureCoordinates = document.getElementById("feature-coordinates");
 
-        if (type != "null") {
+        if (type != "null" && type != null) {
             featureName.innerHTML =
                 name +
                 "<br>" +
