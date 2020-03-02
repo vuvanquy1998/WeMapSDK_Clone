@@ -326,8 +326,9 @@ export default class Reverse{
      */
     clickDirectionIcon(){
         document.getElementById('wemap-direction-icon').addEventListener('click', (e) => {
-            WeGeocoder.hideAll()
+            
             if(Object.keys(this.receivedData).length){
+                WeGeocoder.hideAll()
                 wemapgl.urlController.updateParams("route", {
                     dx: this.receivedData.geometry.coordinates[0],
                     dy: this.receivedData.geometry.coordinates[1],
