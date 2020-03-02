@@ -306,13 +306,30 @@ export default class WeGeocoder {
     }
 
     /**
+     * Handle event click to icon on the map
+     */
+    initEventClickIcon(){
+        let wegeocoder = this
+        this.geocoder._map.on('click', (e) => {
+            if(wemapgl.reverse.isIcon(e)){
+                wegeocoder.updateInfoFromUrl()
+            }
+        })
+    }
+
+
+    /**
      * init all event
      */
     initEvent(){
-        this.initEventIconCross()
-        this.initEventClickBottomCard()
-        this.initEventCloseDetailFrame()
-        this.clickedToResultLists()
+        let wegeocoder = this
+        window.addEventListener('DOMContentLoaded', function() {
+            wegeocoder.initEventIconCross()
+            wegeocoder.initEventClickBottomCard()
+            wegeocoder.initEventCloseDetailFrame()
+            wegeocoder.clickedToResultLists()
+            wegeocoder.initEventClickIcon()
+        })
     }
     /**
      * create view result search (enter)
