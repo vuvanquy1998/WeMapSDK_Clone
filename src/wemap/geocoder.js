@@ -405,13 +405,26 @@ export default class WeGeocoder {
                 if(redMarker){
                     redMarker.remove()
                 }
-                
+
                 if (!e) var e = window.event;
                 e.cancelBubble = true;
                 if (e.stopPropagation) e.stopPropagation();
             }
         });
     }
+
+    /**
+     * Handle event click to icon on the map
+     */
+    initEventClickIcon(){
+        let wegeocoder = this
+        this.geocoder._map.on('click', (e) => {
+            if(wemapgl.reverse.isIcon(e)){
+                wegeocoder.updateInfoFromUrl()
+            }
+        })
+    }
+
 
     /**
      * init all event
