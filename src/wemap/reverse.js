@@ -103,8 +103,8 @@ export default class Reverse{
      */
     leftClick(){
         this.map.on('click', (e) => {
+            
             if(this.on){
-                console.log('click map')
                 this.onClick(e)
             }
         })
@@ -137,7 +137,6 @@ export default class Reverse{
 
             if(nPoints == 0 || notIconAndFarDistance){
                 this.getReversePolygonData(e).then(secondData => {
-                    // console.log(secondData)
                     if(secondData.error){
                         this.showUiNoData(e.lngLat.lat, e.lngLat.lng);
                     }else{
@@ -230,6 +229,7 @@ export default class Reverse{
     clickonIcon(data){
         this.displayUI('wemap-place', 'none')
         this.polygon = false
+        this.removeMarkerAndHideUI()
         this.updateUrlDetailFeatures(data)
     }
     /**
@@ -237,7 +237,6 @@ export default class Reverse{
      * @param {Object} data 
      */
     updateUrlDetailFeatures(data){
-        // console.log("update url")
         let urlParams = {}
         if(this.polygon){
             urlParams = {
@@ -288,6 +287,7 @@ export default class Reverse{
         if(this.marker){
             this.marker.remove();
         }
+
         let iconMarkerEl = document.createElement("div");
         iconMarkerEl.innerHTML = "<div class='wemap-marker-arrow wemap-background-color-red'></div>"
                     + "<div class='wemap-marker-pulse'></div>";
@@ -326,8 +326,9 @@ export default class Reverse{
      */
     clickDirectionIcon(){
         document.getElementById('wemap-direction-icon').addEventListener('click', (e) => {
-            WeGeocoder.hideAll()
+            
             if(Object.keys(this.receivedData).length){
+                WeGeocoder.hideAll()
                 wemapgl.urlController.updateParams("route", {
                     dx: this.receivedData.geometry.coordinates[0],
                     dy: this.receivedData.geometry.coordinates[1],

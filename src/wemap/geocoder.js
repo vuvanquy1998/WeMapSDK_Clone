@@ -59,6 +59,7 @@ export default class WeGeocoder {
      */
     updateInfoFromUrl() {
         let info = wemapgl.urlController.getParams();
+
         let lat = parseFloat(info.lat);
         let lon = parseFloat(info.lon);
         if (lat) {
@@ -179,7 +180,7 @@ export default class WeGeocoder {
             if (e.stopPropagation) e.stopPropagation();
             let redMarker = wemapgl.reverse.marker
             if(redMarker){
-                redMarker.remove()
+                wemapgl.reverse.removeMarkerAndHideUI()
             }
         };
 
@@ -363,7 +364,7 @@ export default class WeGeocoder {
         var originBuildIconCross = this.geocoder._buildIconCrossHTMLElement;
         this.geocoder._buildIconCrossHTMLElement = function() {
             let iconCrossEl = originBuildIconCross.call(this);
-            let self = this;
+            var self = this;
             iconCrossEl.addEventListener("click", function() {
                 self._results = null;
                 WeGeocoder.hideDetailFeatureFrame();
@@ -398,33 +399,18 @@ export default class WeGeocoder {
      */
     initEventClickIcon() {
         let wegeocoder = this;
+
         this.geocoder._map.on("click", e => {
             if (wemapgl.reverse.isIcon(e)) {
-                wegeocoder.updateInfoFromUrl();
-                let redMarker = wemapgl.reverse.marker
-                if(redMarker){
-                    redMarker.remove()
-                }
+                setTimeout(function(){
+                    wegeocoder.updateInfoFromUrl();
+                    wemapgl.reverse.removeMarkerAndHideUI()
+                }, 300);
 
-                if (!e) var e = window.event;
-                e.cancelBubble = true;
-                if (e.stopPropagation) e.stopPropagation();
+                
             }
         });
     }
-
-    /**
-     * Handle event click to icon on the map
-     */
-    initEventClickIcon(){
-        let wegeocoder = this
-        this.geocoder._map.on('click', (e) => {
-            if(wemapgl.reverse.isIcon(e)){
-                wegeocoder.updateInfoFromUrl()
-            }
-        })
-    }
-
 
     /**
      * init all event
@@ -432,7 +418,6 @@ export default class WeGeocoder {
     initEvent() {
         let wegeocoder = this;
         window.addEventListener("DOMContentLoaded", function() {
-            wegeocoder.initEventIconCross();
             wegeocoder.initEventClickBottomCard();
             wegeocoder.initEventCloseDetailFrame();
             wegeocoder.clickedToResultLists();
@@ -743,6 +728,7 @@ export default class WeGeocoder {
             });
             return resultEl;
         };
+        wegeocoder.initEventIconCross();
         wegeocoder.geocoder.getFeatureFromResultByLatLon =
             wegeocoder.getFeatureFromResultByLatLon;
         wegeocoder.geocoder._addAndGetCustomHtmlMarker =
