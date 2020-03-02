@@ -69,7 +69,7 @@ export default class PlaceDetail {
      * @param osmid 
      */
     showAdvanceDetailFeature(osmid, osmtype) {
-        if (osmid) {
+        if (!osmid) {
             return;
 		}
         const key = this.key;
