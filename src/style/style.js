@@ -1,5 +1,6 @@
 // @flow
 
+import window from '../util/window';
 import assert from 'assert';
 
 import {Event, ErrorEvent, Evented} from '../util/evented';
@@ -157,6 +158,7 @@ class Style extends Evented {
         this._resetUpdates();
 
         this.dispatcher.broadcast('setReferrer', getReferrer());
+        this.dispatcher.broadcast('setToken', window.WEMAP_TOKEN);
 
         const self = this;
         this._rtlTextPluginCallback = Style.registerForPluginStateChange((event) => {

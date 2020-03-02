@@ -36,6 +36,7 @@ export default class Worker {
     workerSources: { [string]: { [string]: { [string]: WorkerSource } } };
     demWorkerSources: { [string]: { [string]: RasterDEMTileWorkerSource } };
     referrer: ?string;
+    token: ?string;
 
     constructor(self: WorkerGlobalScopeInterface) {
         this.self = self;
@@ -69,6 +70,16 @@ export default class Worker {
             globalRTLTextPlugin['processBidirectionalText'] = rtlTextPlugin.processBidirectionalText;
             globalRTLTextPlugin['processStyledBidirectionalText'] = rtlTextPlugin.processStyledBidirectionalText;
         };
+    }
+
+    //Thêm function này
+    getToken() {
+        return this.token;
+    }
+
+    //Thêm function này
+    setToken(mapID: string, token: string) {
+        this.token = token;
     }
 
     setReferrer(mapID: string, referrer: string) {

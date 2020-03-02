@@ -75,8 +75,7 @@ export default class Reverse{
     getReverseData(e){
         return new Promise((res, rej) => {
             getJSON({
-                // url:`${config.reverse}${this.key}&lat=${e.lngLat.lat}&lon=${e.lngLat.lng}`,
-                url: `https://apis.wemap.asia/geocode-1/reverse?point.lat=${e.lngLat.lat}&point.lon=${e.lngLat.lng}&key=vpstPRxkBBTLaZkOaCfAHlqXtCR`,
+                url: `${config.reverse}?point.lat=${e.lngLat.lat}&point.lon=${e.lngLat.lng}&key=${this.key}`,
                 method: 'GET'
             }, (err, data) => {
                 if(err) rej(err)
@@ -91,8 +90,7 @@ export default class Reverse{
     getReversePolygonData(e){
         return new Promise((res, rej) => {
             getJSON({
-                // url:`${config.reverse}${this.key}&lat=${e.lngLat.lat}&lon=${e.lngLat.lng}`,
-                url: `https://apis.wemap.asia/we-tools/pip/${e.lngLat.lng}/${e.lngLat.lat}?key=vpstPRxkBBTLaZkOaCfAHlqXtCR`,
+                url: `${config.pipService}/${e.lngLat.lng}/${e.lngLat.lat}?key=${this.key}`,
                 method: 'GET'
             }, (err, data) => {
                 if(err) rej(err)
@@ -191,7 +189,7 @@ export default class Reverse{
         if(this.polygon){
             address = [data.locality, data.county, data.region, data.country, data.continent]
         }else{
-            address = [data.properties.name, data.properties.street, data.properties.district, data.properties.city, data.properties.country]
+            address = [data.properties.name, data.properties.street, data.properties.locality, data.properties.county, data.properties.region, data.properties.country]
         }
         let secondLine = []
         let lastI = 0
@@ -256,11 +254,12 @@ export default class Reverse{
                 address: [
                     data.properties.housenumber,
                     data.properties.street, 
-                    data.properties.district, 
-                    data.properties.city, 
+                    data.properties.locality, 
+                    data.properties.county,
+                    data.properties.region, 
                     data.properties.country
                 ],
-                osm_id: data.properties.osm_id, 
+                osm_id: data.properties.id.replace('node/', ''), 
                 osm_type: data.properties.osm_type
             }
         }
