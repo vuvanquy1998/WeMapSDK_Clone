@@ -179,7 +179,7 @@ export default class WeGeocoder {
             if (e.stopPropagation) e.stopPropagation();
             let redMarker = wemapgl.reverse.marker
             if(redMarker){
-                redMarker.remove()
+                redMarker.removeMarkerAndHideUI()
             }
         };
 
@@ -403,9 +403,8 @@ export default class WeGeocoder {
                 wegeocoder.updateInfoFromUrl();
                 let redMarker = wemapgl.reverse.marker
                 if(redMarker){
-                    redMarker.remove()
+                    redMarker.removeMarkerAndHideUI()
                 }
-
                 if (!e) var e = window.event;
                 e.cancelBubble = true;
                 if (e.stopPropagation) e.stopPropagation();
