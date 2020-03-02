@@ -124,7 +124,7 @@ export default class Reverse{
     onClick(e){
         let isIcon = this.isIcon(e);
         this.getReverseData(e).then(data => {
-            console.log('first reverse', data)
+            // console.log('first reverse', data)
             let allPoints = data.features;
             let nPoints = allPoints.length;
 
@@ -138,7 +138,7 @@ export default class Reverse{
 
             if(nPoints == 0 || notIconAndFarDistance){
                 this.getReversePolygonData(e).then(secondData => {
-                    console.log(secondData)
+                    // console.log(secondData)
                     if(secondData.error){
                         this.showUiNoData(e.lngLat.lat, e.lngLat.lng);
                     }else{
@@ -237,7 +237,8 @@ export default class Reverse{
      * update URL to showDetailFeature
      * @param {Object} data 
      */
-    updateUrlDetailFeatures(data){     
+    updateUrlDetailFeatures(data){
+        // console.log("update url")
         let urlParams = {}
         if(this.polygon){
             urlParams = {
