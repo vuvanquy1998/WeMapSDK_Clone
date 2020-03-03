@@ -1,4 +1,4 @@
-import { getJSON } from '../util/ajax';
+import { makeRequest } from '../util/ajax';
 import { default as config } from '../config.json';
 
 export default class API {
@@ -12,11 +12,15 @@ export default class API {
         } else {
             var url = config.lookup.osmId + osmId + "?key=" + key;
         }
-        getJSON({
+        makeRequest({
             url: url,
             method: 'GET'
         }, (error, data) => {
-             callback(data);
+            if(error) console(error)
+            else {
+                data = JSON.parse(data);
+                callback(data)
+            }
         });
     }
 }

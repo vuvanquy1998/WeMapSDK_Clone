@@ -1,5 +1,4 @@
-// import { getJSON } from '../util/ajax'
-import { makeRequest } from '../util/ajax'
+import { makeRequest } from '../util/ajax';
 import { default as config } from '../config.json';
 import WeGeocoder from './geocoder';
 
