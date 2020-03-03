@@ -1,5 +1,6 @@
-import { getJSON } from '../util/ajax'
-import { default as config } from '../config.json'; 
+// import { getJSON } from '../util/ajax'
+import { makeRequest } from '../util/ajax'
+import { default as config } from '../config.json';
 import WeGeocoder from './geocoder';
 
 export default class Reverse{
@@ -25,7 +26,7 @@ export default class Reverse{
     }
     /**
      * turn on reverse
-     */   
+     */
     onReverse(){
         this.on = true;
     }
@@ -41,10 +42,12 @@ export default class Reverse{
      */
     getStyle(){
         let pointLayers = []
-        getJSON({
+        makeRequest({
             url: `${config.style.bright}${this.key}`,
             method: 'GET'
         }, (err, data) => {
+            // console.log('data: ', JSON.parse(data));
+            data = JSON.parse(data);
             for(let i = 0; i < data.layers.length; i++){
                 let layerId = data.layers[i].id
                 if(layerId.includes('poi')){
@@ -70,16 +73,19 @@ export default class Reverse{
     }
     /**
      * get reverse data by e.lngLat
-     * @param {*} e 
+     * @param {*} e
      */
     getReverseData(e){
         return new Promise((res, rej) => {
-            getJSON({
+            makeRequest({
                 url: `${config.reverse}?point.lat=${e.lngLat.lat}&point.lon=${e.lngLat.lng}&key=${this.key}`,
                 method: 'GET'
             }, (err, data) => {
                 if(err) rej(err)
-                else res(data)
+                else {
+                    data = JSON.parse(data);
+                    res(data)
+                }
             })
         })
     }
@@ -89,12 +95,15 @@ export default class Reverse{
      */
     getReversePolygonData(e){
         return new Promise((res, rej) => {
-            getJSON({
+            makeRequest({
                 url: `${config.pipService}/${e.lngLat.lng}/${e.lngLat.lat}?key=${this.key}`,
                 method: 'GET'
             }, (err, data) => {
                 if(err) rej(err)
-                else res(data)
+                else {
+                    data = JSON.parse(data);
+                    res(data)
+                }
             })
         })
     }
@@ -103,7 +112,7 @@ export default class Reverse{
      */
     leftClick(){
         this.map.on('click', (e) => {
-            
+
             if(this.on){
                 this.onClick(e)
             }
@@ -111,14 +120,14 @@ export default class Reverse{
     }
     /**
      * handle reverse event of right click
-     * @param {Object} e 
+     * @param {Object} e
      */
     rightClick(e){
         this.onClick(e)
     }
     /**
      * render UI based on type of layer clicked
-     * @param {Object} e 
+     * @param {Object} e
      */
     onClick(e){
         let isIcon = this.isIcon(e);
@@ -178,7 +187,7 @@ export default class Reverse{
     }
     /**
      * render ui when clicked point is not an icon
-     * @param {Object} data 
+     * @param {Object} data
      */
     clickoutIcon(data){
         //this.displayUI('wemap-detail-feature', 'none')
@@ -208,8 +217,8 @@ export default class Reverse{
             }
         }
         document.getElementById('wemap-placeadd').innerHTML = secondLine.join(', ')
-        document.getElementById('wemap-placelatlon').innerHTML = Number(data.geometry.coordinates[0]).toFixed(7)+' ,'+ Number(data.geometry.coordinates[1]).toFixed(7)    
-        this.receivedData = data                          
+        document.getElementById('wemap-placelatlon').innerHTML = Number(data.geometry.coordinates[0]).toFixed(7)+' ,'+ Number(data.geometry.coordinates[1]).toFixed(7)
+        this.receivedData = data
     }
     /**
      * check whether the reverse data returns distance < 20m
@@ -224,7 +233,7 @@ export default class Reverse{
     }
     /**
      * render ui when a icon is clicked
-     * @param {Object} data 
+     * @param {Object} data
      */
     clickonIcon(data){
         this.displayUI('wemap-place', 'none')
@@ -234,7 +243,7 @@ export default class Reverse{
     }
     /**
      * update URL to showDetailFeature
-     * @param {Object} data 
+     * @param {Object} data
      */
     updateUrlDetailFeatures(data){
         let urlParams = {}
@@ -247,19 +256,19 @@ export default class Reverse{
             }
         }else{
             urlParams = {
-                name: data.properties.name, 
-                type: data.type, 
-                lat: data.geometry.coordinates[1], 
+                name: data.properties.name,
+                type: data.type,
+                lat: data.geometry.coordinates[1],
                 lon: data.geometry.coordinates[0],
                 address: [
                     data.properties.housenumber,
-                    data.properties.street, 
-                    data.properties.locality, 
+                    data.properties.street,
+                    data.properties.locality,
                     data.properties.county,
-                    data.properties.region, 
+                    data.properties.region,
                     data.properties.country
                 ],
-                osm_id: data.properties.id.replace('node/', ''), 
+                osm_id: data.properties.id.replace('node/', ''),
                 osm_type: data.properties.osm_type
             }
         }
@@ -279,9 +288,9 @@ export default class Reverse{
         document.getElementById('wemap-placelatlon').innerHTML = Number(lon).toFixed(7)+' ,'+ Number(lat).toFixed(7)
     }
     /**
-     * 
-     * @param {Number} lon 
-     * @param {Number} lat 
+     *
+     * @param {Number} lon
+     * @param {Number} lat
      */
     addMarker(lon, lat){
         if(this.marker){
@@ -326,7 +335,7 @@ export default class Reverse{
      */
     clickDirectionIcon(){
         document.getElementById('wemap-direction-icon').addEventListener('click', (e) => {
-            
+
             if(Object.keys(this.receivedData).length){
                 WeGeocoder.hideAll()
                 wemapgl.urlController.updateParams("route", {
@@ -339,8 +348,8 @@ export default class Reverse{
 
     /**
      * change style of html element by id
-     * @param {*} id 
-     * @param {*} text 
+     * @param {*} id
+     * @param {*} text
      */
     displayUI(id, text){
         document.getElementById(id).style.display = text;
