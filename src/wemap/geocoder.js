@@ -15,6 +15,7 @@ export default class WeGeocoder {
         if (!this.options.marker) {
             this.options.marker = {};
         }
+        this.options.useFocusPoint = true;
         this.options.marker.icon = this.initMarker();
         WeGeocoder.min_chars = this.options.suggestion.min_chars;
         this.geocoder = this.getGeocoder(this.options);
@@ -178,9 +179,9 @@ export default class WeGeocoder {
             if (!e) var e = window.event;
             e.cancelBubble = true;
             if (e.stopPropagation) e.stopPropagation();
-            let redMarker = wemapgl.reverse.marker
-            if(redMarker){
-                wemapgl.reverse.removeMarkerAndHideUI()
+            let redMarker = wemapgl.reverse.marker;
+            if (redMarker) {
+                wemapgl.reverse.removeMarkerAndHideUI();
             }
         };
 
@@ -196,7 +197,6 @@ export default class WeGeocoder {
             this.opts.sources = this.opts.sources.join(",");
         }
         this._search = opts.text;
-
         var url =
             this.opts.url +
             "/" +
@@ -402,12 +402,10 @@ export default class WeGeocoder {
 
         this.geocoder._map.on("click", e => {
             if (wemapgl.reverse.isIcon(e)) {
-                setTimeout(function(){
+                setTimeout(function() {
                     wegeocoder.updateInfoFromUrl();
-                    wemapgl.reverse.removeMarkerAndHideUI()
+                    wemapgl.reverse.removeMarkerAndHideUI();
                 }, 300);
-
-                
             }
         });
     }
