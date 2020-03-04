@@ -33,3 +33,4 @@ npm-debug.log
 .idea
 .env
 src/util/encode.js
+src/mapbox-gl-directions/src/encode.js

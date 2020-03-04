@@ -95,7 +95,7 @@ function makeFetchRequest(requestParameters: RequestParameters, callback: Respon
     const controller = new window.AbortController();
     if (!requestParameters.key)
         requestParameters.key = getToken()
-    //     requestParameters.url = encodeURL(requestParameters.url, requestParameters.key)
+    // requestParameters.url = encodeURL(requestParameters.url, requestParameters.key)
     if (requestParameters.url.indexOf('key=') < 0)
         requestParameters.url = requestParameters.url.indexOf('?') >= 0 ? requestParameters.url + `&key=${requestParameters.key}` : requestParameters.url + `?key=${requestParameters.key}`
     const request = new window.Request(requestParameters.url, {
