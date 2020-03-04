@@ -8,13 +8,14 @@ export default class API {
      */
     static lookup({ osmId, osmType, key }, callback) {
         if (osmType != null && osmType != undefined && osmType != "") {
-            var url = config.lookup.osmTypeId + key + "&id=" + osmType + osmId;
+            var url = config.lookup.osmTypeId + "&id=" + osmType + osmId;
         } else {
-            var url = config.lookup.osmId + osmId + "?key=" + key;
+            var url = config.lookup.osmId + osmId;
         }
         makeRequest({
             url: url,
-            method: 'GET'
+            method: 'GET',
+            key: key
         }, (error, data) => {
             if(error) console(error)
             else {

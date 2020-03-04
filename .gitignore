@@ -32,4 +32,4 @@ yarn-debug.log
 npm-debug.log
 .idea
 .env
-/src/util/encode.js
+src/util/encode.js
