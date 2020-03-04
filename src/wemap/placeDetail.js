@@ -28,28 +28,17 @@ export default class PlaceDetail {
         let address = this.options.address;
         let address_result = WeGeocoder.getAddress(address);
         let osmid = this.options.osm_id;
-        let osmtype = this.options.osm_type;
-
         let featureName = document.getElementById("wemap-feature-name");
         let featureLocation = document.getElementById("feature-location");
         let featureCoordinates = document.getElementById("feature-coordinates");
 
-        if (type != "null" && type != null) {
-            featureName.innerHTML =
-                name +
-                "<br>" +
-                "<div class='wemap-feature-type'>" +
-                type +
-                "</div>";
-        } else {
-            featureName.innerHTML = name;
-        }
+        featureName.innerHTML = name;
         featureCoordinates.innerHTML =
             '<i class="fa fa-compass"></i>  ' + lon + ", " + lat;
         featureLocation.innerHTML =
             '<i class="fa fa-map"></i>  ' + address_result;
 
-        this.showAdvanceDetailFeature(osmid, osmtype);
+        this.showAdvanceDetailFeature(osmid);
 
         wemapgl.urlController.updateParams("place", {
             name,
@@ -57,8 +46,7 @@ export default class PlaceDetail {
             lat,
             lon,
             address,
-            osmid,
-            osmtype
+            osmid
         });
         document.getElementById("wemap-feature-directions").onclick = function(){
             WeGeocoder.initEventDirection(lat, lon)
@@ -68,12 +56,12 @@ export default class PlaceDetail {
      * show Information extended of place
      * @param osmid 
      */
-    showAdvanceDetailFeature(osmid, osmtype) {
+    showAdvanceDetailFeature(osmid) {
         if (!osmid) {
             return;
 		}
         const key = this.key;
-        API.lookup({ osmId: osmid, osmType: osmtype, key: key }, result => {
+        API.lookup({ osmId: osmid, key: key }, result => {
             if (result && result[0] && result[0].extratags) {
 				let featureWebsite = document.getElementById("feature-website");
 				let featureOpening_hours = document.getElementById("feature-opening-hours");

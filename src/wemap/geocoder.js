@@ -338,6 +338,7 @@ export default class WeGeocoder {
                                 self._resultsListEl.showAll();
                                 WeGeocoder.showAll;
                                 return self._showResults(result);
+                                
                             }
                         },
                         "autocomplete"
@@ -646,12 +647,20 @@ export default class WeGeocoder {
     overrideFunctionPelias() {
         let wegeocoder = this;
         wegeocoder.updateInfoFromUrl();
-        var originBuildAndGetResult = wegeocoder.geocoder._buildAndGetResult;
         wegeocoder.geocoder._buildAndGetResult = function(feature, index) {
             let self = this;
-            let resultEl = originBuildAndGetResult.call(this, feature, index);
-            let lastChild = resultEl.lastElementChild;
-            resultEl.removeChild(lastChild);
+
+            let resultEl = this._createElement({class: "pelias-ctrl-result"});
+            resultEl.feature = feature;
+            resultEl.setAttribute("tabindex", "-1");
+
+            var iconClassName = this._layerToIcon(feature.properties.layer);
+            if (iconClassName) {
+                var resultIconEl = this._createElement({type: "span", class: "pelias-ctrl-icon-result " + iconClassName});
+                resultEl.appendChild(resultIconEl);
+            }
+
+            var labelWrapperEl = this._createElement({type: "span", class: "pelias-ctrl-wrapper-label"});
             var name = "";
             name = feature.properties.name
                 ? name + feature.properties.name
@@ -818,6 +827,7 @@ export default class WeGeocoder {
                 ].indexOf(feature.properties.layer) >= 0
             ) {
                 this._showPolygon(feature.properties, cameraOpts.zoom);
+                
             } else {
                 this._removePolygon();
             }
