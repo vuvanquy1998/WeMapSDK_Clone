@@ -1,8 +1,8 @@
 {
   "style": {
     "default": "bright",
-    "bright": "https://apis.wemap.asia/vector-tiles/styles/osm-bright/style.json?key=",
-    "dark": "https://apis.wemap.asia/vector-tiles/styles/osm-bright/style.json?key="
+    "bright": "https://apis.wemap.asia/vector-tiles/styles/osm-bright/style.json",
+    "dark": "https://apis.wemap.asia/vector-tiles/styles/osm-bright/style.json"
   },
   "reverse": "https://apis.wemap.asia/geocode-1/reverse",
   "pipService": "https://apis.wemap.asia/we-tools/pip",
@@ -20,7 +20,7 @@
     }
   },
   "lookup": {
-    "osmTypeId": "https://apis.wemap.asia/we-tools/lookup?key=",
+    "osmTypeId": "https://apis.wemap.asia/we-tools/lookup",
     "osmId": "https://apis.wemap.asia/we-tools/lookup/"
   },
   "map": {

@@ -10,7 +10,8 @@ export default class API {
         var url = config.lookup.osmId + osmId + "?key=" + key;
         makeRequest({
             url: url,
-            method: 'GET'
+            method: 'GET',
+            key: key
         }, (error, data) => {
             if(error) console(error)
             else {

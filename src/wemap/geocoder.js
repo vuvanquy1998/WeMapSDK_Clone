@@ -1,3 +1,4 @@
+// import { encodeURL } from '../util/encode';
 import PeliasGeocoder from "../pelias-geocoder/pelias-geocoder";
 import PlaceDetail from "./placeDetail";
 import { default as config } from "../config.json";
@@ -22,7 +23,7 @@ export default class WeGeocoder {
         this.resultAutocompele = null;
         this.place = new PlaceDetail({ key: this.options.key });
         this.init();
-        delete this.options.key;
+        // delete this.options.key;
         return this.geocoder;
     }
 
@@ -82,7 +83,7 @@ export default class WeGeocoder {
                     geocoder._addAndGetCustomHtmlMarker([lon, lat])
                 );
             } catch (err) {
-                window.addEventListener("DOMContentLoaded", function() {
+                window.addEventListener("DOMContentLoaded", function () {
                     geocoder._customHtmlMarkers.push(
                         geocoder._addAndGetCustomHtmlMarker([lon, lat])
                     );
@@ -162,7 +163,7 @@ export default class WeGeocoder {
         let markerElement = marker._element;
         markerElement.appendChild(viewPopup);
         let markerIcon = markerElement.firstChild;
-        markerIcon.onmouseenter = function(e) {
+        markerIcon.onmouseenter = function (e) {
             const targetElement = e.target;
             if (
                 targetElement === markerElement ||
@@ -171,10 +172,10 @@ export default class WeGeocoder {
                 viewPopup.style.display = "block";
             }
         };
-        markerIcon.onmouseleave = function(e) {
+        markerIcon.onmouseleave = function (e) {
             viewPopup.style.display = "none";
         };
-        markerIcon.onclick = function(e) {
+        markerIcon.onclick = function (e) {
             self._goToFeatureLocation(feature, true);
             if (!e) var e = window.event;
             e.cancelBubble = true;
@@ -208,9 +209,9 @@ export default class WeGeocoder {
             (this.opts.sources ? "&sources=" + this.opts.sources : "") +
             (this.opts.useFocusPoint
                 ? "&focus.point.lat=" +
-                  this._map.getCenter().lat +
-                  "&focus.point.lon=" +
-                  this._map.getCenter().lng
+                this._map.getCenter().lat +
+                "&focus.point.lon=" +
+                this._map.getCenter().lng
                 : "");
         this._sendXmlHttpRequest(url, callback);
     }
@@ -219,7 +220,7 @@ export default class WeGeocoder {
         var inputEl = this._createElement({ type: "input" });
         inputEl.type = "text";
         inputEl.placeholder = this.opts.placeholder;
-        inputEl.addEventListener("focus", function(e) {
+        inputEl.addEventListener("focus", function (e) {
             self._resultsListEl.showAll();
             self._removeMarkers();
             if (self._results && self._results.features.length > 0) {
@@ -228,7 +229,7 @@ export default class WeGeocoder {
             self.updateListMarker();
             WeGeocoder.hideDetailFeatureFrame();
         });
-        inputEl.addEventListener("keyup", function(e) {
+        inputEl.addEventListener("keyup", function (e) {
             WeGeocoder.hideNoResult();
             // Enter -> go to feature location.
             if (
@@ -289,7 +290,7 @@ export default class WeGeocoder {
             if (self._eventMatchKey(e, self._keys.enter)) {
                 self.search(
                     { text: value },
-                    function(err, results) {
+                    function (err, results) {
                         if (err) {
                             return self._showError(err);
                         }
@@ -330,7 +331,7 @@ export default class WeGeocoder {
                 if (this.value.length >= WeGeocoder.min_chars) {
                     self.search(
                         { text: value },
-                        function(err, result) {
+                        function (err, result) {
                             if (err) {
                                 return self._showError(err);
                             }
@@ -363,10 +364,10 @@ export default class WeGeocoder {
 
     initEventIconCross() {
         var originBuildIconCross = this.geocoder._buildIconCrossHTMLElement;
-        this.geocoder._buildIconCrossHTMLElement = function() {
+        this.geocoder._buildIconCrossHTMLElement = function () {
             let iconCrossEl = originBuildIconCross.call(this);
             var self = this;
-            iconCrossEl.addEventListener("click", function() {
+            iconCrossEl.addEventListener("click", function () {
                 self._results = null;
                 WeGeocoder.hideDetailFeatureFrame();
                 WeGeocoder.hideResultSearch();
@@ -383,7 +384,7 @@ export default class WeGeocoder {
         var geocoder = this.geocoder;
         document
             .getElementById("wemap-close-detail-button")
-            .addEventListener("click", function() {
+            .addEventListener("click", function () {
                 geocoder._removeMarkers();
                 if (
                     geocoder._results &&
@@ -403,7 +404,7 @@ export default class WeGeocoder {
 
         this.geocoder._map.on("click", e => {
             if (wemapgl.reverse.isIcon(e)) {
-                setTimeout(function() {
+                setTimeout(function () {
                     wegeocoder.updateInfoFromUrl();
                     wemapgl.reverse.removeMarkerAndHideUI();
                 }, 300);
@@ -416,7 +417,7 @@ export default class WeGeocoder {
      */
     initEvent() {
         let wegeocoder = this;
-        window.addEventListener("DOMContentLoaded", function() {
+        window.addEventListener("DOMContentLoaded", function () {
             wegeocoder.initEventClickBottomCard();
             wegeocoder.initEventCloseDetailFrame();
             wegeocoder.clickedToResultLists();
@@ -441,7 +442,7 @@ export default class WeGeocoder {
             WeGeocoder.hideResultSearch();
             document
                 .getElementById("wemap-icon-cross-noresult")
-                .addEventListener("click", function(e) {
+                .addEventListener("click", function (e) {
                     WeGeocoder.hideNoResult();
                 });
             return;
@@ -452,7 +453,7 @@ export default class WeGeocoder {
         let features = result.features;
         self._goToFeatureLocation(features[0]);
         let resultFeatures = "";
-        features.forEach(function(feature, i) {
+        features.forEach(function (feature, i) {
             if (i < features.length) {
                 resultFeatures =
                     resultFeatures +
@@ -520,11 +521,11 @@ export default class WeGeocoder {
 
         results.innerHTML = resultFeatures;
         let resultList = results.querySelectorAll("li");
-        resultList.forEach(function(result, index) {
-            result.onmouseover = function(e) {
+        resultList.forEach(function (result, index) {
+            result.onmouseover = function (e) {
                 self._goToFeatureLocation(features[index]);
             };
-            result.onclick = function(e) {
+            result.onclick = function (e) {
                 self._selectFeature(features[index]);
                 self._goToFeatureLocation(features[index], true);
                 WeGeocoder.hideResultSearch();
@@ -538,14 +539,14 @@ export default class WeGeocoder {
             }
             let rating_number = result.querySelector(".average");
             rating_number.innerHTML = averageStar;
-            rating.onclick = function(e) {
+            rating.onclick = function (e) {
                 if (!e) var e = window.event;
                 e.cancelBubble = true;
                 if (e.stopPropagation) e.stopPropagation();
             };
             let routing = result.querySelector(".f-control");
 
-            routing.onclick = function(e) {
+            routing.onclick = function (e) {
                 if (!e) var e = window.event;
                 e.cancelBubble = true;
                 if (e.stopPropagation) e.stopPropagation();
@@ -554,7 +555,7 @@ export default class WeGeocoder {
                 WeGeocoder.initEventDirection(urlInfo.x, urlInfo.y);
             };
             let star = result.querySelector(".stars");
-            star.onclick = function(e) {
+            star.onclick = function (e) {
                 if (!e) var e = window.event;
                 e.cancelBubble = true;
                 if (e.stopPropagation) e.stopPropagation();
@@ -646,8 +647,27 @@ export default class WeGeocoder {
 
     overrideFunctionPelias() {
         let wegeocoder = this;
+        let key = this.options.key
         wegeocoder.updateInfoFromUrl();
-        wegeocoder.geocoder._buildAndGetResult = function(feature, index) {
+        wegeocoder.geocoder._sendXmlHttpRequest = function (url, callback) {
+            // url = encodeURL(url, key)
+            var req = new XMLHttpRequest();
+            req.addEventListener('load', function () {
+                switch (this.status) {
+                    case 200:
+                        return callback(null, JSON.parse(this.responseText));
+                    case 400:
+                        return callback('You sent a bad request.');
+                    case 401:
+                        return callback('You are not authorized to use this geocode.');
+                    case 500:
+                        return callback('This server can not answer yet.');
+                }
+            });
+            req.open('GET', url);
+            req.send();
+        };
+        wegeocoder.geocoder._buildAndGetResult = function (feature, index) {
             let self = this;
 
             let resultEl = this._createElement({class: "pelias-ctrl-result"});
@@ -708,14 +728,14 @@ export default class WeGeocoder {
 
             resultEl.appendChild(labelWrapperEl);
 
-            resultEl.addEventListener("focus", function() {
+            resultEl.addEventListener("focus", function () {
                 self._goToFeatureLocation(feature);
                 self._resultsListEl.showAll();
             });
-            resultEl.addEventListener("click", function() {
+            resultEl.addEventListener("click", function () {
                 self._goToFeatureLocation(feature, true);
             });
-            resultEl.addEventListener("keydown", function(e) {
+            resultEl.addEventListener("keydown", function (e) {
                 if (self._eventMatchKey(e, self._keys.enter)) {
                     self._goToFeatureLocation(feature, true);
                 }
@@ -749,18 +769,18 @@ export default class WeGeocoder {
 
         var originBuildResultsListHTMLElement =
             wegeocoder.geocoder._buildResultsListHTMLElement;
-        wegeocoder.geocoder._buildResultsListHTMLElement = function() {
+        wegeocoder.geocoder._buildResultsListHTMLElement = function () {
             var resultsListEl = originBuildResultsListHTMLElement.call(this);
-            resultsListEl.hideAll = function() {
+            resultsListEl.hideAll = function () {
                 resultsListEl.style.display = "none";
             };
-            resultsListEl.showAll = function() {
+            resultsListEl.showAll = function () {
                 resultsListEl.style.display = "block";
             };
             return resultsListEl;
         };
 
-        wegeocoder.geocoder._goToFeatureLocation = function(
+        wegeocoder.geocoder._goToFeatureLocation = function (
             feature,
             viewDetail
         ) {
@@ -921,7 +941,7 @@ export default class WeGeocoder {
         iconCross.click();
     }
     clickedToResultLists() {
-        window.addEventListener("DOMContentLoaded", function() {
+        window.addEventListener("DOMContentLoaded", function () {
             const peliasSelector = document.querySelectorAll(
                 "div.pelias-ctrl-results.pelias-ctrl-shadow"
             )[0];

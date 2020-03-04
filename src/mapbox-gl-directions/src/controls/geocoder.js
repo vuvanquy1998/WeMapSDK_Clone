@@ -1,5 +1,6 @@
 'use strict';
 
+// import encode from '../encode';
 import Typeahead from 'suggestions';
 import debounce from 'lodash.debounce';
 import { EventEmitter } from 'events';
@@ -110,11 +111,12 @@ export default class Geocoder {
         URLAutoComplete = this.api + encodeURIComponent(q.trim()) + '.json?' + options.join('&');
         // this.request.open('GET', this.api + encodeURIComponent(q.trim()) + '.json?' + options.join('&'), true);
     } else {
-        URLAutoComplete = this.api + encodeURIComponent(q.trim()) + '&key=' + accessToken
+        // URLAutoComplete = this.api + encodeURIComponent(q.trim()) + '&key=' + accessToken
+        URLAutoComplete = this.api + q.trim() + '&key=' + accessToken
             + '&boundary.country=VNM'
             + '&focus.point.lat=' + this._map.getCenter().lat + '&focus.point.lon=' + this._map.getCenter().lng;
     }
-
+    // URLAutoComplete = encode.encodeURL(URLAutoComplete, accessToken)
     this.request.open('GET', URLAutoComplete , true);
 
     this.request.onload = function() {

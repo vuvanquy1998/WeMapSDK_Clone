@@ -1,6 +1,5 @@
 // @flow
 
-import window from './util/window';
 import assert from 'assert';
 import supported from '@mapbox/mapbox-gl-supported';
 
@@ -80,7 +79,6 @@ const exported = {
     },
 
     set accessToken(token: string) {
-        window.WEMAP_TOKEN = token
         config.ACCESS_TOKEN = token;
     },
 

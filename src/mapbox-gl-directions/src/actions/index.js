@@ -1,5 +1,6 @@
 import * as types from '../constants/action_types';
 import utils from '../utils';
+// import encode from '../encode';
 const request = new XMLHttpRequest();
 
 function originPoint(coordinates) {
@@ -74,36 +75,37 @@ function fetchDirections() {
 
     let URLDirection = '';
     if (engine === 'mapbox') {
-        if (language) options.push('language='+language);
-        if (accessToken) options.push('access_token=' + accessToken);
-        URLDirection = `${api}${profile}/${query}.json?${options.join('&')}`
+      if (language) options.push('language=' + language);
+      if (accessToken) options.push('access_token=' + accessToken);
+      URLDirection = `${api}${profile}/${query}.json?${options.join('&')}`
     } else if (engine === 'osrm' || engine === 'default') {
-        if (accessToken) options.push('key=' + accessToken);
-        let profileOSRM = '';
-        if (profile === 'mapbox/driving-traffic' || profile === 'driving-traffic') {
-            profileOSRM = 'driving';
-        } else if (profile === 'mapbox/driving' || profile === 'driving') {
-            profileOSRM = 'driving';
-        } else if (profile === 'mapbox/walking' || profile === 'walking') {
-            profileOSRM = 'walking';
-        } else if (profile === 'mapbox/cycling' || profile === 'cycling') {
-            profileOSRM = 'cycling';
-        } else {
-            profileOSRM = 'driving';
-        }
-        // URLDirection = `${api}${profile}/${query}?${options.join('&')}`;
-        URLDirection = `${api}${profileOSRM}/${query}?${options.join('&')}`;
+      if (accessToken) options.push('key=' + accessToken);
+      let profileOSRM = '';
+      if (profile === 'mapbox/driving-traffic' || profile === 'driving-traffic') {
+        profileOSRM = 'driving';
+      } else if (profile === 'mapbox/driving' || profile === 'driving') {
+        profileOSRM = 'driving';
+      } else if (profile === 'mapbox/walking' || profile === 'walking') {
+        profileOSRM = 'walking';
+      } else if (profile === 'mapbox/cycling' || profile === 'cycling') {
+        profileOSRM = 'cycling';
+      } else {
+        profileOSRM = 'driving';
+      }
+      // URLDirection = `${api}${profile}/${query}?${options.join('&')}`;
+      URLDirection = `${api}${profileOSRM}/${query}?${options.join('&')}`;
     } else if (engine === 'graphhopper') {
-        if (accessToken) options.push('key=' + accessToken);
-        const startEnd = query.split('%3B');
-        const latLonStart = startEnd[0].split('%2C')
-        const latLonEnd = startEnd[1].split('%2C')
-        URLDirection = api + 'point=' + latLonStart[1] + ',' + latLonStart[0]
-                        + '&point=' + latLonEnd[1] + ',' + latLonEnd[0]
-                        + '&type=json' + '&vehicle=' + profile
-                        + '&weighting=fastest&elevation=false&locale=vi-VN' + '&key=' + accessToken
-        // TODO: Check graphhopper Direction
+      if (accessToken) options.push('key=' + accessToken);
+      const startEnd = query.split('%3B');
+      const latLonStart = startEnd[0].split('%2C')
+      const latLonEnd = startEnd[1].split('%2C')
+      URLDirection = api + 'point=' + latLonStart[1] + ',' + latLonStart[0]
+        + '&point=' + latLonEnd[1] + ',' + latLonEnd[0]
+        + '&type=json' + '&vehicle=' + profile
+        + '&weighting=fastest&elevation=false&locale=vi-VN' + '&key=' + accessToken
+      // TODO: Check graphhopper Direction
     }
+    // URLDirection = encode.encodeURL(URLDirection, accessToken)
     request.open('GET', URLDirection, true);
     // request.open('GET', `${api}${profile}/${query}.json?${options.join('&')}`, true);
     //  console.log(request)
@@ -237,7 +239,7 @@ export function setOptions(options) {
 
 export function hoverMarker(coordinates) {
   return (dispatch) => {
-    const feature = (coordinates) ? utils.createPoint(coordinates, { id: 'hover'}) : {};
+    const feature = (coordinates) ? utils.createPoint(coordinates, { id: 'hover' }) : {};
     dispatch(setHoverMarker(feature));
   };
 }
@@ -332,12 +334,12 @@ export function setWaypoint(index, waypoint) {
 export function removeWaypoint(waypoint) {
   return (dispatch, getState) => {
     let { destination, waypoints } = getState();
-      waypoints = waypoints.filter((way) => {
-        return !utils.coordinateMatch(way, waypoint);
-      });
+    waypoints = waypoints.filter((way) => {
+      return !utils.coordinateMatch(way, waypoint);
+    });
 
-      dispatch(updateWaypoints(waypoints));
-      if (destination.geometry) dispatch(fetchDirections());
+    dispatch(updateWaypoints(waypoints));
+    if (destination.geometry) dispatch(fetchDirections());
   };
 }
 

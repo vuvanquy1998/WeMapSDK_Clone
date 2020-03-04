@@ -1,16 +1,17 @@
 // @flow
 
+// import { encodeURL } from './encode';
 import window from './window';
-import {extend, warnOnce, isWorker} from './util';
-import {isMapboxHTTPURL, hasCacheDefeatingSku} from './mapbox';
+import { extend, warnOnce, isWorker } from './util';
+import { isMapboxHTTPURL, hasCacheDefeatingSku } from './mapbox';
 import config from './config';
 import assert from 'assert';
-import {cacheGet, cachePut} from './tile_request_cache';
+import { cacheGet, cachePut } from './tile_request_cache';
 import webpSupported from './webp_supported';
 import offscreenCanvasSupported from './offscreen_canvas_supported';
 
-import type {Callback} from '../types/callback';
-import type {Cancelable} from '../types/cancelable';
+import type { Callback } from '../types/callback';
+import type { Cancelable } from '../types/cancelable';
 
 /**
  * The type of a resource.
@@ -28,7 +29,7 @@ const ResourceType = {
     SpriteJSON: 'SpriteJSON',
     Image: 'Image'
 };
-export {ResourceType};
+export { ResourceType };
 
 if (typeof Object.freeze == 'function') {
     Object.freeze(ResourceType);
@@ -82,6 +83,8 @@ class AJAXError extends Error {
 export const getReferrer = isWorker() ?
     () => self.worker && self.worker.referrer :
     () => (window.location.protocol === 'blob:' ? window.parent : window).location.href;
+export const getToken = isWorker() ?
+    () => self.worker.getToken() : () => (window.location.protocol === 'blob:' ? window.parent : window).WEMAP_TOKEN;
 
 // Determines whether a URL is a file:// URL. This is obviously the case if it begins
 // with file://. Relative URLs are also file:// URLs iff the original document was loaded
@@ -90,6 +93,11 @@ const isFileURL = url => /^file:/.test(url) || (/^file:/.test(getReferrer()) && 
 
 function makeFetchRequest(requestParameters: RequestParameters, callback: ResponseCallback<any>): Cancelable {
     const controller = new window.AbortController();
+    if (!requestParameters.key)
+        requestParameters.key = getToken()
+    // requestParameters.url = encodeURL(requestParameters.url, requestParameters.key)
+    if (requestParameters.url.indexOf('key=') < 0)
+        requestParameters.url = requestParameters.url.indexOf('?') >= 0 ? requestParameters.url + `&key=${requestParameters.key}` : requestParameters.url + `?key=${requestParameters.key}`
     const request = new window.Request(requestParameters.url, {
         method: requestParameters.method || 'GET',
         body: requestParameters.body,
@@ -149,8 +157,8 @@ function makeFetchRequest(requestParameters: RequestParameters, callback: Respon
     const finishRequest = (response, cacheableResponse, requestTime) => {
         (
             requestParameters.type === 'arrayBuffer' ? response.arrayBuffer() :
-            requestParameters.type === 'json' ? response.json() :
-            response.text()
+                requestParameters.type === 'json' ? response.json() :
+                    response.text()
         ).then(result => {
             if (aborted) return;
             if (cacheableResponse && requestTime) {
@@ -174,10 +182,12 @@ function makeFetchRequest(requestParameters: RequestParameters, callback: Respon
         validateOrFetch(null, null);
     }
 
-    return {cancel: () => {
-        aborted = true;
-        if (!complete) controller.abort();
-    }};
+    return {
+        cancel: () => {
+            aborted = true;
+            if (!complete) controller.abort();
+        }
+    };
 }
 
 function makeXMLHttpRequest(requestParameters: RequestParameters, callback: ResponseCallback<any>): Cancelable {
@@ -215,10 +225,10 @@ function makeXMLHttpRequest(requestParameters: RequestParameters, callback: Resp
         }
     };
     xhr.send(requestParameters.body);
-    return {cancel: () => xhr.abort()};
+    return { cancel: () => xhr.abort() };
 }
 
-export const makeRequest = function(requestParameters: RequestParameters, callback: ResponseCallback<any>): Cancelable {
+export const makeRequest = function (requestParameters: RequestParameters, callback: ResponseCallback<any>): Cancelable {
     // We're trying to use the Fetch API if possible. However, in some situations we can't use it:
     // - IE11 doesn't support it at all. In this case, we dispatch the request to the main thread so
     //   that we can get an accruate referrer header.
@@ -238,16 +248,16 @@ export const makeRequest = function(requestParameters: RequestParameters, callba
     return makeXMLHttpRequest(requestParameters, callback);
 };
 
-export const getJSON = function(requestParameters: RequestParameters, callback: ResponseCallback<Object>): Cancelable {
-    return makeRequest(extend(requestParameters, {type: 'json'}), callback);
+export const getJSON = function (requestParameters: RequestParameters, callback: ResponseCallback<Object>): Cancelable {
+    return makeRequest(extend(requestParameters, { type: 'json' }), callback);
 };
 
-export const getArrayBuffer = function(requestParameters: RequestParameters, callback: ResponseCallback<ArrayBuffer>): Cancelable {
-    return makeRequest(extend(requestParameters, {type: 'arrayBuffer'}), callback);
+export const getArrayBuffer = function (requestParameters: RequestParameters, callback: ResponseCallback<ArrayBuffer>): Cancelable {
+    return makeRequest(extend(requestParameters, { type: 'arrayBuffer' }), callback);
 };
 
-export const postData = function(requestParameters: RequestParameters, callback: ResponseCallback<string>): Cancelable {
-    return makeRequest(extend(requestParameters, {method: 'POST'}), callback);
+export const postData = function (requestParameters: RequestParameters, callback: ResponseCallback<string>): Cancelable {
+    return makeRequest(extend(requestParameters, { method: 'POST' }), callback);
 };
 
 function sameOrigin(url) {
@@ -266,14 +276,14 @@ function arrayBufferToImage(data: ArrayBuffer, callback: (err: ?Error, image: ?H
         URL.revokeObjectURL(img.src);
     };
     img.onerror = () => callback(new Error('Could not load image. Please make sure to use a supported image type such as PNG or JPEG. Note that SVGs are not supported.'));
-    const blob: Blob = new window.Blob([new Uint8Array(data)], {type: 'image/png'});
+    const blob: Blob = new window.Blob([new Uint8Array(data)], { type: 'image/png' });
     (img: any).cacheControl = cacheControl;
     (img: any).expires = expires;
     img.src = data.byteLength ? URL.createObjectURL(blob) : transparentPngUrl;
 }
 
 function arrayBufferToImageBitmap(data: ArrayBuffer, callback: (err: ?Error, image: ?ImageBitmap) => void) {
-    const blob: Blob = new window.Blob([new Uint8Array(data)], {type: 'image/png'});
+    const blob: Blob = new window.Blob([new Uint8Array(data)], { type: 'image/png' });
     window.createImageBitmap(blob).then((imgBitmap) => {
         callback(null, imgBitmap);
     }).catch((e) => {
@@ -288,7 +298,7 @@ export const resetImageRequestQueue = () => {
 };
 resetImageRequestQueue();
 
-export const getImage = function(requestParameters: RequestParameters, callback: Callback<HTMLImageElement | ImageBitmap>): Cancelable {
+export const getImage = function (requestParameters: RequestParameters, callback: Callback<HTMLImageElement | ImageBitmap>): Cancelable {
     if (webpSupported.supported) {
         if (!requestParameters.headers) {
             requestParameters.headers = {};
@@ -317,7 +327,7 @@ export const getImage = function(requestParameters: RequestParameters, callback:
         assert(numImageRequests >= 0);
         while (imageQueue.length && numImageRequests < config.MAX_PARALLEL_IMAGE_REQUESTS) { // eslint-disable-line
             const request = imageQueue.shift();
-            const {requestParameters, callback, cancelled} = request;
+            const { requestParameters, callback, cancelled } = request;
             if (!cancelled) {
                 request.cancel = getImage(requestParameters, callback).cancel;
             }
@@ -349,10 +359,10 @@ export const getImage = function(requestParameters: RequestParameters, callback:
     };
 };
 
-export const getVideo = function(urls: Array<string>, callback: Callback<HTMLVideoElement>): Cancelable {
+export const getVideo = function (urls: Array<string>, callback: Callback<HTMLVideoElement>): Cancelable {
     const video: HTMLVideoElement = window.document.createElement('video');
     video.muted = true;
-    video.onloadstart = function() {
+    video.onloadstart = function () {
         callback(null, video);
     };
     for (let i = 0; i < urls.length; i++) {
@@ -363,5 +373,5 @@ export const getVideo = function(urls: Array<string>, callback: Callback<HTMLVid
         s.src = urls[i];
         video.appendChild(s);
     }
-    return {cancel: () => {}};
+    return { cancel: () => { } };
 };
