@@ -8,7 +8,7 @@ export default class API {
      */
     static lookup({ osmId, osmType, key }, callback) {
         if (osmType != null && osmType != undefined && osmType != "") {
-            var url = config.lookup.osmTypeId + "&id=" + osmType + osmId;
+            var url = config.lookup.osmTypeId + "?id=" + osmType + osmId;
         } else {
             var url = config.lookup.osmId + osmId;
         }
