@@ -7,7 +7,7 @@ export default class API {
      * @returns {Object} detail infomation
      */
     static lookup({ osmId, key }, callback) {
-        var url = config.lookup.osmId + osmId;
+        const url = config.lookup.osmId + osmId;
         makeRequest({
             url: url,
             method: 'GET',
