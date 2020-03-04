@@ -9,17 +9,12 @@
     <link href="../dist/css/wemap.min.css" rel="stylesheet" />
     <link href="../dist/css/dev.min.css" rel="stylesheet" />
     <style>
-        body {
-            margin: 0;
-            padding: 0;
+        #map{
+            position: relative;
+            height: 500px;
+            width: 800px;
         }
 
-        #map {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 100%;
-        }
     </style>
 </head>
 
@@ -28,20 +23,9 @@
     <script>
         var wemap = new wemapgl.WeMap({
             key: 'vpstPRxkBBTLaZkOaCfAHlqXtCR',
-            container: 'map',
-            urlController: "true",
-            reverse: "true"
+            container: 'map'
         });
 
-        wemap.addControl(new wemapgl.NavigationControl(), 'bottom-right');
-
-        wemap.addControl(new wemapgl.GeolocateControl({
-            positionOptions: {
-                enableHighAccuracy: true
-            },
-            trackUserLocation: true
-        }),
-        'bottom-right');
     </script>
 
 </body>

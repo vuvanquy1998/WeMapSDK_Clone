@@ -62,8 +62,8 @@ export default class WeMap {
         this.map = new wemapgl.Map(mapboxOptions);
 
         // reverse
-        switch (this.options.reverse) {
-            case true: case "true":
+        switch(this.options.reverse) {
+            case true: case "true": case null: case undefined: case "default":
                 wemapgl.rightClick = new RightClick(this.map, this.options.key);
                 wemapgl.reverse = new Reverse({ map: this.map, key: this.options.key });
         }
@@ -71,8 +71,8 @@ export default class WeMap {
         // url controller
         wemapgl.urlController = new UrlController();
 
-        switch (this.options.urlController) {
-            case true: case "true":
+        switch(this.options.urlController) {
+            case true: case "true": case null: case undefined: case "default":
                 let urlParams = wemapgl.urlController.getParams();
                 if (urlParams.x != null && urlParams.y != null && urlParams.z != null) {
                     this.map.jumpTo({ center: [urlParams.x, urlParams.y], zoom: urlParams.z });
