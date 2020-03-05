@@ -5,6 +5,8 @@
     "dark": "https://apis.wemap.asia/vector-tiles/styles/osm-bright/style.json?key="
   },
   "reverse": "https://apis.wemap.asia/geocode-1/reverse",
+  "streetMaxDistance": 20,
+  "pointMaxDistance": 20,
   "pipService": "https://apis.wemap.asia/we-tools/pip",
   "direction": {
     "engine": {
