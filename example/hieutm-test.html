@@ -9,10 +9,16 @@
     <link href="../dist/css/wemap.min.css" rel="stylesheet" />
     <link href="../dist/css/dev.min.css" rel="stylesheet" />
     <style>
-        #map{
-            position: relative;
-            height: 500px;
-            width: 800px;
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
         }
 
     </style>
@@ -26,6 +32,12 @@
             container: 'map'
         });
 
+        wemap.addControl(new wemapgl.WeGeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true
+            },
+            trackUserLocation: true
+        }), 'bottom-right');
     </script>
 
 </body>
