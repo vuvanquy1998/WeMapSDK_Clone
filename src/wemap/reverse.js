@@ -156,19 +156,27 @@ export default class Reverse{
             }
 
             if(nPoints == 0 || notIconAndFarPoint){
-                this.getReverseStreetData(e).then(streetData => {
-                    if(streetData.features.length === 0 || !this.checkDistance(streetData.features[0])){
-                        this.getReversePolygonData(e).then(polygonData => {
-                            if(polygonData.features.length === 0){
-                                this.showUiNoData(e.lngLat.lat, e.lngLat.lng);
-                            }else{
-                                this.receivedDataType = 'polygon'
-                                this.clickoutIcon(polygonData.features[0]);
-                            }
-                        })
+                // this.getReverseStreetData(e).then(streetData => {
+                //     if(streetData.features.length === 0 || !this.checkDistance(streetData.features[0])){
+                //         this.getReversePolygonData(e).then(polygonData => {
+                //             if(polygonData.features.length === 0){
+                //                 this.showUiNoData(e.lngLat.lat, e.lngLat.lng);
+                //             }else{
+                //                 this.receivedDataType = 'polygon'
+                //                 this.clickoutIcon(polygonData.features[0]);
+                //             }
+                //         })
+                //     }else{
+                //         this.receivedDataType = 'street';
+                //         this.clickoutIcon(streetData[0])
+                //     }
+                // })
+                this.getReversePolygonData(e).then(polygonData => {
+                    if(polygonData.features.length === 0){
+                        this.showUiNoData(e.lngLat.lat, e.lngLat.lng);
                     }else{
-                        this.receivedDataType = 'street';
-                        this.clickoutIcon(streetData[0])
+                        this.receivedDataType = 'polygon'
+                        this.clickoutIcon(polygonData.features[0]);
                     }
                 })
             }else if(!isIcon){
@@ -255,12 +263,15 @@ export default class Reverse{
      * @param {Object} data
      */
     updateUrlDetailFeatures(data){
+        let address = this.listAddress(data)
+        let name = address[0]
+        address.splice(0,1)
         let urlParams = {
-            name: data.properties.name,
+            name: name,
             type: data.type,
             lat: data.geometry.coordinates[1],
             lon: data.geometry.coordinates[0],
-            address: this.listAddress(data),
+            address: address,
             osm_id: data.properties.id.replace('node/', ''),
             osm_type: data.properties.osm_type
         }
