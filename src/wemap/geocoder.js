@@ -708,6 +708,9 @@ export default class WeGeocoder {
                 separatorEl.innerHTML = " - ";
                 labelWrapperEl.appendChild(separatorEl);
                 var address = "";
+                address = feature.properties.locality
+                    ? address + feature.properties.locality + ", "
+                    : address;
                 address = feature.properties.county
                     ? address + feature.properties.county + ", "
                     : address;
@@ -805,6 +808,7 @@ export default class WeGeocoder {
                 let address = [
                     info.street,
                     info.county,
+                    info.locality,
                     info.region,
                     info.country
                 ];
