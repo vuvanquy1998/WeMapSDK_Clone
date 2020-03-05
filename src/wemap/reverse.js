@@ -157,7 +157,7 @@ export default class Reverse {
                             county: secondData.county[0].name,
                             region: secondData.region[0].name,
                             country: secondData.country[0].name,
-                            continent: secondData.continent[0].name,
+                            // continent: secondData.continent[0].name,
                             geometry: { coordinates: [e.lngLat.lng, e.lngLat.lat] },
                         })
                     }
@@ -198,8 +198,10 @@ export default class Reverse {
         this.displayUI('wemap-place', 'block');
         let address = [];
         if (this.polygon) {
-            address = [data.locality, data.county, data.region, data.country, data.continent]
+            // address = [data.locality, data.county, data.region, data.country, data.continent]
+            address = [data.locality, data.county, data.region, data.country]
         } else {
+            // address = [data.properties.name, data.properties.street, data.properties.locality, data.properties.county, data.properties.region, data.properties.country]
             address = [data.properties.name, data.properties.street, data.properties.locality, data.properties.county, data.properties.region, data.properties.country]
         }
         let secondLine = []
@@ -252,7 +254,8 @@ export default class Reverse {
         if (this.polygon) {
             urlParams = {
                 name: data.locality,
-                address: [data.county, data.region, data.country, data.continent],
+                // address: [data.county, data.region, data.country, data.continent],
+                address: [data.county, data.region, data.country],
                 lat: data.geometry.coordinates[1],
                 lon: data.geometry.coordinates[0]
             }

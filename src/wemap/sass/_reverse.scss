@@ -138,3 +138,21 @@
 .wemap-background-color-red{
     background-color: red;
 }
+
+.wemap-image-direc {
+    position: relative;
+    #wemap-direction-icon {
+        opacity: .7;
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        left: 25px;
+        top: 20px;
+        background-image: url(../img/directions-icon.png);
+        background-repeat: no-repeat;
+        &:hover {
+            opacity: 1;
+        }
+    }
+}

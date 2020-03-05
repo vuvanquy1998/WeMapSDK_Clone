@@ -1,7 +1,7 @@
 export default class RightClick {
     /**
      * Create right click
-     * @param {Object} map 
+     * @param {Object} map
      */
     constructor(map) {
         this.map = map;
@@ -42,9 +42,8 @@ export default class RightClick {
             '<div class="wemap-placelatlon"><a href="#" id="wemap-placelatlon"></a></div>' +
             '</div>' +
             '<div class="wemap-image-direc">' +
-            '<a id="wemap-direction-icon">'+
-            '<img src="http://maps.gstatic.com/tactile/reveal/directions-1x-20150909.png">' +
-            '</a>'+
+            '<div id="wemap-direction-icon">'+
+            '</div>'+
             '</div>' +
             '<div class="wemap-close-place">' +
             '<div id="wemap-placeclose" style="color: black;"><i class="fa fa-times"></i></div>' +
@@ -107,16 +106,16 @@ export default class RightClick {
     }
     /**
      * change style of html element by id
-     * @param {String} id 
-     * @param {String} text 
+     * @param {String} id
+     * @param {String} text
      */
     displayUI(id, text){
         document.getElementById(id).style.display = text;
     }
     /**
      * add new option in right click menu
-     * @param {String} id 
-     * @param {String} text 
+     * @param {String} id
+     * @param {String} text
      */
     addMenuItem(id, text){
         let newRightClickItem = document.createElement('div')
