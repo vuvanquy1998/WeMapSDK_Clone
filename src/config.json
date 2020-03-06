@@ -54,5 +54,8 @@
   "language": {
     "vi": "vi-VN",
     "en": "en-US"
+  },
+  "rerank": {
+    "iploc": "http://103.130.218.242:80/w"
   }
 }

@@ -1,4 +1,5 @@
 import GeolocateControl from "../ui/control/geolocate_control"
+import { default as config } from '../config.json';
 
 export default class WeGeolocateControl {
     constructor(options) {
@@ -11,7 +12,7 @@ export default class WeGeolocateControl {
         this.geolocateControl = new GeolocateControl(this.options);
         this.geolocateControl.on("geolocate", (data) => {
             var req = new XMLHttpRequest();
-            req.open("POST",  "http://103.130.218.242:80/w");
+            req.open("POST", config.rerank.iploc);
             req.send(JSON.stringify({
                 "lat": data.coords.latitude,
                 "lng": data.coords.longitude,
