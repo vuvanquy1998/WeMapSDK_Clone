@@ -32,12 +32,13 @@
             container: 'map'
         });
 
-        wemap.addControl(new wemapgl.WeGeolocateControl({
+        var control = new wemapgl.WeGeolocateControl({
             positionOptions: {
                 enableHighAccuracy: true
             },
             trackUserLocation: true
-        }), 'bottom-right');
+        });
+        wemap.addControl(control, 'bottom-right');
     </script>
 
 </body>
