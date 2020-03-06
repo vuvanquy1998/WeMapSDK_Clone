@@ -28,6 +28,7 @@ export default class PlaceDetail {
         let address = this.options.address;
         let address_result = WeGeocoder.getAddress(address);
         let osmid = this.options.osm_id;
+        let osmtype = this.options.osm_type;
         let featureName = document.getElementById("wemap-feature-name");
         let featureLocation = document.getElementById("feature-location");
         let featureCoordinates = document.getElementById("feature-coordinates");
@@ -38,7 +39,7 @@ export default class PlaceDetail {
         featureLocation.innerHTML =
             '<i class="fa fa-map"></i>  ' + address_result;
 
-        this.showAdvanceDetailFeature(osmid);
+        this.showAdvanceDetailFeature(osmid, osmtype);
 
         wemapgl.urlController.updateParams("place", {
             name,
@@ -48,31 +49,55 @@ export default class PlaceDetail {
             address,
             osmid
         });
-        document.getElementById("wemap-feature-directions").onclick = function(){
-            WeGeocoder.initEventDirection(lat, lon)
-        }
+        document.getElementById(
+            "wemap-feature-directions"
+        ).onclick = function() {
+            WeGeocoder.initEventDirection(lat, lon);
+        };
+    }
+    deleteAdvanceDetailFeature(info) {
+        info.forEach(ele => {
+            ele.innerHTML = "";
+            ele.classList.remove("wemap-detail-feature-element");
+        });
     }
     /**
      * show Information extended of place
-     * @param osmid 
+     * @param osmid
      */
-    showAdvanceDetailFeature(osmid) {
+    showAdvanceDetailFeature(osmid, osmtype) {
+        let featureWebsite = document.getElementById("feature-website");
+        let featureOpening_hours = document.getElementById(
+            "feature-opening-hours"
+        );
+        let featureDescription = document.getElementById("feature-description");
+        let featurePhone = document.getElementById("feature-phone");
+        let featureInternetAccess = document.getElementById(
+            "feature-internt-access"
+        );
+        let featureFax = document.getElementById("feature-fax");
+        let featureEmail = document.getElementById("feature-email");
+        let featureLevel = document.getElementById("feature-level");
+        let featureSmoking = document.getElementById("feature-smoking");
+        let featureStars = document.getElementById("feature-stars");
+        this.deleteAdvanceDetailFeature([
+            featureWebsite,
+            featureOpening_hours,
+            featureDescription,
+            featurePhone,
+            featureInternetAccess,
+            featureFax,
+            featureEmail,
+            featureLevel,
+            featureSmoking,
+            featureStars
+        ]);
         if (!osmid) {
             return;
-		}
+        }
         const key = this.key;
-        API.lookup({ osmId: osmid, key: key }, result => {
+        API.lookup({ osmId: osmid, osmType: osmtype, key: key }, result => {
             if (result && result[0] && result[0].extratags) {
-				let featureWebsite = document.getElementById("feature-website");
-				let featureOpening_hours = document.getElementById("feature-opening-hours");
-				let featureDescription = document.getElementById("feature-description");
-				let featurePhone = document.getElementById("feature-phone");
-				let featureInternetAccess = document.getElementById("feature-internt-access");
-				let featureFax = document.getElementById("feature-fax");
-				let featureEmail = document.getElementById("feature-email");
-				let featureLevel = document.getElementById("feature-level");
-				let featureSmoking = document.getElementById("feature-smoking");
-				let featureStars = document.getElementById("feature-stars");
                 let data = result[0].extratags;
                 let website = data.website;
                 let description = data.description;
@@ -87,82 +112,47 @@ export default class PlaceDetail {
                 if (website) {
                     featureWebsite.innerHTML =
                         '<i class="fas fa-home"></i>' +
-                        '<a href="{' +website +'}">' + website + " </a>";
+                        '<a href="{' +
+                        website +
+                        '}">' +
+                        website +
+                        " </a>";
                     featureWebsite.className = "wemap-detail-feature-element";
-                } else {
-                    featureWebsite.innerHTML = "";
-                    featureWebsite.classList.remove(
-                        "wemap-detail-feature-element"
-                    );
-                    featureWebsite.classList.remove("wemap-border-top");
                 }
                 if (phone) {
                     featurePhone.innerHTML =
                         '<i class="fas fa-phone"></i>' + phone;
                     featurePhone.className = "wemap-detail-feature-element";
-                } else {
-                    featurePhone.innerHTML = "";
-                    featurePhone.classList.remove(
-                        "wemap-detail-feature-element"
-                    );
                 }
                 if (inrternet_access) {
                     featureInternetAccess.innerHTML =
                         '<i class="fas fa-wifi"></i>' + inrternet_access;
                     featureInternetAccess.className =
                         "wemap-detail-feature-element";
-                } else {
-                    featureInternetAccess.innerHTML = "";
-                    featureInternetAccess.classList.remove(
-                        "wemap-detail-feature-element"
-                    );
                 }
                 if (fax) {
                     featureFax.innerHTML = '<i class="fas fa-fax"></i>' + fax;
                     featureFax.className = "wemap-detail-feature-element";
-                } else {
-                    featureFax.innerHTML = "";
-                    featureFax.classList.remove("wemap-detail-feature-element");
                 }
                 if (email) {
                     featureEmail.innerHTML =
                         '<i class="fas fa-envelope"></i>' + email;
                     featureEmail.className = "wemap-detail-feature-element";
-                } else {
-                    featureEmail.innerHTML = "";
-                    featureEmail.classList.remove(
-                        "wemap-detail-feature-element"
-                    );
                 }
                 if (level) {
                     featureLevel.innerHTML =
                         '<i class="fas fa-layer-group"></i>' + level;
                     featureLevel.className = "wemap-detail-feature-element";
-                } else {
-                    featureLevel.innerHTML = "";
-                    featureLevel.classList.remove(
-                        "wemap-detail-feature-element"
-                    );
                 }
                 if (smoking) {
                     featureSmoking.innerHTML =
                         '<i class="fas fa-smoking-ban"></i>' + smoking;
                     featureSmoking.className = "wemap-detail-feature-element";
-                } else {
-                    featureSmoking.innerHTML = "";
-                    featureSmoking.classList.remove(
-                        "wemap-detail-feature-element"
-                    );
                 }
                 if (stars) {
                     featureStars.innerHTML =
                         '<i class="fas fa-star"></i>' + stars;
                     featureStars.className = "wemap-detail-feature-element";
-                } else {
-                    featureStars.innerHTML = "";
-                    featureStars.classList.remove(
-                        "wemap-detail-feature-element"
-                    );
                 }
                 if (description) {
                     featureDescription.innerHTML = description;
@@ -171,11 +161,6 @@ export default class PlaceDetail {
                     featureDescription.className =
                         "wemap-detail-feature-element";
                     featureDescription.style.marginTop = "0px";
-                } else {
-                    featureDescription.innerHTML = "";
-                    featureDescription.classList.remove(
-                        "wemap-detail-feature-element"
-                    );
                 }
                 if (opening_hours) {
                     let opening_hour = opening_hours
@@ -194,11 +179,6 @@ export default class PlaceDetail {
                         "</span>";
                     featureOpening_hours.className =
                         "wemap-detail-feature-element";
-                } else {
-                    featureOpening_hours.innerHTML = "";
-                    featureOpening_hours.classList.remove(
-                        "wemap-detail-feature-element"
-                    );
                 }
             }
         });

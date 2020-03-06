@@ -6,8 +6,12 @@ export default class API {
      * Returns detail infomation of an OSM Id (with or without OSM type)
      * @returns {Object} detail infomation
      */
-    static lookup({ osmId, key }, callback) {
-        const url = config.lookup.osmId + osmId;
+    static lookup({ osmId, osmType, key }, callback) {	  
+        if (osmType != null && osmType != undefined && osmType != "") {
+            var url = config.lookup.osmTypeId + "?key=" + key + "&id=" + osmType + osmId;	
+        } else {	
+            var url = config.lookup.osmId + osmId + "?key=" + key;	
+        }
         makeRequest({
             url: url,
             method: 'GET',
