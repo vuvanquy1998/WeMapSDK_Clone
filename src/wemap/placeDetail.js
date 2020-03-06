@@ -28,6 +28,7 @@ export default class PlaceDetail {
         let address = this.options.address;
         let address_result = WeGeocoder.getAddress(address);
         let osmid = this.options.osm_id;
+        let osmtype = this.options.osm_type;
         let featureName = document.getElementById("wemap-feature-name");
         let featureLocation = document.getElementById("feature-location");
         let featureCoordinates = document.getElementById("feature-coordinates");
@@ -38,7 +39,7 @@ export default class PlaceDetail {
         featureLocation.innerHTML =
             '<i class="fa fa-map"></i>  ' + address_result;
 
-        this.showAdvanceDetailFeature(osmid);
+        this.showAdvanceDetailFeature(osmid, osmtype);
 
         wemapgl.urlController.updateParams("place", {
             name,
@@ -56,12 +57,12 @@ export default class PlaceDetail {
      * show Information extended of place
      * @param osmid 
      */
-    showAdvanceDetailFeature(osmid) {
+    showAdvanceDetailFeature(osmid, osmtype) {
         if (!osmid) {
             return;
 		}
         const key = this.key;
-        API.lookup({ osmId: osmid, key: key }, result => {
+        API.lookup({ osmId: osmid,osmType: osmtype, key: key }, result => {
             if (result && result[0] && result[0].extratags) {
 				let featureWebsite = document.getElementById("feature-website");
 				let featureOpening_hours = document.getElementById("feature-opening-hours");

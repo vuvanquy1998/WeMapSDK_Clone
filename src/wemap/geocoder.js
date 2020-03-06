@@ -20,7 +20,8 @@ export default class WeGeocoder {
         this.options.marker.icon = this.initMarker();
         WeGeocoder.min_chars = this.options.suggestion.min_chars;
         this.geocoder = this.getGeocoder(this.options);
-        this.resultAutocompele = null;
+        this.geocoder.resultAutocompele = null;
+        this.geocoder.resultSearch = null;
         this.place = new PlaceDetail({ key: this.options.key });
         this.init();
         // delete this.options.key;
@@ -95,10 +96,9 @@ export default class WeGeocoder {
     /**
      * update list marker from results
      */
-    updateListMarker() {
-        let results = this._results;
-        if (results) {
-            let features = this._removeDuplicates(results.features);
+    updateListMarker(result) {
+        if (result) {
+            let features = this._removeDuplicates(result.features);
             if (this.opts.marker && this.opts.marker.multiple) {
                 this._updateMarkers(features);
             }
@@ -221,12 +221,15 @@ export default class WeGeocoder {
         inputEl.type = "text";
         inputEl.placeholder = this.opts.placeholder;
         inputEl.addEventListener("focus", function (e) {
-            self._resultsListEl.showAll();
+           
             self._removeMarkers();
-            if (self._results && self._results.features.length > 0) {
-                self.updateListMarker();
+            if (self.resultAutocompele && self.resultAutocompele.features.length > 0) {
+                self.updateListMarker(self.resultAutocompele);
+                self._resultsListEl.showAll();
+            }else if(self.resultSearch && self.resultSearch.features.length > 0){
+                self.updateListMarker(self.resultSearch);
+                WeGeocoder.showResultSearch()
             }
-            self.updateListMarker();
             WeGeocoder.hideDetailFeatureFrame();
         });
         inputEl.addEventListener("keyup", function (e) {
@@ -301,6 +304,8 @@ export default class WeGeocoder {
 
                             // create list marker
                             self._results = results;
+                            self.resultSearch = results
+                            self.resultAutocompele = null
                             let features = self._removeDuplicates(
                                 results.features
                             );
@@ -336,8 +341,8 @@ export default class WeGeocoder {
                                 return self._showError(err);
                             }
                             if (result) {
+                                self.resultAutocompele = result
                                 self._resultsListEl.showAll();
-                                WeGeocoder.showAll;
                                 return self._showResults(result);
                                 
                             }
@@ -355,6 +360,7 @@ export default class WeGeocoder {
             .getElementById("wemap-click-detail")
             .addEventListener("click", e => {
                 this.updateInfoFromUrl();
+                WeGeocoder.hideResultSearch()
             });
     }
     static initEventDirection(lat, lon) {
@@ -369,9 +375,10 @@ export default class WeGeocoder {
             var self = this;
             iconCrossEl.addEventListener("click", function () {
                 self._results = null;
+                self.resultAutocompele = null
+                self.resultSearch = null
                 WeGeocoder.hideDetailFeatureFrame();
                 WeGeocoder.hideResultSearch();
-                WeGeocoder.hideNoResult();
                 WeGeocoder.removeAllMarker();
             });
             return iconCrossEl;
@@ -399,10 +406,15 @@ export default class WeGeocoder {
     /**
      * Handle event click to icon on the map
      */
-    initEventClickIcon() {
+    initEventClickMap() {
         let wegeocoder = this;
-
+        let self = wegeocoder.geocoder
         this.geocoder._map.on("click", e => {
+            WeGeocoder.hideResultAutocompele()
+            WeGeocoder.removeAllMarker()
+            if(self.resultSearch && self.resultSearch.features.length > 0){
+                self.updateListMarker(self.resultSearch);
+            }
             if (wemapgl.reverse.isIcon(e)) {
                 setTimeout(function () {
                     wegeocoder.updateInfoFromUrl();
@@ -421,7 +433,7 @@ export default class WeGeocoder {
             wegeocoder.initEventClickBottomCard();
             wegeocoder.initEventCloseDetailFrame();
             wegeocoder.clickedToResultLists();
-            wegeocoder.initEventClickIcon();
+            wegeocoder.initEventClickMap();
         });
     }
     /**
@@ -437,9 +449,10 @@ export default class WeGeocoder {
             no_result.innerHTML =
                 "Không có kết quả tìm kiếm" +
                 '<span class="fa fa-times" id= "wemap-icon-cross-noresult"></span>';
+            WeGeocoder.hideResultSearch();
             WeGeocoder.showNoResult();
             self._clearAll();
-            WeGeocoder.hideResultSearch();
+            
             document
                 .getElementById("wemap-icon-cross-noresult")
                 .addEventListener("click", function (e) {
@@ -736,6 +749,7 @@ export default class WeGeocoder {
                 self._resultsListEl.showAll();
             });
             resultEl.addEventListener("click", function () {
+                WeGeocoder.hideResultSearch()
                 self._goToFeatureLocation(feature, true);
             });
             resultEl.addEventListener("keydown", function (e) {
@@ -790,15 +804,13 @@ export default class WeGeocoder {
             let info = feature.properties;
             let osm_id = "";
             let osm_type = "";
-            if (info.source == "openstreetmap") {
-                var get_number = /[0-9]/g;
-                osm_id = info.id.match(get_number).join("");
-                var get_text = /[a-zA-Z]/;
-                osm_type = info.id
-                    .match(get_text)
-                    .join("")
-                    .toUpperCase();
-            }
+            var get_number = /[0-9]/g;
+            osm_id = info.id.match(get_number).join("");
+            var get_text = /[a-zA-Z]/;
+            osm_type = info.id
+                .match(get_text)
+                .join("")
+                .toUpperCase();
             if (viewDetail) {
                 this._removeMarkers();
                 let name = info.name;
@@ -892,6 +904,7 @@ export default class WeGeocoder {
      */
     static hideResultSearch() {
         document.getElementById("wemap-results-items").style.display = "none";
+        document.getElementById("wemap-no-result").style.display = "none";
     }
     /**
      * show view result search(enter)
@@ -900,7 +913,7 @@ export default class WeGeocoder {
         document.getElementById("wemap-results-items").style.display =
             "inline-block";
     }
-    /**
+     /**
      * hide view result search - no result
      */
     static hideNoResult() {
@@ -933,8 +946,8 @@ export default class WeGeocoder {
         );
         markers.forEach(ele => {
             ele.remove();
-            wemapgl.WeGeocoder.hideResultSearch();
-            wemapgl.WeGeocoder.hideNoResult();
+            // wemapgl.WeGeocoder.hideResultSearch();
+            // wemapgl.WeGeocoder.hideNoResult();
         });
     }
 
