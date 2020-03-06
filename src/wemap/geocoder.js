@@ -60,12 +60,12 @@ export default class WeGeocoder {
     /**
      * fly to feature
      */
-    flyto(lat, lon) {
+    flyto(lat, lon, zoom=15) {
         let geocoder = this.geocoder;
         let map = geocoder._map;
         var cameraOpts = {
             center: [lon, lat],
-            zoom: 15
+            zoom: zoom
         };
         if (geocoder._useFlyTo(cameraOpts)) {
             map.flyTo(cameraOpts);
@@ -832,6 +832,8 @@ export default class WeGeocoder {
             viewDetail
         ) {
             let info = feature.properties;
+            let lat = feature.geometry.coordinates[1];
+            let lon = feature.geometry.coordinates[0];
             let osm_id = "";
             let osm_type = "";
             var get_number = /[0-9]/g;
@@ -845,8 +847,7 @@ export default class WeGeocoder {
                 this._removeMarkers();
                 let name = info.name;
                 let type = feature.geometry.type;
-                let lat = feature.geometry.coordinates[1];
-                let lon = feature.geometry.coordinates[0];
+                
                 let address = [
                     info.street,
                     info.county,
@@ -867,16 +868,8 @@ export default class WeGeocoder {
                 this._updateMarkers(feature);
             }
             // default goToFeature
-            var cameraOpts = {
-                center: feature.geometry.coordinates,
-                zoom: this._getBestZoom(feature)
-            };
-            if (this._useFlyTo(cameraOpts)) {
-                this._map.flyTo(cameraOpts);
-            } else {
-                this._map.jumpTo(cameraOpts);
-            }
-
+            let zoom = this._getBestZoom(feature)
+            wegeocoder.flyto(lat, lon, zoom)
             if (
                 feature.properties.source === "whosonfirst" &&
                 [
