@@ -276,6 +276,7 @@ export default class Reverse{
             osm_type: data.properties.osm_type
         }
         wemapgl.urlController.deleteParams('route')
+        wemapgl.urlController.deleteParams('place')
         wemapgl.urlController.updateParams("place", urlParams)
     }
     /**
