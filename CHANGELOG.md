@@ -3,6 +3,13 @@
 -------------
 ## Version 0.2
 
+### Date: 2020/03/07
+
+1. WeGeolocationControl: A control provides a button that uses the browser's geolocation API to locate the user on the map.
+
+-------------
+## Version 0.2
+
 ### Date: 2020/03/02
 
 ### ✨ Features
@@ -44,6 +51,7 @@ already have information then show revert
 ### 🍏 Improvements
 
 ### 🐞 Bug Fixes
+- fix bug view place source = "whosonfirst"
 
 ### 🐛 Bug Created
 

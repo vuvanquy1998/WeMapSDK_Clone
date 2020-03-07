@@ -544,8 +544,8 @@ export default class WeDirections {
      * @private
      */
     _onReverseInput() {
+        let self = this;
         const direction = self.weDirection;
-
         const reverseButton = document.querySelectorAll('button.directions-reverse')[0];
         reverseButton.addEventListener('click', () => {
             const origin =  direction.getOrigin();

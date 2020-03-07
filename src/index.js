@@ -35,6 +35,7 @@ import WeDirections from './wemap/directions';
 import WeGeocoder from './wemap/geocoder';
 import Reverse from './wemap/reverse';
 import RightClick from './wemap/rightclick';
+import WeGeolocateControl from './wemap/wegeolocate';
 
 import PeliasGeocoder from './pelias-geocoder/pelias-geocoder';
 
@@ -64,6 +65,7 @@ const exported = {
     WeGeocoder,
     Reverse,
     RightClick,
+    WeGeolocateControl,
     config,
 
     /**
