@@ -39,6 +39,13 @@
             trackUserLocation: true
         });
         wemap.addControl(control, 'bottom-right');
+
+        var filter = new wemapgl.WeFilterControl({
+            values: {
+                
+            }
+        });
+        wemap.addControl(filter)
     </script>
 
 </body>
