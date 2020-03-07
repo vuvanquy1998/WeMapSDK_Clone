@@ -4,21 +4,17 @@ export default class WeFilterControl {
     }
 
     renderView() {
+        const allLayersRadio = this.createRadioGroup("show-all-layers-radio", "layer-filter-radio", "Show all layers", true)
+        allLayersRadio.addEventListener("click", () => this.showAllLayers());
+        this._container.appendChild(allLayersRadio);
+        
+        this._layers = [];
         this._map.getStyle().layers.forEach(layer => {
-            if(layer.id.includes("poi")) {
-                const radio = document.createElement("input");
-                radio.setAttribute("type", "radio");
-                radio.setAttribute("id", layer.id);
-                radio.setAttribute("name", layer.id);
-                radio.setAttribute("value", layer.id);
-
-                const label = document.createElement('label');
-                label.setAttribute("for", layer.id);
-                label.innerHTML = layer.id
-
-                this._container.appendChild(radio);
-                this._container.appendChild(label);
-                this._container.appendChild(document.createElement("br"));
+            if(layer.id.includes("")) {
+                this._layers.push(layer);
+                const layerRadio = this.createRadioGroup(layer.id + "-radio", "layer-filter-radio", layer.id, false);
+                layerRadio.addEventListener("click", () => this.showLayer(layer.id));
+                this._container.appendChild(layerRadio);
             }
         });
                 
@@ -41,5 +37,38 @@ export default class WeFilterControl {
 
     getDefaultPosition() {
         return 'top-right';
+    }
+
+    createRadioGroup(id, name, value, checked) {
+        const radio = document.createElement("input");
+        radio.setAttribute("type", "radio");
+        radio.setAttribute("id", id);
+        radio.setAttribute("name", name);
+        radio.setAttribute("value", value);
+        checked && radio.setAttribute("checked", "checked");
+
+        const label = document.createElement('label');
+        label.setAttribute("for", id);
+        label.innerHTML = value;
+
+        const radioGroupContainer = document.createElement('div');
+        radioGroupContainer.appendChild(radio);
+        radioGroupContainer.appendChild(label);
+        radioGroupContainer.appendChild(document.createElement("br"));
+
+        return radioGroupContainer;
+    }
+
+    showLayer(layerId) {
+        this._layers.forEach(layer => {
+            const visibilityValue = layer.id == layerId ? "visible" : "none";
+            this._map.setLayoutProperty(layer.id, "visibility", visibilityValue);
+        });
+    }
+
+    showAllLayers() {
+        this._layers.forEach(layer => {
+            this._map.setLayoutProperty(layer.id, "visibility", "visible");
+        });
     }
 }
