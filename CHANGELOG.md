@@ -1,6 +1,13 @@
 # WeMap SDK
 
 -------------
+## Date: 2020/03/07
+
+### Feautures
+1. Reverse: 
+    1. update url of polygon reverse
+    2. maximum allowed distance for reverse is saved in config.js
+-------------
 ## Version 0.2
 
 ### Date: 2020/03/07
@@ -42,7 +49,6 @@
     5. When in directions click to map, if Origin and Destination
 already have information then show revert
     6. Add control button to Search input
-
 ### ★ Future
 1. Place:
     1. Rating:
