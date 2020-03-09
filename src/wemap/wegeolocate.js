@@ -15,9 +15,14 @@ export default class WeGeolocateControl {
         this.geolocateControl = new GeolocateControl(this.options);
         this.geolocateControl.on("geolocate", (data) => {
             if(this.isUpdated) {
-                
+                if(data.accuracy < this.prevAccuracy) {
+                    this.send(data);
+                }
             } else {
-
+                if(data.accuracy < this.accuracyUpperLimit) {
+                    this.send(data);
+                }
+                this.isUpdated = true;
             }
         });
     }
@@ -29,5 +34,6 @@ export default class WeGeolocateControl {
             "lng": data.coords.longitude,
             "accuracy": data.coords.accuracy
         }));
+        this.prevAccuracy = data.accuracy;
     }
 }
