@@ -60,13 +60,14 @@ export default class WeGeocoder {
     /**
      * fly to feature
      */
-    flyto(lat, lon, zoom=15) {
+    flyto(lat, lon, zoom = 15) {
         let geocoder = this.geocoder;
         let map = geocoder._map;
         var cameraOpts = {
             center: [lon, lat],
             zoom: zoom
         };
+        geocoder._removePolygon()
         if (geocoder._useFlyTo(cameraOpts)) {
             map.flyTo(cameraOpts);
         } else {
@@ -232,6 +233,18 @@ export default class WeGeocoder {
                   this._map.getCenter().lng
                 : "");
         this._sendXmlHttpRequest(url, callback);
+    }
+    initPolygon(){
+        let geocoder = this.geocoder
+        geocoder.opts.wof = {};
+        geocoder.opts.wof.url = 'https://raw.githubusercontent.com/whosonfirst-data/whosonfirst-data-admin-$country/master/data/';
+        geocoder.opts.wof.fillColor = "rgba(200, 40, 32, 0.1)";
+        geocoder.opts.wof.fillOutlineColor = "rgba(200, 40, 32, 0.7)";
+        geocoder.getWOFURL = geocoder.getDefaultWOFURLFunction();
+        geocoder._removePolygon = geocoder._removeSources.bind(geocoder, geocoder.opts.wof, geocoder.polygonLayerId);
+    }
+    overrideRemovePolygon(){
+
     }
     overrideBuildInputHTMLElement() {
         let self = this;
@@ -682,9 +695,9 @@ export default class WeGeocoder {
 
     overrideFunctionPelias() {
         let wegeocoder = this;
-        let key = this.options.key;
+        let geocoder = wegeocoder.geocoder
         wegeocoder.updateInfoFromUrl();
-        wegeocoder.geocoder._sendXmlHttpRequest = function(url, callback) {
+        geocoder._sendXmlHttpRequest = function(url, callback) {
             // url = encodeURL(url, key)
             var req = new XMLHttpRequest();
             req.addEventListener("load", function() {
@@ -704,7 +717,9 @@ export default class WeGeocoder {
             req.open("GET", url);
             req.send();
         };
-        wegeocoder.geocoder._buildAndGetResult = function(feature, index) {
+       
+        wegeocoder.initPolygon()
+        geocoder._buildAndGetResult = function(feature, index) {
             let self = this;
 
             let resultEl = this._createElement({ class: "pelias-ctrl-result" });
@@ -803,20 +818,20 @@ export default class WeGeocoder {
             return resultEl;
         };
         wegeocoder.initEventIconCross();
-        wegeocoder.geocoder.getFeatureFromResultByLatLon =
+        geocoder.getFeatureFromResultByLatLon =
             wegeocoder.getFeatureFromResultByLatLon;
-        wegeocoder.geocoder._addAndGetCustomHtmlMarker =
+        geocoder._addAndGetCustomHtmlMarker =
             wegeocoder.overrideAddAndGetCustomHtmlMarker;
-        wegeocoder.geocoder.createResultsSearch =
+        geocoder.createResultsSearch =
             wegeocoder.createResultsSearch;
-        wegeocoder.geocoder.search = wegeocoder.overrideSearch;
+        geocoder.search = wegeocoder.overrideSearch;
         wegeocoder.geocoder._buildInputHTMLElement =
             wegeocoder.overrideBuildInputHTMLElement;
-        wegeocoder.geocoder.updateListMarker = wegeocoder.updateListMarker;
+        geocoder.updateListMarker = wegeocoder.updateListMarker;
 
         var originBuildResultsListHTMLElement =
             wegeocoder.geocoder._buildResultsListHTMLElement;
-        wegeocoder.geocoder._buildResultsListHTMLElement = function() {
+        geocoder._buildResultsListHTMLElement = function() {
             var resultsListEl = originBuildResultsListHTMLElement.call(this);
             resultsListEl.hideAll = function() {
                 resultsListEl.style.display = "none";
@@ -827,7 +842,7 @@ export default class WeGeocoder {
             return resultsListEl;
         };
 
-        wegeocoder.geocoder._goToFeatureLocation = function(
+        geocoder._goToFeatureLocation = function(
             feature,
             viewDetail
         ) {
