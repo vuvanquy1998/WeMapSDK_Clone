@@ -4,15 +4,10 @@
 ## Date: 2020/03/07
 
 ### Feautures
-1. Reverse: 
+1. Reverse:
     1. update url of polygon reverse
     2. maximum allowed distance for reverse is saved in config.js
--------------
-## Version 0.2
-
-### Date: 2020/03/07
-
-1. WeGeolocationControl: A control provides a button that uses the browser's geolocation API to locate the user on the map.
+2. WeGeolocationControl: A control provides a button that uses the browser's geolocation API to locate the user on the map.
 
 -------------
 ## Version 0.2
