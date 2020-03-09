@@ -5,24 +5,16 @@ export default class WeGeolocateControl {
     constructor(options) {
         options = options || {};
         this.options = options;
-        this.accuracyUpperLimit = config.rerank.accuracyUpperLimit;
-        this.prevAccuracy = this.accuracyUpperLimit;
-        this.isUpdated = false;
+        this.prevAccuracy = config.rerank.accuracyUpperLimit;
         this.init();
         return this.geolocateControl;
     }
     init() {
         this.geolocateControl = new GeolocateControl(this.options);
         this.geolocateControl.on("geolocate", (data) => {
-            if(this.isUpdated) {
-                if(data.accuracy < this.prevAccuracy) {
-                    this.send(data);
-                }
-            } else {
-                if(data.accuracy < this.accuracyUpperLimit) {
-                    this.send(data);
-                }
-                this.isUpdated = true;
+            if(data.accuracy < this.prevAccuracy) {
+                this.send(data);
+                this.prevAccuracy = data.accuracy;
             }
         });
     }
@@ -34,6 +26,5 @@ export default class WeGeolocateControl {
             "lng": data.coords.longitude,
             "accuracy": data.coords.accuracy
         }));
-        this.prevAccuracy = data.accuracy;
     }
 }
