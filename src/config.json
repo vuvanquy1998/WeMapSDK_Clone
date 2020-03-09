@@ -56,6 +56,7 @@
     "en": "en-US"
   },
   "rerank": {
-    "iploc": "http://103.130.218.242:3333/w"
+    "iploc": "http://103.130.218.242:3333/w",
+    "accuracyUpperLimit": 4000
   }
 }
