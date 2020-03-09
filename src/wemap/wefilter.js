@@ -4,27 +4,42 @@ export default class WeFilterControl {
     }
 
     renderView() {
-        const allLayersRadio = this.createRadioGroup("show-all-layers-radio", "layer-filter-radio", "Show all layers", true)
-        allLayersRadio.addEventListener("click", () => this.showAllLayers());
-        this._container.appendChild(allLayersRadio);
-        
-        this._layers = [];
-        this._map.getStyle().layers.forEach(layer => {
-            if(layer.id.includes("")) {
-                this._layers.push(layer);
-                const layerRadio = this.createRadioGroup(layer.id + "-radio", "layer-filter-radio", layer.id, false);
-                layerRadio.addEventListener("click", () => this.showLayer(layer.id));
-                this._container.appendChild(layerRadio);
-            }
+        // TODO: check if viewport has only 1 feature, dont render "Show all classes" radio, checked that radio immediately
+
+        this._poiLayers = ["poi-level-1-en", "poi-level-1", "poi-level-2-en", "poi-level-2", "poi-level-3-en", "poi-level-3"];
+
+        this._container.innerHTML = "";
+
+        const features = this._map.queryRenderedFeatures({
+            layers: this._poiLayers
         });
-                
+        if(features.length > 0) {
+            const showAllClassesRadio = this.createRadioGroup("radio-feature-class-all", "radio-feature-class", "Show all classes");
+            showAllClassesRadio.addEventListener('click', () => this.showAllClasses());
+            this._container.appendChild(showAllClassesRadio);
+            
+            const featureClasses = new Set();
+            features.forEach(feature => {
+                featureClasses.add(feature.properties.class);
+            });
+
+            featureClasses.forEach(featureClass => {
+                const featureClassRadio = this.createRadioGroup("radio-feature-class-" + featureClass, "radio-feature-class", featureClass);
+                featureClassRadio.addEventListener("click", () => this.showSpecifiedClass(featureClass));
+                this._container.appendChild(featureClassRadio);
+            });
+        } else {
+            this._container.innerHTML = "No feature rendered";
+        }
+
+        
     }
 
     onAdd(map) {
         this._map = map;
         this._container = document.createElement('div');
         this._container.setAttribute("id", "wemap-ctrl-filter");
-        this._map.on('load', () => {
+        this._map.on('idle', () => {
             this.renderView();
         });
         return  this._container;
@@ -59,16 +74,27 @@ export default class WeFilterControl {
         return radioGroupContainer;
     }
 
-    showLayer(layerId) {
-        this._layers.forEach(layer => {
-            const visibilityValue = layer.id == layerId ? "visible" : "none";
-            this._map.setLayoutProperty(layer.id, "visibility", visibilityValue);
+    createCheckboxGroup() {
+
+    }
+
+    showSpecifiedClass(className) {
+        this._poiLayers.forEach(layer => {
+            this._map.setFilter(layer, ["==", "class", className]);
         });
     }
 
-    showAllLayers() {
-        this._layers.forEach(layer => {
-            this._map.setLayoutProperty(layer.id, "visibility", "visible");
+    showMultipleClass(classNames) {
+    
+    }
+
+    showAllClasses() {
+        this._poiLayers.forEach(layer => {
+            this._map.setFilter(layer, null);
         });
+    }
+
+    hideAllClasses() {
+        
     }
 }
