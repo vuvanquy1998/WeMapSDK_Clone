@@ -10,7 +10,7 @@ export default class WeFilterControl {
         
         this._layers = [];
         this._map.getStyle().layers.forEach(layer => {
-            if(layer.id.includes("")) {
+            if(layer.id.includes("poi")) {
                 this._layers.push(layer);
                 const layerRadio = this.createRadioGroup(layer.id + "-radio", "layer-filter-radio", layer.id, false);
                 layerRadio.addEventListener("click", () => this.showLayer(layer.id));
