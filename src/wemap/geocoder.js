@@ -853,8 +853,8 @@ export default class WeGeocoder {
                 
                 let address = [
                     info.street,
-                    info.county,
                     info.locality,
+                    info.county,
                     info.region,
                     info.country
                 ];
