@@ -57,6 +57,7 @@ already have information then show revert
 ### 🍏 Improvements
 
 ### 🐞 Bug Fixes
+- fix bug view place source = "whosonfirst"
 
 ### 🐛 Bug Created
 

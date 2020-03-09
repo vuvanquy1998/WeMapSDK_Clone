@@ -837,12 +837,15 @@ export default class WeGeocoder {
             let osm_id = "";
             let osm_type = "";
             var get_number = /[0-9]/g;
-            osm_id = info.id.match(get_number).join("");
-            var get_text = /[a-zA-Z]/;
-            osm_type = info.id
-                .match(get_text)
-                .join("")
-                .toUpperCase();
+            if(feature.properties.source == "openstreetmap"){
+                osm_id = info.id.match(get_number).join("");
+                var get_text = /[a-zA-Z]/;
+                osm_type = info.id
+                    .match(get_text)
+                    .join("")
+                    .toUpperCase();
+            }
+            
             if (viewDetail) {
                 this._removeMarkers();
                 let name = info.name;
@@ -870,6 +873,10 @@ export default class WeGeocoder {
             // default goToFeature
             let zoom = this._getBestZoom(feature)
             wegeocoder.flyto(lat, lon, zoom)
+            let cameraOpts = {
+                center: feature.geometry.coordinates,
+                zoom: zoom
+            };
             if (
                 feature.properties.source === "whosonfirst" &&
                 [
