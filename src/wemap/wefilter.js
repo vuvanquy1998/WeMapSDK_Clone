@@ -25,7 +25,7 @@ export default class WeFilterControl {
 
         this._poiLayers = ["poi-level-1-en", "poi-level-1", "poi-level-2-en", "poi-level-2", "poi-level-3-en", "poi-level-3"];
         this._choosedGroup = "";
-        this.markers = [];
+        this._markers = [];
     }
 
     renderView() {
@@ -34,6 +34,7 @@ export default class WeFilterControl {
             this._map.queryRenderedFeatures({
                 layers: this._poiLayers
             }).forEach(feature => {
+                console.log(feature.geometry.coordinates);
                 (this._groups[this._choosedGroup]["classes"].includes(feature.properties.class) && matchedFeatures.push(feature));
             });
             console.log(matchedFeatures)
@@ -66,6 +67,7 @@ export default class WeFilterControl {
     }
 
     addMarkers(features) {
+        this.removeMarkers();
         features.forEach(feature => {
             const markerEl = document.createElement("div");
             markerEl.innerHTML =
@@ -73,13 +75,14 @@ export default class WeFilterControl {
                 "<div class='wemap-marker-pulse'></div>";
 
             // TODO: add marker
-            console.log("add marker!");
-
+            
+            const marker = new wemapgl.Marker(markerEl).setLngLat(feature.geometry.coordinates).addTo(this._map);
+            this._markers.push(marker);
         });
     }
 
     removeMarkers(group) {
-        // TODO: remove marker
+        this._markers.forEach(marker => marker.remove());
     }
 
     createGroupButton(group) {
@@ -89,11 +92,7 @@ export default class WeFilterControl {
         button.addEventListener('click', () => {
             if(this._choosedGroup == group) {
                 this._choosedGroup = "";
-                this.removeMarkers(group);
             } else {
-                if(this._choosedGroup != "") {
-                    this.removeMarkers(this._choosedGroup);
-                }
                 this._choosedGroup = group;
                 this.renderView();
             }
