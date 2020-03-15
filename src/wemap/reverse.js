@@ -276,8 +276,8 @@ export default class Reverse {
             lat: data.geometry.coordinates[1],
             lon: data.geometry.coordinates[0],
             address: address,
-            osm_id: data.properties.id.replace('node/', ''),
-            osm_type: data.properties.osm_type
+            osmid: data.properties.id.split('/')[1],
+            osmtype: data.properties.osm_type
         }
         wemapgl.urlController.deleteParams('route')
         wemapgl.urlController.deleteParams('place')

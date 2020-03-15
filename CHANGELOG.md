@@ -53,6 +53,7 @@ already have information then show revert
 
 ### 🐞 Bug Fixes
 - fix bug view place source = "whosonfirst"
+- add polygon 
 
 ### 🐛 Bug Created
 
