@@ -13,7 +13,6 @@ export default class WeGeolocateControl {
     init() {
         this.geolocateControl = new GeolocateControl(this.options);
         this.geolocateControl.on("geolocate", (data) => {
-            console.log(this.prevAccuracy);
             if(data.coords.accuracy < this.prevAccuracy) {
                 this.send(data);
                 this.prevAccuracy = data.coords.accuracy;
