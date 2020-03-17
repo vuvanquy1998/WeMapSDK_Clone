@@ -40,11 +40,21 @@
         });
         wemap.addControl(control, 'bottom-right');
 
+        var wemapControl = new wemapgl.WeGeocoder({
+            flyTo: 'hybrid',
+            key: 'vpstPRxkBBTLaZkOaCfAHlqXtCR',
+            engine: 'default',  //ko biết
+            suggestion: {
+                min_char: 4  // ko ghi = 4
+            }
+        });
+        wemap.addControl(wemapControl);
+
         var filter = new wemapgl.WeFilterControl({
             values: {    
             }
         });
-        wemap.addControl(filter)
+        wemap.addControl(filter, "top-left")
     </script>
 
 </body>
