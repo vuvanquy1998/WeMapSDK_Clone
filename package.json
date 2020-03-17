@@ -178,7 +178,7 @@
     "wemap-dev": "yarn run build-dev && yarn run build-css && gulp build && mkdir -p dist/css && rm -rf dist/css/* && yarn run wemap-font-awesome && yarn run wemap-dev-style && gulp wemap-prod && yarn run wemap-clean && cp src/wemap/css/style.min.css dist/css/dev.min.css && cp -r src/wemap/img/ dist/ && yarn run wemap-dev-js",
     "wemap-prod-style": "cp dist/mapbox-gl.css dist/css && cp src/mapbox-gl-directions/src/mapbox-gl-directions.css dist/css && cp src/pelias-geocoder/pelias-geocoder.css dist/css && cp src/wemap/css/style.min.css dist/css",
     "wemap-prod": "yarn run build-prod-min && yarn run build-css && gulp build && mkdir -p dist/css && rm -rf dist/css/* && yarn run wemap-font-awesome && yarn run wemap-prod-style && gulp wemap-prod && yarn run wemap-clean &&  cp -r src/wemap/img/ dist/ && yarn run wemap-prod-js",
-    "wemap-js-ob": "javascript-obfuscator dist/js/wemap-gl.js --output dist/js/wemap-gl-obfus.js --compact true  --dead-code-injection true --identifier-names-generator \"mangled\"  --string-array false --split-strings-chunk-length 4",
+    "wemap-js-ob": "javascript-obfuscator dist/js/wemap-gl.js --output dist/js/wemap-gl-obfus.js --compact true  --dead-code-injection false --identifier-names-generator \"mangled\"  --string-array false --split-strings-chunk-length 5",
     "build-csp": "rollup -c rollup.config.csp.js",
     "build-query-suite": "rollup -c test/integration/rollup.config.test.js",
     "build-flow-types": "cp build/mapbox-gl.js.flow dist/mapbox-gl.js.flow && cp build/mapbox-gl.js.flow dist/mapbox-gl-dev.js.flow",
