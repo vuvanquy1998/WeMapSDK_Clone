@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>WeMap v0.2</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <script src="../dist/js/wemap-gl-obfus.js"  type="text/javascript"></script>
+    <link href="../dist/css/wemap.min.css" rel="stylesheet" />
+    <link href="../dist/css/dev.min.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+    var map = new wemapgl.WeMap({
+        container: 'map',
+        key: 'vpstPRxkBBTLaZkOaCfAHlqXtCR',
+        style: 'dark',
+        center: [105.84370246986344, 21.003961186227826],
+        zoom: 13,
+        urlController: "true",
+        reverse: "true"
+    });
+
+    var wemapControl = new wemapgl.WeGeocoder({
+        flyTo: 'hybrid',
+        key: 'vpstPRxkBBTLaZkOaCfAHlqXtCR',
+        engine: 'default',  //ko biết
+        suggestion: {
+            min_char: 4  // ko ghi = 4
+        }
+    });
+    map.addControl(wemapControl);
+
+    let wd =  new wemapgl.WeDirections({
+        mode: 'cycling',
+        key: "vpstPRxkBBTLaZkOaCfAHlqXtCR",
+        engine: 'osrm',
+        // interactive: true, // Enable action Directions, default: false
+        alternatives: true,
+        geocoder: {
+            engine: 'pelias',
+        }
+    });
+
+    map.addControl(wd, 'top-left');
+
+    map.addControl(new wemapgl.NavigationControl(), 'bottom-right');
+
+    map.addControl(new wemapgl.WeGeolocateControl({
+        positionOptions: {
+            enableHighAccuracy: true
+        },
+        trackUserLocation: true
+    }), 'bottom-right');
+
+</script>
+</body>
+</html>
