@@ -56,7 +56,7 @@
     "en": "en-US"
   },
   "rerank": {
-    "iploc": "https://apis.wemap.asia/iploc/w",
+    "iploc": "https://apis.wemap.asia/iploc/w?key=vpstPRxkBBTLaZkOaCfAHlqXtCR",
     "accuracyUpperLimit": 4000
   }
 }
