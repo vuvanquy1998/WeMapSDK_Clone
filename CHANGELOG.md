@@ -1,9 +1,15 @@
 # WeMap SDK
 
 -------------
+## Date: 2020/03/16
+
+### Features
+1. WeGeolocationControl: change iploc server address
+
+-------------
 ## Date: 2020/03/07
 
-### Feautures
+### Features
 1. Reverse:
     1. update url of polygon reverse
     2. maximum allowed distance for reverse is saved in config.js
@@ -53,7 +59,7 @@ already have information then show revert
 
 ### 🐞 Bug Fixes
 - fix bug view place source = "whosonfirst"
-- add polygon 
+- add polygon
 
 ### 🐛 Bug Created
 
