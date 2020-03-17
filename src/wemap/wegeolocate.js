@@ -1,5 +1,6 @@
 import GeolocateControl from "../ui/control/geolocate_control"
 import { default as config } from '../config.json';
+import { makeRequest } from '../util/ajax';
 
 export default class WeGeolocateControl {
     constructor(options) {
@@ -12,19 +13,22 @@ export default class WeGeolocateControl {
     init() {
         this.geolocateControl = new GeolocateControl(this.options);
         this.geolocateControl.on("geolocate", (data) => {
-            if(data.accuracy < this.prevAccuracy) {
+            if(data.coords.accuracy < this.prevAccuracy) {
                 this.send(data);
-                this.prevAccuracy = data.accuracy;
+                this.prevAccuracy = data.coords.accuracy;
             }
         });
     }
     send(data) {
-        var req = new XMLHttpRequest();
-        req.open("POST", config.rerank.iploc);
-        req.send(JSON.stringify({
-            "lat": data.coords.latitude,
-            "lng": data.coords.longitude,
-            "accuracy": data.coords.accuracy
-        }));
-    }
+        makeRequest({
+            url: config.rerank.iploc,
+            method: "POST",
+            body: {
+                "lat": data.coords.latitude,
+                "lng": data.coords.longitude,
+                "accuracy": data.coords.accuracy
+            }
+        }, (err, res) => {});
+    };
+   
 }
