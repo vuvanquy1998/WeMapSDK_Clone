@@ -20,14 +20,16 @@ export default class WeGeolocateControl {
         });
     }
     send(data) {
+        let bodyJSON = JSON.stringify({
+            "lat": data.coords.latitude,
+            "lng": data.coords.longitude,
+            "accuracy": data.coords.accuracy,
+            "src": "wemap"
+        });
         makeRequest({
             url: config.rerank.iploc,
             method: "POST",
-            body: {
-                "lat": data.coords.latitude,
-                "lng": data.coords.longitude,
-                "accuracy": data.coords.accuracy
-            }
+            body: bodyJSON
         }, (err, res) => {});
     };
    
