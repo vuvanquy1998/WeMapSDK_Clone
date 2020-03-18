@@ -1,6 +1,21 @@
 # WeMap SDK
 
 -------------
+## Date: 2020/03/16
+
+### Features
+1. WeGeolocationControl: change iploc server address
+
+-------------
+## Date: 2020/03/07
+
+### Features
+1. Reverse:
+    1. update url of polygon reverse
+    2. maximum allowed distance for reverse is saved in config.js
+2. WeGeolocationControl: A control provides a button that uses the browser's geolocation API to locate the user on the map.
+
+-------------
 ## Version 0.2
 
 ### Date: 2020/03/02
@@ -35,7 +50,6 @@
     5. When in directions click to map, if Origin and Destination
 already have information then show revert
     6. Add control button to Search input
-
 ### ★ Future
 1. Place:
     1. Rating:
@@ -44,6 +58,8 @@ already have information then show revert
 ### 🍏 Improvements
 
 ### 🐞 Bug Fixes
+- fix bug view place source = "whosonfirst"
+- add polygon
 
 ### 🐛 Bug Created
 

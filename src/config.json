@@ -5,6 +5,8 @@
     "dark": "https://apis.wemap.asia/vector-tiles/styles/osm-bright/style.json"
   },
   "reverse": "https://apis.wemap.asia/geocode-1/reverse",
+  "streetMaxDistance": 20,
+  "pointMaxDistance": 20,
   "pipService": "https://apis.wemap.asia/we-tools/pip",
   "direction": {
     "engine": {
@@ -56,6 +58,7 @@
     "en": "en-US"
   },
   "rerank": {
-    "iploc": "http://103.130.218.242:80/w"
+    "iploc": "https://apis.wemap.asia/iploc/w?key=vpstPRxkBBTLaZkOaCfAHlqXtCR",
+    "accuracyUpperLimit": 4000
   }
 }
