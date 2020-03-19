@@ -45,6 +45,9 @@
     background-color: #efefef;
 }
 
+.wefilter-button-container-active {
+    background-color: #efefef;
+}
 
 .wefilter-button-container span {
     display: block;
@@ -77,4 +80,13 @@
 #wefilter-button-shopping {
     background:   #f1c40f;
     border: 1px solid   #f1c40f;
+}
+
+#wefilter-error-container {
+    text-align: center;
+    margin-top: 15px;
+    font-family: sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    color:  #c0392b ;
 }
