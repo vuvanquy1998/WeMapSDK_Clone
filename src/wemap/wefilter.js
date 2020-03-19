@@ -7,26 +7,48 @@ export default class WeFilterControl {
             "cuisine": {
                 "text": "Ẩm thực",
                 "fa-icon": "fa-cutlery",
-                "k": "amenity",
-                "v": "restaurant"
+                "kv": [
+                    ["amenity", "restaurant"],
+                    ["amenity", "cafe"],
+                    ["amenity", "fast_food"],
+                    ["amenity", "food_court"],
+                    ["amenity", "fast_food"]
+
+                ]
             },
             "hotel": {
                 "text": "Nhà nghỉ",
                 "fa-icon": "fa-hotel",
-                "k": "tourism",
-                "v": "hotel"
+                "kv": [
+                    ["tourism", "hotel"],
+                    ["tourism", "guest_house"],
+                    ["tourism", "motel"]
+                ]
             },
             "entertainment": {
                 "text": "Giải trí",
                 "fa-icon": "fa-glass",
-                "k": "amenity",
-                "v": "nightclub"
+                "kv": [
+                    ["amenity", "nightclub"],
+                    ["amenity", "pub"],
+                    ["amenity", "theatre"],
+                    ["amenity", "casino"],
+                    ["amenity", "cinema"]
+                ]
             },
             "shopping": {
                 "text": "Mua sắm",
                 "fa-icon": "fa-shopping-bag",
-                "k": "amenity",
-                "v": "nightclub"
+                "kv": [
+                    ["shop", "mall"],
+                    ["shop", "supermarket"],
+                    ["shop", "shoes"],
+                    ["shop", "jewelry"],
+                    ["shop", "fashion"],
+                    ["shop", "bakery"],
+                    ["shop", "convenience"],
+                    ["amenity", "marketplace"]
+                ]
             }
         };
         this._locationMarker = null;
@@ -42,6 +64,16 @@ export default class WeFilterControl {
         let wefilterTitle = document.createElement("div");
         wefilterTitle.setAttribute("id", "wefilter-title");
         wefilterTitle.innerHTML = "Khám phá xung quanh bạn";
+
+        let wefilterAqi = document.createElement("span");
+        wefilterAqi.setAttribute("id", "wefilter-aqi");
+        wefilterAqi.innerHTML = "AQI 310";
+        wefilterTitle.appendChild(wefilterAqi);
+
+        let wefilterTemp = document.createElement("span");
+        wefilterTemp.setAttribute("id", "wefilter-temp");
+        wefilterTemp.innerHTML = "<i class='fa fa-cloud'></i> 26°C";
+        wefilterTitle.appendChild(wefilterTemp);        
 
         wefilterContainer.appendChild(wefilterTitle);
 
@@ -101,7 +133,7 @@ export default class WeFilterControl {
 
     explore(group) {
         // TODO: when removing this marker?
-        this._locationMarker = this.createMarker("wefilter-marker-location", "fa fa-male")
+        this._locationMarker = this.createMarker("wefilter-marker", "wefilter-marker-location", "fa fa-male")
         .setLngLat([this._userLocation.lng, this._userLocation.lat])
         .addTo(this._map);
 
@@ -141,51 +173,58 @@ export default class WeFilterControl {
     }
 
     queryFeatures(group) {
-        let exploreUrl = "https://apis.wemap.asia/we-tools/explore?"
-        + "k=" + this._groups[group]["k"] + "&"
-        + "v=" + this._groups[group]["v"] + "&"
-        + "lat=" + this._userLocation.lat + "&"
-        + "lon=" + this._userLocation.lng + "&"
-        + "limit=20&d=1000";
 
-        makeRequest({
-            url: exploreUrl,
-            method: "GET"
-        }, (err, res) => {
-            if(res != undefined) {
-                let points = JSON.parse(res);
-                let minLon = null;
-                let maxLon = null;
-                let minLat = null;
-                let maxLat = null;
-                points.forEach((point) => {
-                    console.log(point);
-                    let lat = parseFloat(point.lat);
-                    let lon = parseFloat(point.lon);
-                    (minLon == null || minLon > lon) && (minLon = lon);
-                    (minLat == null || minLat > lat) && (minLat = lat);
-                    (maxLon == null || maxLon < lon) && (maxLon = lon);
-                    (maxLat == null || maxLat < lat) && (maxLat = lat);
-                    
-                    let marker = this.createMarker("wefilter-marker", "fa fa-map-marker").setLngLat([lon, lat]).addTo(this._map);
-                    marker.setPopup(this.createPopup(point, group));
-                    let markerEl = marker.getElement();
-                    markerEl.addEventListener('mouseenter', () => marker.togglePopup());
-                    markerEl.addEventListener('mouseleave', () => marker.togglePopup());
-                    this._markers.push(marker);
-                });
-                this._map.fitBounds([
-                    [minLon, minLat],
-                    [maxLon, maxLat]
-                ]);
-                console.log(this._map.getZoom());
-            }
+        let keyValuePairs = this._groups[group]["kv"];
+
+        let minLon = null;
+        let maxLon = null;
+        let minLat = null;
+        let maxLat = null;
+
+        let requestNum = 0;
+
+        keyValuePairs.forEach((pair) => {
+            let exploreUrl = this.createExploreUrl(this._userLocation.lat,  this._userLocation.lng, pair[0], pair[1], 1000, 20);
+            makeRequest({
+                url: exploreUrl,
+                method: "GET"
+            }, (err, res) => {
+                requestNum += 1;
+                if(res != undefined) {
+                    let points = JSON.parse(res);
+                    points.forEach(point => {
+                        let lat = parseFloat(point.lat);
+                        let lon = parseFloat(point.lon);
+                        (minLon == null || minLon > lon) && (minLon = lon);
+                        (minLat == null || minLat > lat) && (minLat = lat);
+                        (maxLon == null || maxLon < lon) && (maxLon = lon);
+                        (maxLat == null || maxLat < lat) && (maxLat = lat);
+                        
+                        let marker = this.createMarker("wefilter-marker", "wefilter-marker-" + group, "fa fa-map-marker").setLngLat([lon, lat]).addTo(this._map);
+                        marker.setPopup(this.createPopup(point, pair[1]));
+                        let markerEl = marker.getElement();
+                        markerEl.addEventListener('mouseenter', () => marker.togglePopup());
+                        markerEl.addEventListener('mouseleave', () => marker.togglePopup());
+                        this._markers.push(marker);
+                    });
+                    if(requestNum == keyValuePairs.length) {
+                        this._map.fitBounds([
+                            [minLon, minLat],
+                            [maxLon, maxLat]
+                        ]);
+                    }               
+                }
+                
+            });
+
         });
+        
     }
 
-    createMarker(elClass, iconClass) {
+    createMarker(elClass, elId, iconClass) {
         let markerEl = document.createElement("div");
         markerEl.setAttribute("class", elClass);
+        markerEl.setAttribute("id", elId);
         let markerIcon = document.createElement("i");
         markerIcon.setAttribute("class", iconClass);
         markerEl.appendChild(markerIcon);
@@ -193,9 +232,12 @@ export default class WeFilterControl {
         return marker;
     }
 
-    createPopup(point, group) {
+    createPopup(point, value) {
+        console.log(point);
+        console.log(value);
+        console.log(point.address[value]);
         let popup = new wemapgl.Popup({offset: 15}).setHTML(
-            '<p>' + point.address[this._groups[group]["v"]] + '</p>'
+            '<p>' + point.address[value] + '</p>'
         );
         return popup;
     }
@@ -205,5 +247,16 @@ export default class WeFilterControl {
         this._markers = [];
     }
 
+    createExploreUrl(lat, lon, k, v, distance, limit) {
+        // TODO: move to config file
+        let url = "https://apis.wemap.asia/we-tools/explore?"
+        + "k=" + k + "&"
+        + "v=" + v + "&"
+        + "lat=" + lat + "&"
+        + "lon=" + lon + "&"
+        + "limit=" + limit + "&"
+        + "d=" + distance;
+        return url;
+    }
 
 }

@@ -18,6 +18,17 @@
     margin: 0px 0px 15px 10px;
 }
 
+#wefilter-title span {
+    color: grey;
+    margin-left: 20px;
+    float: right;
+    display: block;
+}
+
+#wefilter-temp i {
+    color: grey;
+}
+
 .wefilter-button {
     background-color: white;
     border: 1px solid grey;
@@ -93,12 +104,26 @@
 
 .wefilter-marker i {
     font-size: 23px;
-    color:  #FF5733;
     text-shadow: 0 2px 4px rgba(0,0,0,.2), 0 -1px 0 rgba(0,0,0,.02);
 }
 
-.wefilter-marker-location i {
-    font-size: 23px;
-    color:  #4a235a ;
-    text-shadow: 0 2px 4px rgba(0,0,0,.2), 0 -1px 0 rgba(0,0,0,.02);
+#wefilter-marker-cuisine i {
+    color:  #C70039;
+}
+
+#wefilter-marker-hotel i {
+    color:  #28b463;
+}
+
+#wefilter-marker-entertainment i {
+    color:  #2980b9;
+}
+
+#wefilter-marker-shopping i {
+    color:  #f1c40f;
+}
+
+
+#wefilter-marker-location i {
+    color:  #4a235a;
 }
