@@ -1,69 +1,73 @@
 #wefilter-container {
-    box-shadow: 0 2px 4px rgba(0,0,0,.2), 0 -1px 0 rgba(0,0,0,.02);
-    pointer-events: auto;
-    background-color: white;
-    padding: 10px 12px;
-    border-radius: 5px;
-    display: inline-block;
-    margin: 5px 10px 0px 20px;
+  width: 400px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.2), 0 -1px 0 rgba(0,0,0,.02);
+  pointer-events: auto;
+  background-color: white;
+  border-radius: 5px;
+  display: inline-block;
+  padding: 10px 20px;
+  margin-left: 20px;
+  margin-top: 10px;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  outline: 0;
 }
 
 #wefilter-title {
-    font-family: sans-serif;
-    font-weight: bold;
-    color:  #2e4053;
-    font-size: 13px;
-    margin-bottom: 20px;
-    margin: 0px 0px 15px 10px;
-}
-
-#wefilter-title span {
-    color: grey;
-    margin-left: 20px;
-    float: right;
-    display: block;
+  font-family: sans-serif;
+  font-weight: bold;
+  color:  #2e4053;
+  font-size: 13px;
+  margin: 10px 0px;
 }
 
 .wefilter-button {
-    background-color: white;
-    border: 1px solid grey;
-    outline-style: none;
-    margin: 0px 10px;
-    color: white;
-   
-    width: 50px;
-    height: 50px;
-    padding: 6px 0px;
-    border-radius: 25px;
-    text-align: center;
-    font-size: 18px;
-    line-height: 1.42857;
+  margin: 10px 5px;
+  width: 50px;
+  height: 50px;
+
+  line-height: 50px;
+  text-align: center;
+
+  border-radius: 25px;
+  background: white;
+  
+  font-size: 20px;
+
+  display: inline-block;
+
+  color: #23bbad;
+  border: solid 1px #23bbad;
 }
 
-.wefilter-button-container {
-    display: inline-block;
-    padding: 10px 10px;
-    margin: 0px 2px;
-    border-radius: 5px;
+.wefilter-control {
+  margin: 10px 5px;
+  width: 50px;
+  height: 50px;
+
+  line-height: 50px;
+  text-align: center;
+
+  border-radius: 25px;
+  
+  font-size: 20px;
+
+  display: inline-block;
 }
 
-.wefilter-button-container:hover {
-    background-color: #efefef;
+.wefilter-control i {
+  color: grey;
 }
 
-.wefilter-button-container-active {
-    background-color: #efefef;
+.wefilter-control:hover {
+  background: grey;
 }
 
-.wefilter-button-container span {
-    display: block;
-    margin-top: 10px;
-    font-family: sans-serif;
-    text-align: center;
-    color: grey;
-    font-size: 14px;
-}
-
-.wefilter-button-container i {
-    color: white;
+.wefilter-control:hover i {
+  color: white;
 }
