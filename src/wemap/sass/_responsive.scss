@@ -1,0 +1,46 @@
+$tablet: 670px;
+$mobile-large: 640px;
+$mobile-medium: 600px;
+$mobile-small: 400px;
+
+#wemap-place {
+    @media screen and (max-width: $mobile-medium) {
+        width: 300px;
+        left: calc(50% - 170px);
+        .wemap-image-place {
+            display: none;
+        }
+    }
+}
+
+.wemap-direction  .mapboxgl-control-container {
+    @media screen and (max-width: $mobile-large) {
+        .pelias-ctrl {
+            min-width: 350px;
+        }
+
+        .mapboxgl-ctrl-directions {
+            min-width: 350px;
+            max-width: 350px;
+        }
+
+    }
+
+    @media screen and (max-width: $mobile-small) {
+        .pelias-ctrl {
+            min-width: calc(100vw - 30px);
+        }
+
+        .mapboxgl-ctrl-directions {
+            min-width: calc(100vw - 65px);
+        }
+    }
+}
+
+// ctrl-top-left
+.wemap-direction .mapboxgl-ctrl-top-left .directions-control.directions-control-instructions {
+    @media screen and (max-width: $tablet) {
+        top: 0;
+        left: 0;
+    }
+}

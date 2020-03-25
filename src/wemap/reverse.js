@@ -238,7 +238,7 @@ export default class Reverse {
             }
         }
         document.getElementById('wemap-placeadd').innerHTML = secondLine.join(', ')
-        document.getElementById('wemap-placelatlon').innerHTML = Number(data.geometry.coordinates[0]).toFixed(7) + ' ,' + Number(data.geometry.coordinates[1]).toFixed(7)
+        document.getElementById('wemap-placelatlon').innerHTML = Number(data.geometry.coordinates[0]).toFixed(7) + ', ' + Number(data.geometry.coordinates[1]).toFixed(7)
         this.receivedData = data
     }
     /**

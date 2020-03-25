@@ -4,7 +4,7 @@
     min-height: 10px;
     position: absolute;
     width: 384px;
-    bottom: 10px;
+    bottom: 20px;
     left: calc(50% - 192px);
     border-radius: 8px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
@@ -62,7 +62,7 @@
 }
 .wemap-placename {
     font-size: 12px;
-    font-family: roboto;
+    font-family: Roboto, Arial, sans-serif, inherit;
     max-width: 192px;
     font-weight: bold;
     overflow: hidden;
@@ -75,7 +75,7 @@
 }
 .wemap-placeadd {
     font-size: 12px;
-    font-family: roboto;
+    font-family: Roboto, Arial, sans-serif, inherit;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -93,7 +93,7 @@
 }
 .wemap-placelatlon {
     font-size: 12px;
-    font-family: roboto;
+    font-family: Roboto, Arial, sans-serif, inherit;
     color: #999999;
     max-width: 192px;
     overflow: hidden;
@@ -110,7 +110,7 @@
     flex-direction: column;
     width: 192px;
     border: none;
-    border-radius: none;
+    border-radius: 0;
     outline: none;
     cursor: pointer;
 }
