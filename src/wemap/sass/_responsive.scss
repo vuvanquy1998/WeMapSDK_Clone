@@ -161,3 +161,45 @@ $mobile-small: 479px;
         font-size: 13px;
     }
 }
+
+
+// Slider
+.tns-nav > .tns-nav-active {
+    background: #999;
+}
+
+.tns-nav > [aria-controls] {
+    width: 9px;
+    height: 9px;
+    padding: 0;
+    margin: 0 5px;
+    border-radius: 50%;
+    background: #ddd;
+    border: 0;
+}
+
+.tns-controls [aria-controls] {
+    font-size: 15px;
+    margin: 0 5px;
+    padding: 0 1em;
+    height: 2.5em;
+    color: #000;
+    background: #66CCFF;
+    border-radius: 3px;
+    border: 0;
+}
+
+
+#wefilter-control-container {
+    position: relative;
+    div#wefilter-control-left {
+        position: absolute;
+        top: -60px;
+        left: -20px;
+    }
+    div#wefilter-control-right {
+        position: absolute;
+        right: -20px;
+        top: -60px;
+    }
+}

@@ -43,6 +43,22 @@ export default class WeFilterControl {
         this._head = 0;
         this._buttons = [];
         this._numberOfButtons = 4;
+        window.addEventListener('DOMContentLoaded', function() {
+            let slider = tns({
+                "container": '#wefilter-button-section',
+                "items": 4,
+                "nested": "inner",
+                // "edgePadding": 10,
+                "controlsContainer": "#wefilter-control-container",
+                "gutter": 15,
+                "nav": false,
+                "mouseDrag": true,
+                "loop": false,
+                "slideBy": "page",
+                "swipeAngle": false,
+                "speed": 400
+            });
+        });
     }
 
     onAdd(map) {
@@ -63,15 +79,17 @@ export default class WeFilterControl {
         buttonControlSection.setAttribute("id", "wefilter-button-section");
         wefilterContainer.appendChild(buttonControlSection);
 
-        this._leftButton = document.createElement("div");
-        this._leftButton.setAttribute("class", "wefilter-control");
-        this._leftButton.setAttribute("id", "wefilter-control-left");
-        let leftIcon = document.createElement("i");
-        leftIcon.setAttribute("class", "fa fa-chevron-left");
-        this._leftButton.appendChild(leftIcon);
-        this._leftButton.addEventListener("click", () => this.updateCarousel(--this._head));
+        // this._leftButton = document.createElement("div");
+        // this._leftButton.setAttribute("class", "wefilter-control");
+        // this._leftButton.setAttribute("id", "wefilter-control-left");
+        // let leftIcon = document.createElement("i");
+        // leftIcon.setAttribute("class", "fa fa-chevron-left");
+        // this._leftButton.appendChild(leftIcon);
+
+        // this._leftButton.addEventListener("click", () => this.updateCarousel(--this._head));
+
         // wefilterContainer.appendChild(this._leftButton);
-        buttonControlSection.appendChild(this._leftButton);
+        // buttonControlSection.appendChild(this._leftButton);
 
 
         Object.keys(this._options["filters"]).forEach(filterId => {
@@ -79,30 +97,70 @@ export default class WeFilterControl {
             filterButton.setAttribute("class", "wefilter-button");
             filterButton.setAttribute("id", "wefilter-button-" + filterId);
             let filterIcon = document.createElement("i");
+
+            filterIcon.setAttribute("id", "wefilter-icon-" + filterId);
+
             filterIcon.setAttribute("class", "fa " + this._options["filters"][filterId]["fa-icon"]);
+
+            let filterText = document.createElement("div");
+
+            filterText.setAttribute("id", "wefilter-text-" + filterId);
+
+            filterText.setAttribute("class", "wefilter-text");
+            filterText.innerHTML = this._options["filters"][filterId]["text"];
+
             filterButton.appendChild(filterIcon);
+            filterButton.appendChild(filterText);
+
             filterButton.setAttribute("title", this._options["filters"][filterId]["text"]);
             // wefilterContainer.appendChild(filterButton);
             buttonControlSection.appendChild(filterButton);
 
             filterButton.addEventListener("click", () => this.onClickFilter(filterId));
             this._buttons.push(filterButton);
-            this.unhighlightButton(filterButton, this._options["filters"][filterId]["color"]);
+
+            // this.unhighlightButton(filterButton, this._options["filters"][filterId]["color"]);
+            this.unhighlightButton(filterIcon, this._options["filters"][filterId]["color"]);
         });
 
-        this._rightButton = document.createElement("div");
-        this._rightButton.setAttribute("class", "wefilter-control");
-        this._rightButton.setAttribute("id", "wefilter-control-right");
-        let rightIcon = document.createElement("i");
 
+        let controlContainer = document.createElement("div");
+        controlContainer.setAttribute("id", "wefilter-control-container");
+        wefilterContainer.appendChild(controlContainer);
+
+        let leftControlButton = document.createElement("div");
+        leftControlButton.setAttribute("class", "wefilter-control");
+        leftControlButton.setAttribute("id", "wefilter-control-left");
+        let leftIcon = document.createElement("i");
+        leftIcon.setAttribute("class", "fa fa-chevron-left");
+        leftControlButton.appendChild(leftIcon);
+        controlContainer.appendChild(leftControlButton);
+
+
+        let rightControlButton = document.createElement("div");
+        rightControlButton.setAttribute("class", "wefilter-control");
+        rightControlButton.setAttribute("id", "wefilter-control-right");
+        let rightIcon = document.createElement("i");
         rightIcon.setAttribute("class", "fa fa-chevron-right");
-        this._rightButton.appendChild(rightIcon);
-        this._rightButton.addEventListener("click", () => this.updateCarousel(++this._head));
+        rightControlButton.appendChild(rightIcon);
+        controlContainer.appendChild(rightControlButton);
+
+        // this._rightButton = document.createElement("div");
+        // this._rightButton.setAttribute("class", "wefilter-control");
+        // this._rightButton.setAttribute("id", "wefilter-control-right");
+        // let rightIcon = document.createElement("i");
+        //
+        // rightIcon.setAttribute("class", "fa fa-chevron-right");
+        // this._rightButton.appendChild(rightIcon);
+
+        // this._rightButton.addEventListener("click", () => this.updateCarousel(++this._head));
+
         // wefilterContainer.appendChild(this._rightButton);
-        buttonControlSection.appendChild(this._rightButton);
+        // buttonControlSection.appendChild(this._rightButton);
 
         this._container.appendChild(wefilterContainer);
-        this.updateCarousel(this._head);
+        // this.updateCarousel(this._head);
+
         return  this._container;
     }
 
@@ -119,15 +177,18 @@ export default class WeFilterControl {
         if(this._currFilter == null) {
             this._prevFilter = null;
             this._currFilter = filterId;
-            this.highlightButton(document.getElementById("wefilter-button-" + this._currFilter), this._options["filters"][this._currFilter]["color"]);
+            // this.highlightButton(document.getElementById("wefilter-button-" + this._currFilter), this._options["filters"][this._currFilter]["color"]);
+            this.highlightButton(document.getElementById("wefilter-icon-" + this._currFilter), this._options["filters"][this._currFilter]["color"]);
             this._wefilterTitle.innerHTML = "Đang lọc: " + this._options["filters"][this._currFilter]["text"];
         } else {
             this._prevFilter = this._currFilter;
-            this.unhighlightButton(document.getElementById("wefilter-button-" + this._prevFilter), this._options["filters"][this._prevFilter]["color"]);
+            // this.unhighlightButton(document.getElementById("wefilter-button-" + this._prevFilter), this._options["filters"][this._prevFilter]["color"]);
+            this.unhighlightButton(document.getElementById("wefilter-icon-" + this._prevFilter), this._options["filters"][this._prevFilter]["color"]);
             this._wefilterTitle.innerHTML = "Hãy lọc ra những địa điểm bạn muốn";
             if(this._currFilter != filterId) {
                 this._currFilter = filterId;
-                this.highlightButton(document.getElementById("wefilter-button-" + this._currFilter), this._options["filters"][this._currFilter]["color"]);
+                // this.highlightButton(document.getElementById("wefilter-button-" + this._currFilter), this._options["filters"][this._currFilter]["color"]);
+                this.highlightButton(document.getElementById("wefilter-icon-" + this._currFilter), this._options["filters"][this._currFilter]["color"]);
                 this._wefilterTitle.innerHTML = "Đang lọc: " + this._options["filters"][this._currFilter]["text"];
             } else {
                 this._currFilter = null;
@@ -167,13 +228,15 @@ export default class WeFilterControl {
     highlightButton(buttonDOM, color) {
         buttonDOM.style.border = "1px solid " + color;
         buttonDOM.style.background = color;
-        Array.from(buttonDOM.children)[0].style.color = "white";
+        // Array.from(buttonDOM.children)[0].style.color = "white";
+        buttonDOM.style.color = "white";
     }
 
     unhighlightButton(buttonDOM, color) {
         buttonDOM.style.border = "1px solid " + color;
         buttonDOM.style.background = "white";
-        Array.from(buttonDOM.children)[0].style.color = color;
+        // Array.from(buttonDOM.children)[0].style.color = color;
+        buttonDOM.style.color = color;
     }
 
     disableButton(buttonDOM) {
