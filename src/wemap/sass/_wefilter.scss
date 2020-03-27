@@ -1,73 +1,85 @@
-#wefilter-container {
-  width: 400px;
-  box-shadow: 0 2px 4px rgba(0,0,0,.2), 0 -1px 0 rgba(0,0,0,.02);
-  pointer-events: auto;
-  background-color: white;
-  border-radius: 5px;
-  display: inline-block;
-  padding: 10px 20px;
-  margin-left: 20px;
-  margin-top: 10px;
+#wefilter-section {
+    position: relative;
 
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  outline: 0;
+    #wefilter-container {
+        position: absolute;
+        left: 20px;
+        top: 70px;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+#wefilter-container {
+    width: 400px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .2), 0 -1px 0 rgba(0, 0, 0, .02);
+    pointer-events: auto;
+    background-color: white;
+    border-radius: 5px;
+    display: inline-block;
+    padding: 10px 20px;
+    margin-left: 20px;
+    margin-top: 10px;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    outline: 0;
 }
 
 #wefilter-title {
-  font-family: sans-serif;
-  font-weight: bold;
-  color:  #2e4053;
-  font-size: 13px;
-  margin: 10px 0px;
+    font-family: sans-serif;
+    font-weight: bold;
+    color: #2e4053;
+    font-size: 13px;
+    padding: 10px 0 10px 15px;
 }
 
 .wefilter-button {
-  margin: 10px 5px;
-  width: 50px;
-  height: 50px;
+    margin: 10px 5px;
+    width: 50px;
+    height: 50px;
 
-  line-height: 50px;
-  text-align: center;
+    line-height: 50px;
+    text-align: center;
 
-  border-radius: 25px;
-  background: white;
-  
-  font-size: 20px;
+    border-radius: 25px;
+    background: white;
 
-  display: inline-block;
+    font-size: 20px;
 
-  color: #23bbad;
-  border: solid 1px #23bbad;
+    display: inline-block;
+
+    color: #23bbad;
+    border: solid 1px #23bbad;
 }
 
 .wefilter-control {
-  margin: 10px 5px;
-  width: 50px;
-  height: 50px;
+    margin: 10px 5px;
+    width: 50px;
+    height: 50px;
 
-  line-height: 50px;
-  text-align: center;
+    line-height: 50px;
+    text-align: center;
 
-  border-radius: 25px;
-  
-  font-size: 20px;
+    border-radius: 25px;
 
-  display: inline-block;
+    font-size: 20px;
+
+    display: inline-block;
 }
 
 .wefilter-control i {
-  color: grey;
+    color: grey;
 }
 
 .wefilter-control:hover {
-  background: grey;
+    background: grey;
 }
 
 .wefilter-control:hover i {
-  color: white;
+    color: white;
 }

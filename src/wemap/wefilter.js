@@ -1,4 +1,6 @@
 import { makeRequest } from '../util/ajax';
+import { tns } from "tiny-slider/src/tiny-slider"
+
 export default class WeFilterControl {
     constructor(options) {
         let defaultLayers = ["poi-level-1", "poi-level-2", "poi-level-3"];
@@ -32,10 +34,10 @@ export default class WeFilterControl {
                     "featureClasses": ["shop", "grocery", "alcohol_shop", "jewelry", "mall", "supermarket", "fashion", "convenience", "marketplace"],
                     "layers": defaultLayers
                 },
-                
+
             }
         };
-        
+
         this._currFilter = null;
         this._prevFilter = null;
         this._head = 0;
@@ -46,6 +48,8 @@ export default class WeFilterControl {
     onAdd(map) {
         this._map = map;
         this._container = document.createElement("div");
+        this._container.setAttribute("id", "wefilter-section");
+
         let wefilterContainer = document.createElement("div");
         wefilterContainer.setAttribute("id", "wefilter-container");
 
@@ -55,6 +59,10 @@ export default class WeFilterControl {
 
         wefilterContainer.appendChild(this._wefilterTitle);
 
+        let buttonControlSection = document.createElement("div");
+        buttonControlSection.setAttribute("id", "wefilter-button-section");
+        wefilterContainer.appendChild(buttonControlSection);
+
         this._leftButton = document.createElement("div");
         this._leftButton.setAttribute("class", "wefilter-control");
         this._leftButton.setAttribute("id", "wefilter-control-left");
@@ -62,7 +70,8 @@ export default class WeFilterControl {
         leftIcon.setAttribute("class", "fa fa-chevron-left");
         this._leftButton.appendChild(leftIcon);
         this._leftButton.addEventListener("click", () => this.updateCarousel(--this._head));
-        wefilterContainer.appendChild(this._leftButton);
+        // wefilterContainer.appendChild(this._leftButton);
+        buttonControlSection.appendChild(this._leftButton);
 
 
         Object.keys(this._options["filters"]).forEach(filterId => {
@@ -73,7 +82,8 @@ export default class WeFilterControl {
             filterIcon.setAttribute("class", "fa " + this._options["filters"][filterId]["fa-icon"]);
             filterButton.appendChild(filterIcon);
             filterButton.setAttribute("title", this._options["filters"][filterId]["text"]);
-            wefilterContainer.appendChild(filterButton);
+            // wefilterContainer.appendChild(filterButton);
+            buttonControlSection.appendChild(filterButton);
 
             filterButton.addEventListener("click", () => this.onClickFilter(filterId));
             this._buttons.push(filterButton);
@@ -84,11 +94,12 @@ export default class WeFilterControl {
         this._rightButton.setAttribute("class", "wefilter-control");
         this._rightButton.setAttribute("id", "wefilter-control-right");
         let rightIcon = document.createElement("i");
-        
+
         rightIcon.setAttribute("class", "fa fa-chevron-right");
         this._rightButton.appendChild(rightIcon);
         this._rightButton.addEventListener("click", () => this.updateCarousel(++this._head));
-        wefilterContainer.appendChild(this._rightButton);
+        // wefilterContainer.appendChild(this._rightButton);
+        buttonControlSection.appendChild(this._rightButton);
 
         this._container.appendChild(wefilterContainer);
         this.updateCarousel(this._head);

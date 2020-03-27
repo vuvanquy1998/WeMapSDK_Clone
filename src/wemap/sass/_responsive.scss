@@ -109,8 +109,8 @@ $mobile-small: 479px;
 // Filter
 @media screen and (max-width: $mobile-medium) {
     div#wefilter-button-section {
-        display: flex;
-        justify-content: space-around;
+        //display: flex;
+        //justify-content: space-around;
     }
 
     //#wefilter-section {
