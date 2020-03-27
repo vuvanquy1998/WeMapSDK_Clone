@@ -11,6 +11,12 @@ $mobile-small: 479px;
     z-index: 999;
 }
 
+.wedirection-activated {
+    #wefilter-section {
+        display: none;
+    }
+}
+
 #wemap-place {
     @media screen and (max-width: $mobile-medium) {
         width: 300px;
