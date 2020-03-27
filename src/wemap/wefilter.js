@@ -49,6 +49,10 @@ export default class WeFilterControl {
 
         wefilterContainer.appendChild(wefilterTitle);
 
+        let wefilterButtonSection = document.createElement("div");
+        wefilterButtonSection.setAttribute("id", "wefilter-button-section");
+        wefilterContainer.appendChild(wefilterButtonSection);
+
         Object.keys(this._groups).forEach(group => {
             let wefilterButtonContainer = document.createElement("div");
             wefilterButtonContainer.setAttribute("class", "wefilter-button-container");
@@ -69,7 +73,8 @@ export default class WeFilterControl {
             wefilterButtonContainer.appendChild(span);
             wefilterButtonContainer.addEventListener("click", () => this.onClickFilter(group))
 
-            wefilterContainer.appendChild(wefilterButtonContainer);
+            // wefilterContainer.appendChild(wefilterButtonContainer);
+            wefilterButtonSection.appendChild(wefilterButtonContainer);
         });
 
         this._container.appendChild(wefilterContainer);
