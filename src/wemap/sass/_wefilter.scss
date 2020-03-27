@@ -1,12 +1,118 @@
+.wedirection-activated {
+    #wefilter-section {
+        display: none;
+    }
+}
+
+#wefilter-section {
+    position: relative;
+    #wefilter-container {
+        position: absolute;
+        z-index: 9;
+        top: 70px;
+        left: 20px;
+        margin: 0;
+        padding: 0;
+    }
+}
+
 #wefilter-container {
     box-shadow: 0 2px 4px rgba(0,0,0,.2), 0 -1px 0 rgba(0,0,0,.02);
     pointer-events: auto;
     background-color: white;
-    padding: 10px 12px;
+    //padding: 10px 12px;
     border-radius: 5px;
     display: inline-block;
-    
-    margin: 5px 10px 0px 20px;
+    //margin: 5px 10px 0px 20px;
+
+    .wefilter-button-container {
+        display: inline-block;
+        padding: 10px 3px;
+        margin: 0 2px;
+        border-radius: 5px;
+    }
+
+    .wefilter-button {
+        background-color: white;
+        border: 1px solid grey;
+        outline-style: none;
+        margin: 0px 10px;
+        color: white;
+
+        width: 50px;
+        height: 50px;
+        padding: 6px 0px;
+        border-radius: 25px;
+        text-align: center;
+        font-size: 18px;
+        line-height: 1.42857;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+
+    #wefilter-button-cuisine {
+        background: #C70039;
+        border: 1px solid #C70039;
+    }
+
+    #wefilter-button-hotel {
+        background: #28b463;
+        border: 1px solid #28b463;
+    }
+
+    #wefilter-button-entertainment {
+        background:  #2980b9;
+        border: 1px solid  #2980b9;
+    }
+
+    #wefilter-button-shopping {
+        background:   #f1c40f;
+        border: 1px solid   #f1c40f;
+    }
+
+    #wefilter-error-container {
+        text-align: center;
+        margin-top: 15px;
+        font-family: sans-serif;
+        font-size: 13px;
+        font-weight: bold;
+        color:  #c0392b ;
+    }
+
+    .wefilter-marker i {
+        font-size: 23px;
+        text-shadow: 0 2px 4px rgba(0,0,0,.2), 0 -1px 0 rgba(0,0,0,.02);
+    }
+
+    #wefilter-marker-cuisine i {
+        color:  #C70039;
+    }
+
+    #wefilter-marker-hotel i {
+        color:  #28b463;
+    }
+
+    #wefilter-marker-entertainment i {
+        color:  #2980b9;
+    }
+
+    #wefilter-marker-shopping i {
+        color:  #f1c40f;
+    }
+
+
+    #wefilter-marker-location i {
+        color:  #4a235a;
+    }
+
+    #wefilter-button-more {
+        background: #333;
+    }
+
+
 }
 
 #wefilter-title {
@@ -14,8 +120,11 @@
     font-weight: bold;
     color:  #2e4053;
     font-size: 13px;
-    margin-bottom: 20px;
-    margin: 0px 0px 15px 10px;
+    //margin-bottom: 20px;
+    //padding: 0 0 15px 10px;
+    padding-left: 15px;
+    padding-top: 8px;
+    //line-height: 3;
 }
 
 #wefilter-title span {
@@ -29,28 +138,6 @@
     color: grey;
 }
 
-.wefilter-button {
-    background-color: white;
-    border: 1px solid grey;
-    outline-style: none;
-    margin: 0px 10px;
-    color: white;
-   
-    width: 50px;
-    height: 50px;
-    padding: 6px 0px;
-    border-radius: 25px;
-    text-align: center;
-    font-size: 18px;
-    line-height: 1.42857;
-}
-
-.wefilter-button-container {
-    display: inline-block;
-    padding: 10px 10px;
-    margin: 0px 2px;
-    border-radius: 5px;
-}
 
 .wefilter-button-container:hover {
     background-color: #efefef;
@@ -71,59 +158,4 @@
 
 .wefilter-button-container i {
     color: white;
-}
-
-#wefilter-button-cuisine {
-    background: #C70039;
-    border: 1px solid #C70039;
-}
-
-#wefilter-button-hotel {
-    background: #28b463;
-    border: 1px solid #28b463;
-}
-
-#wefilter-button-entertainment {
-    background:  #2980b9;
-    border: 1px solid  #2980b9;
-}
-
-#wefilter-button-shopping {
-    background:   #f1c40f;
-    border: 1px solid   #f1c40f;
-}
-
-#wefilter-error-container {
-    text-align: center;
-    margin-top: 15px;
-    font-family: sans-serif;
-    font-size: 13px;
-    font-weight: bold;
-    color:  #c0392b ;
-}
-
-.wefilter-marker i {
-    font-size: 23px;
-    text-shadow: 0 2px 4px rgba(0,0,0,.2), 0 -1px 0 rgba(0,0,0,.02);
-}
-
-#wefilter-marker-cuisine i {
-    color:  #C70039;
-}
-
-#wefilter-marker-hotel i {
-    color:  #28b463;
-}
-
-#wefilter-marker-entertainment i {
-    color:  #2980b9;
-}
-
-#wefilter-marker-shopping i {
-    color:  #f1c40f;
-}
-
-
-#wefilter-marker-location i {
-    color:  #4a235a;
 }

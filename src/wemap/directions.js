@@ -339,6 +339,11 @@ export default class WeDirections {
         }
     }
 
+    /**
+     * Active profile
+     * @returns {string}
+     * @private
+     */
     _activeProfile() {
         let checked = '';
         let inputs = document.querySelectorAll('.mapbox-directions-inputs .mapbox-directions-profile input');
@@ -492,6 +497,8 @@ export default class WeDirections {
     activeDirections() {
         const self = this;
         const direction = self.weDirection;
+        const container = self.weDirection._map._container;
+
         direction._map._interactive = true;
         wemapgl.reverse.offReverse(); // Off reverse when direction active
 
@@ -499,6 +506,9 @@ export default class WeDirections {
             document.querySelectorAll('div.pelias-ctrl.mapboxgl-ctrl')[0];
         const directionSelector =
             document.querySelectorAll('div.mapboxgl-ctrl-directions.mapboxgl-ctrl')[0];
+
+        container.classList.remove("wedirection-deactivated");
+        container.classList.add("wedirection-activated");
 
         directionSelector.classList.remove("hide");
         if(peliasSelector) {
@@ -515,6 +525,8 @@ export default class WeDirections {
     deactiveDirections() {
         const self = this;
         const direction = self.weDirection;
+        const container = self.weDirection._map._container;
+
         direction._map._interactive = true;
         wemapgl.reverse.onReverse(); // Active reverse when direction off
 
@@ -527,6 +539,10 @@ export default class WeDirections {
         o.value = ''; // Reset input origin
         const d = document.querySelectorAll('#mapbox-directions-destination-input input')[0];
         d.value = ''; // Reset input destination
+
+        container.classList.remove("wedirection-activated");
+        container.classList.add("wedirection-deactivated");
+
 
         peliasSelector.classList.remove("hide");
         directionSelector.classList.add("hide");

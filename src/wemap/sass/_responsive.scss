@@ -1,7 +1,7 @@
 $tablet: 670px;
 $mobile-large: 640px;
 $mobile-medium: 600px;
-$mobile-small: 400px;
+$mobile-small: 479px;
 
 #wemap-place {
     @media screen and (max-width: $mobile-medium) {
@@ -32,7 +32,12 @@ $mobile-small: 400px;
         }
 
         .mapboxgl-ctrl-directions {
-            min-width: calc(100vw - 65px);
+            min-width: calc(100vw - 85px);
+            margin: 0;
+            .directions-control-inputs {
+                top: 20px;
+                left: 20px;
+            }
         }
     }
 }
@@ -42,5 +47,31 @@ $mobile-small: 400px;
     @media screen and (max-width: $tablet) {
         top: 0;
         left: 0;
+    }
+}
+
+
+// Filter
+@media screen and (max-width: $mobile-small) {
+    #wefilter-section {
+        position: relative;
+        width: calc(100vw - 40px);
+    }
+
+    #wefilter-section #wefilter-container {
+        width: 100%;
+    }
+
+    #wefilter-container .wefilter-button {
+        width: 40px;
+        height: 40px;
+    }
+
+    #wefilter-container .wefilter-button-container {
+        margin: 0;
+    }
+
+    .wefilter-button-container span {
+        font-size: 13px;
     }
 }

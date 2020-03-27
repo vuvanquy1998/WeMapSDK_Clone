@@ -26,6 +26,11 @@ export default class WeFilterControl {
                 "text": "Mua sắm",
                 "fa-icon": "fa-shopping-bag",
                 "featureClasses": ["shop", "grocery", "alcohol_shop", "jewelry", "mall", "supermarket", "fashion", "convenience", "marketplace"]
+            },
+            "more": {
+                "text": "Xem thêm",
+                "fa-icon": "fa fa-ellipsis-h",
+                "featureClasses": []
             }
         };
         this._currentGroup = null;
@@ -34,6 +39,7 @@ export default class WeFilterControl {
     onAdd(map) {
         this._map = map;
         this._container = document.createElement("div");
+        this._container.setAttribute("id", "wefilter-section");
         let wefilterContainer = document.createElement("div");
         wefilterContainer.setAttribute("id", "wefilter-container");
 
@@ -55,7 +61,7 @@ export default class WeFilterControl {
             let icon = document.createElement("i");
             icon.setAttribute("class", "fa " + this._groups[group]["fa-icon"]);
             button.appendChild(icon);
-            
+
             wefilterButtonContainer.appendChild(button);
 
             let span = document.createElement("span");
@@ -86,6 +92,7 @@ export default class WeFilterControl {
         } else {
             document.getElementById("wefilter-button-container-" + this._currentGroup).classList.remove("wefilter-button-container-active");
             if(this._currentGroup != group) {
+                console.log('group: ', group);
                 this._currentGroup = group;
                 document.getElementById("wefilter-button-container-" + group).classList.add("wefilter-button-container-active");
             } else {

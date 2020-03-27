@@ -66,6 +66,12 @@
         trackUserLocation: true
     }), 'bottom-right');
 
+    var filter = new wemapgl.WeFilterControl({
+        values: {
+        }
+    });
+    map.addControl(filter, "top-left")
+
 </script>
 </body>
 </html>
