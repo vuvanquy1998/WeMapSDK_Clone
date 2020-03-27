@@ -49,10 +49,12 @@ export default class WeFilterControl {
                 "items": 4,
                 "nested": "inner",
                 // "edgePadding": 10,
-                "controlsContainer": "#wefilter-control-container",
-                "gutter": 15,
-                "nav": false,
+                // "controlsContainer": "#wefilter-control-container",
+                // "gutter": 15,
+                "controls": false,
                 "mouseDrag": true,
+                // "nav": false,
+                "navPosition": "bottom",
                 "loop": false,
                 "slideBy": "page",
                 "swipeAngle": false,
@@ -116,34 +118,37 @@ export default class WeFilterControl {
             // wefilterContainer.appendChild(filterButton);
             buttonControlSection.appendChild(filterButton);
 
-            filterButton.addEventListener("click", () => this.onClickFilter(filterId));
-            this._buttons.push(filterButton);
+            // filterButton.addEventListener("click", () => this.onClickFilter(filterId));
+            // this._buttons.push(filterButton);
+
+            filterIcon.addEventListener("click", () => this.onClickFilter(filterId));
+            this._buttons.push(filterIcon);
 
             // this.unhighlightButton(filterButton, this._options["filters"][filterId]["color"]);
             this.unhighlightButton(filterIcon, this._options["filters"][filterId]["color"]);
         });
 
 
-        let controlContainer = document.createElement("div");
-        controlContainer.setAttribute("id", "wefilter-control-container");
-        wefilterContainer.appendChild(controlContainer);
-
-        let leftControlButton = document.createElement("div");
-        leftControlButton.setAttribute("class", "wefilter-control");
-        leftControlButton.setAttribute("id", "wefilter-control-left");
-        let leftIcon = document.createElement("i");
-        leftIcon.setAttribute("class", "fa fa-chevron-left");
-        leftControlButton.appendChild(leftIcon);
-        controlContainer.appendChild(leftControlButton);
-
-
-        let rightControlButton = document.createElement("div");
-        rightControlButton.setAttribute("class", "wefilter-control");
-        rightControlButton.setAttribute("id", "wefilter-control-right");
-        let rightIcon = document.createElement("i");
-        rightIcon.setAttribute("class", "fa fa-chevron-right");
-        rightControlButton.appendChild(rightIcon);
-        controlContainer.appendChild(rightControlButton);
+        // let controlContainer = document.createElement("div");
+        // controlContainer.setAttribute("id", "wefilter-control-container");
+        // wefilterContainer.appendChild(controlContainer);
+        //
+        // let leftControlButton = document.createElement("div");
+        // leftControlButton.setAttribute("class", "wefilter-control");
+        // leftControlButton.setAttribute("id", "wefilter-control-left");
+        // let leftIcon = document.createElement("i");
+        // leftIcon.setAttribute("class", "fa fa-chevron-left");
+        // leftControlButton.appendChild(leftIcon);
+        // controlContainer.appendChild(leftControlButton);
+        //
+        //
+        // let rightControlButton = document.createElement("div");
+        // rightControlButton.setAttribute("class", "wefilter-control");
+        // rightControlButton.setAttribute("id", "wefilter-control-right");
+        // let rightIcon = document.createElement("i");
+        // rightIcon.setAttribute("class", "fa fa-chevron-right");
+        // rightControlButton.appendChild(rightIcon);
+        // controlContainer.appendChild(rightControlButton);
 
         // this._rightButton = document.createElement("div");
         // this._rightButton.setAttribute("class", "wefilter-control");

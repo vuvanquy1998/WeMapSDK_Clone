@@ -178,6 +178,14 @@ $mobile-small: 479px;
     border: 0;
 }
 
+.tns-nav {
+    text-align: center;
+}
+
+.tns-nav > .tns-nav-active {
+    background: #999;
+}
+
 .tns-controls [aria-controls] {
     font-size: 15px;
     margin: 0 5px;
@@ -189,9 +197,26 @@ $mobile-small: 479px;
     border: 0;
 }
 
+#wefilter-container {
+    .tns-visually-hidden {
+        display: none;
+    }
+
+    .wefilter-button {
+        height: auto;
+    }
+
+    .wefilter-text {
+        font-family: Roboto,Arial,sans-serif,inherit;
+        font-size: 13px;
+    }
+}
 
 #wefilter-control-container {
     position: relative;
+    .wefilter-control {
+        margin: unset;
+    }
     div#wefilter-control-left {
         position: absolute;
         top: -60px;
