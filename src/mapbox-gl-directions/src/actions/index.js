@@ -1,6 +1,9 @@
 import * as types from '../constants/action_types';
 import utils from '../utils';
-// import encode from '../encode';
+// import encode from '../wemap/encode';
+
+import { convertGraph2OSRM } from '../wemap/graph2osrm';
+
 const request = new XMLHttpRequest();
 
 function originPoint(coordinates) {
@@ -74,6 +77,8 @@ function fetchDirections() {
     // formArea.dataset.query = query;
 
     let URLDirection = '';
+    let profileGraphhopper= '';
+
     if (engine === 'mapbox') {
       if (language) options.push('language=' + language);
       if (accessToken) options.push('access_token=' + accessToken);
@@ -97,12 +102,23 @@ function fetchDirections() {
     } else if (engine === 'graphhopper') {
       if (accessToken) options.push('key=' + accessToken);
       const startEnd = query.split('%3B');
-      const latLonStart = startEnd[0].split('%2C')
-      const latLonEnd = startEnd[1].split('%2C')
+      const latLonStart = startEnd[0].split('%2C');
+      const latLonEnd = startEnd[1].split('%2C');
+        if (profile === 'mapbox/driving-traffic' || profile === 'driving-traffic') {
+            profileGraphhopper = 'car';
+        } else if (profile === 'mapbox/driving' || profile === 'driving') {
+            profileGraphhopper = 'car';
+        } else if (profile === 'mapbox/walking' || profile === 'walking') {
+            profileGraphhopper = 'foot';
+        } else if (profile === 'mapbox/cycling' || profile === 'cycling') {
+            profileGraphhopper = 'bike';
+        } else {
+            profileGraphhopper = 'car';
+        }
       URLDirection = api + 'point=' + latLonStart[1] + ',' + latLonStart[0]
         + '&point=' + latLonEnd[1] + ',' + latLonEnd[0]
-        + '&type=json' + '&vehicle=' + profile
-        + '&weighting=fastest&elevation=false&locale=vi-VN' + '&key=' + accessToken
+        + '&type=json' + '&vehicle=' + profileGraphhopper
+        + '&weighting=fastest&elevation=false&points_encoded=false&locale=vi-VN' + '&key=' + accessToken
       // TODO: Check graphhopper Direction
     }
     // URLDirection = encode.encodeURL(URLDirection, accessToken)
@@ -118,12 +134,19 @@ function fetchDirections() {
         }
 
         dispatch(setError(null));
-        if (!data.routes[routeIndex]) dispatch(setRouteIndex(0));
-        dispatch(setDirections(data.routes));
-
-        // Revise origin / destination points
-        dispatch(originPoint(data.waypoints[0].location));
-        dispatch(destinationPoint(data.waypoints[data.waypoints.length - 1].location));
+          if (engine === 'graphhopper') {
+              let graphRoutes = convertGraph2OSRM(data.paths, profileGraphhopper);
+              if (!graphRoutes[routeIndex]) dispatch(setRouteIndex(0));
+              dispatch(setDirections(graphRoutes));
+              dispatch(originPoint(data.paths[0]["snapped_waypoints"].coordinates[0]));
+              dispatch(destinationPoint(data.paths[0]["snapped_waypoints"].coordinates[1]));
+          } else {
+              if (!data.routes[routeIndex]) dispatch(setRouteIndex(0));
+              dispatch(setDirections(data.routes));
+              // Revise origin / destination points
+              dispatch(originPoint(data.waypoints[0].location));
+              dispatch(destinationPoint(data.waypoints[data.waypoints.length - 1].location));
+          }
       } else {
         dispatch(setDirections([]));
         return dispatch(setError(JSON.parse(request.responseText).message));

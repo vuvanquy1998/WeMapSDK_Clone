@@ -1,6 +1,6 @@
 'use strict';
 
-// import encode from '../encode';
+// import encode from '../wemap/encode';
 import Typeahead from 'suggestions';
 import debounce from 'lodash.debounce';
 import { EventEmitter } from 'events';

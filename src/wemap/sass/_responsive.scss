@@ -7,6 +7,10 @@ $mobile-small: 479px;
     z-index: 9;
 }
 
+#wemap-results-search {
+	z-index: 9;
+}
+
 .wemap-direction .mapboxgl-control-container .pelias-ctrl.mapboxgl-ctrl {
     z-index: 999;
 }

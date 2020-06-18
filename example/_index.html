@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Display driving directions</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+
+    <script src="../dist/js/wemap-gl.js"  type="text/javascript"></script>
+
+    <link href="../dist/css/wemap.min.css" rel="stylesheet" />
+
+    <link href="../dist/css/dev.min.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+
+    <script>
+        wemapgl.accessToken = "pk.eyJ1IjoicGh1b25naHgiLCJhIjoiY2s2N3IxMnNiMWdlbTNlcW8ybG5jaXU4MCJ9.CkMLijVJ1Lp2ZbaR0zDgrg";
+        var map = new wemapgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: [105.7884815, 21.02459],
+            zoom: 11
+        });
+
+        map.addControl(
+            new wemapgl.MapboxDirections({
+                accessToken: wemapgl.accessToken,
+                unit: 'metric',
+                profile: 'mapbox/cycling'
+            }),
+            'top-left'
+        );
+    </script>
+	
+	<script>
+		let wm =  new wemapgl.WeMap({
+            params: {
+                'access-token': 'P4QzOCt4wWfPKfuPuMF1UQSupLKLsO7ZC4DBRF6GAoC0AcaSAKRvD4v2vix948q7', 
+                'reverse': true,
+            }
+		});
+
+	    console.log(wm.showForm());
+
+	</script>
+
+</body>
+
+</html>
