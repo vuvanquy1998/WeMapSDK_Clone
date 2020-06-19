@@ -29,7 +29,7 @@
                 type='radio'
                 name='profile'
                 value='mapbox/driving-traffic'
-            <% if (profile === 'mapbox/driving-traffic') { %>checked<% } %>
+                <% if (profile === 'mapbox/driving-traffic') { %>checked<% } %>
             />
 
             <label for="mapbox-directions-profile-driving-traffic" style='font-size: 16px; height: 36px; text-align: center; display: flex; align-items: center; justify-content: center;'>
@@ -74,7 +74,7 @@
                 type='radio'
                 name='profile'
                 value='mapbox/cycling'
-            <% if (profile === 'mapbox/cycling') { %>checked<% } %>
+                <% if (profile === 'mapbox/cycling') { %>checked<% } %>
             />
 
             <label for='mapbox-directions-profile-cycling' style='height: 36px; text-align: center; display: flex; align-items: center; justify-content: center;'>
@@ -93,7 +93,7 @@
                 type='radio'
                 name='profile'
                 value='osrm/driving-traffic'
-            <% if (profile === 'osrm/driving-traffic') { %>checked<% } %>
+                <% if (profile === 'osrm/driving-traffic') { %>checked<% } %>
             />
 
             <label for="osrm-directions-profile-driving-traffic" style='font-size: 16px; height: 36px; text-align: center; display: flex; align-items: center; justify-content: center;'>
@@ -107,7 +107,7 @@
                 type='radio'
                 name='profile'
                 value='osrm/driving'
-            <% if (profile === 'osrm/driving') { %>checked<% } %>
+                <% if (profile === 'osrm/driving') { %>checked<% } %>
             />
 
             <label for='osrm-directions-profile-driving' style='font-size: 16px; height: 36px; text-align: center; display: flex; align-items: center; justify-content: center;'>
@@ -121,7 +121,7 @@
                 type='radio'
                 name='profile'
                 value='osrm/walking'
-            <% if (profile === 'osrm/walking') { %>checked<% } %>
+                <% if (profile === 'osrm/walking') { %>checked<% } %>
             />
 
             <label for='osrm-directions-profile-walking' style='height: 36px; text-align: center; display: flex; align-items: center; justify-content: center;'>
@@ -138,7 +138,7 @@
                 type='radio'
                 name='profile'
                 value='osrm/cycling'
-            <% if (profile === 'osrm/cycling') { %>checked<% } %>
+                <% if (profile === 'osrm/cycling') { %>checked<% } %>
             />
 
             <label for='osrm-directions-profile-cycling' style='height: 36px; text-align: center; display: flex; align-items: center; justify-content: center;'>
@@ -151,13 +151,13 @@
         <!-- End OSRM -->
 
         <!-- Graphhopper -->
-        <% if(supports.includes('osrm/driving-traffic')) {%>
+        <% if(supports.includes('graphhopper/driving-traffic')) {%>
             <input
                 id='graphhopper-directions-profile-driving-traffic'
                 type='radio'
                 name='profile'
                 value='graphhopper/driving-traffic'
-            <% if (profile === 'graphhopper/driving-traffic') { %>checked<% } %>
+                <% if (profile === 'graphhopper/driving-traffic') { %>checked<% } %>
             />
 
             <label for="graphhopper-directions-profile-driving-traffic" style='font-size: 16px; height: 36px; text-align: center; display: flex; align-items: center; justify-content: center;'>
@@ -171,7 +171,7 @@
                 type='radio'
                 name='profile'
                 value='graphhopper/driving'
-            <% if (profile === 'graphhopper/driving') { %>checked<% } %>
+                <% if (profile === 'graphhopper/driving') { %>checked<% } %>
             />
 
             <label for='graphhopper-directions-profile-driving' style='font-size: 16px; height: 36px; text-align: center; display: flex; align-items: center; justify-content: center;'>
@@ -185,7 +185,7 @@
                 type='radio'
                 name='profile'
                 value='graphhopper/walking'
-            <% if (profile === 'graphhopper/walking') { %>checked<% } %>
+                <% if (profile === 'graphhopper/walking') { %>checked<% } %>
             />
 
             <label for='graphhopper-directions-profile-walking' style='height: 36px; text-align: center; display: flex; align-items: center; justify-content: center;'>
@@ -202,7 +202,7 @@
                 type='radio'
                 name='profile'
                 value='graphhopper/cycling'
-            <% if (profile === 'graphhopper/cycling') { %>checked<% } %>
+                <% if (profile === 'graphhopper/cycling') { %>checked<% } %>
             />
 
             <label for='graphhopper-directions-profile-cycling' style='height: 36px; text-align: center; display: flex; align-items: center; justify-content: center;'>

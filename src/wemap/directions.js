@@ -53,22 +53,24 @@ export default class WeDirections {
      */
     set _apiEngine(engine) {
         let api = '';
-        switch (engine) {
-            case 'default':
-            case 'osrm':
-                api = config.direction.engine.osrm;
-                break;
-            case 'graphhopper':
-                api = config.direction.engine.graphhopper;
-                break;
-            case 'mapbox':
-                api = config.direction.engine.mapbox;
-                break;
-            default:
-                api = config.direction.engine.osrm;
-                break;
-        }
-        this.options.api = api;
+        // switch (engine) {
+        //     case 'default':
+        //     case 'osrm':
+        //         api = config.direction.engine.osrm;
+        //         break;
+        //     case 'graphhopper':
+        //         api = config.direction.engine.graphhopper;
+        //         break;
+        //     case 'mapbox':
+        //         api = config.direction.engine.mapbox;
+        //         break;
+        //     default:
+        //         api = config.direction.engine.osrm;
+        //         break;
+        // }
+        // this.options.api = api;
+        this.options.api = config.direction.engine;
+
     }
 
     /**
@@ -333,10 +335,17 @@ export default class WeDirections {
     set _optionProfile(profile) {
         const engine = this.options.engine;
         const urlParams = wemapgl.urlController.getParams();
+        // if (urlParams.vehicle) {
+        //     this.options.profile = urlParams.vehicle;
+        // } else if (engine === 'mapbox') {
+        //     this.options.profile = 'mapbox' + '/' + profile;
+        // } else {
+        //     this.options.profile = profile;
+        // }
+
+
         if (urlParams.vehicle) {
             this.options.profile = urlParams.vehicle;
-        } else if (engine === 'mapbox') {
-            this.options.profile = 'mapbox' + '/' + profile;
         } else {
             this.options.profile = profile;
         }
@@ -353,7 +362,7 @@ export default class WeDirections {
         inputs.forEach(element => {
             if (element.checked === true) {
                 checked = element.value;
-                checked = checked.replace("mapbox/", "");
+                // checked = checked.replace("mapbox/", "");
             }
         });
         return checked;

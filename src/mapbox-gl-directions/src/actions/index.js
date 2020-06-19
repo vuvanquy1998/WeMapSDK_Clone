@@ -56,7 +56,9 @@ function setHoverMarker(feature) {
 
 function fetchDirections() {
   return (dispatch, getState) => {
-    const { api, accessToken, routeIndex, profile, alternatives, congestion, destination, language, engine } = getState();
+    // INFO: input engine
+    // const { api, accessToken, routeIndex, profile, alternatives, congestion, destination, language, engine } = getState();
+    const { api, accessToken, routeIndex, profile, alternatives, congestion, destination, language } = getState();
     // if there is no destination set, do not make request because it will fail
     if (!(destination && destination.geometry)) return;
 
@@ -78,48 +80,50 @@ function fetchDirections() {
 
     let URLDirection = '';
     let profileGraphhopper= '';
+    let engine = profile.split("/")[0];
 
     if (engine === 'mapbox') {
-      if (language) options.push('language=' + language);
-      if (accessToken) options.push('access_token=' + accessToken);
-      URLDirection = `${api}${profile}/${query}.json?${options.join('&')}`
-    } else if (engine === 'osrm' || engine === 'default') {
-      if (accessToken) options.push('key=' + accessToken);
-      let profileOSRM = '';
-      if (profile === 'mapbox/driving-traffic' || profile === 'driving-traffic') {
-        profileOSRM = 'driving';
-      } else if (profile === 'mapbox/driving' || profile === 'driving') {
-        profileOSRM = 'driving';
-      } else if (profile === 'mapbox/walking' || profile === 'walking') {
-        profileOSRM = 'walking';
-      } else if (profile === 'mapbox/cycling' || profile === 'cycling') {
-        profileOSRM = 'cycling';
-      } else {
-        profileOSRM = 'driving';
-      }
-      // URLDirection = `${api}${profile}/${query}?${options.join('&')}`;
-      URLDirection = `${api}${profileOSRM}/${query}?${options.join('&')}`;
+        // let mapboxKey = "pk.eyJ1IjoicGh1b25naHgiLCJhIjoiY2s2N3IxMnNiMWdlbTNlcW8ybG5jaXU4MCJ9.CkMLijVJ1Lp2ZbaR0zDgrg";
+        if (language) options.push('language=' + language);
+        if (accessToken) options.push('access_token=' + accessToken);
+        // if (accessToken) options.push('access_token=' + mapboxKey);
+        URLDirection = `${api.mapbox}${profile}/${query}.json?${options.join('&')}`
+    } else if (engine === 'osrm') {
+        if (accessToken) options.push('key=' + accessToken);
+        let profileOSRM = '';
+        if (profile === 'osrm/driving-traffic') {
+            profileOSRM = 'driving';
+        } else if (profile === 'osrm/driving') {
+            profileOSRM = 'driving';
+        } else if (profile === 'osrm/walking') {
+            profileOSRM = 'walking';
+        } else if (profile === 'osrm/cycling') {
+            profileOSRM = 'cycling';
+        } else {
+            profileOSRM = 'driving';
+        }
+        // URLDirection = `${api}${profile}/${query}?${options.join('&')}`;
+        URLDirection = `${api.osrm}${profileOSRM}/${query}?${options.join('&')}`;
     } else if (engine === 'graphhopper') {
-      if (accessToken) options.push('key=' + accessToken);
-      const startEnd = query.split('%3B');
-      const latLonStart = startEnd[0].split('%2C');
-      const latLonEnd = startEnd[1].split('%2C');
-        if (profile === 'mapbox/driving-traffic' || profile === 'driving-traffic') {
+        if (accessToken) options.push('key=' + accessToken);
+        const startEnd = query.split('%3B');
+        const latLonStart = startEnd[0].split('%2C');
+        const latLonEnd = startEnd[1].split('%2C');
+        if (profile === 'graphhopper/driving-traffic') {
             profileGraphhopper = 'car';
-        } else if (profile === 'mapbox/driving' || profile === 'driving') {
+        } else if (profile === 'graphhopper/driving') {
             profileGraphhopper = 'car';
-        } else if (profile === 'mapbox/walking' || profile === 'walking') {
+        } else if (profile === 'graphhopper/walking') {
             profileGraphhopper = 'foot';
-        } else if (profile === 'mapbox/cycling' || profile === 'cycling') {
+        } else if (profile === 'graphhopper/cycling') {
             profileGraphhopper = 'bike';
         } else {
             profileGraphhopper = 'car';
         }
-      URLDirection = api + 'point=' + latLonStart[1] + ',' + latLonStart[0]
-        + '&point=' + latLonEnd[1] + ',' + latLonEnd[0]
-        + '&type=json' + '&vehicle=' + profileGraphhopper
-        + '&weighting=fastest&elevation=false&points_encoded=false&locale=vi-VN' + '&key=' + accessToken
-      // TODO: Check graphhopper Direction
+        URLDirection = api.graphhopper + 'point=' + latLonStart[1] + ',' + latLonStart[0]
+            + '&point=' + latLonEnd[1] + ',' + latLonEnd[0]
+            + '&type=json' + '&vehicle=' + profileGraphhopper
+            + '&weighting=fastest&elevation=false&points_encoded=false&locale=vi-VN' + '&key=' + accessToken
     }
     // URLDirection = encode.encodeURL(URLDirection, accessToken)
     request.open('GET', URLDirection, true);
