@@ -127,8 +127,7 @@ function fetchDirections() {
     }
     // URLDirection = encode.encodeURL(URLDirection, accessToken)
     request.open('GET', URLDirection, true);
-    // request.open('GET', `${api}${profile}/${query}.json?${options.join('&')}`, true);
-    //  console.log(request)
+
     request.onload = () => {
       if (request.status >= 200 && request.status < 400) {
         var data = JSON.parse(request.responseText);

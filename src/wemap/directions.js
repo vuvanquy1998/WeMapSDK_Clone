@@ -52,25 +52,7 @@ export default class WeDirections {
      * @private
      */
     set _apiEngine(engine) {
-        let api = '';
-        // switch (engine) {
-        //     case 'default':
-        //     case 'osrm':
-        //         api = config.direction.engine.osrm;
-        //         break;
-        //     case 'graphhopper':
-        //         api = config.direction.engine.graphhopper;
-        //         break;
-        //     case 'mapbox':
-        //         api = config.direction.engine.mapbox;
-        //         break;
-        //     default:
-        //         api = config.direction.engine.osrm;
-        //         break;
-        // }
-        // this.options.api = api;
         this.options.api = config.direction.engine;
-
     }
 
     /**
@@ -333,7 +315,7 @@ export default class WeDirections {
      * @param profile
      */
     set _optionProfile(profile) {
-        const engine = this.options.engine;
+        // const engine = this.options.engine;
         const urlParams = wemapgl.urlController.getParams();
         // if (urlParams.vehicle) {
         //     this.options.profile = urlParams.vehicle;
