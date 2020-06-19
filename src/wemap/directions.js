@@ -17,8 +17,11 @@ export default class WeDirections {
         this.options.placeholderOrigin = options.placeholderOrigin || 'Chọn điểm bắt đầu';
         this.options.placeholderDestination = options.placeholderDestination || 'Chọn điểm kết thúc';
         this.options.engine = ['default', 'osrm', 'graphhopper', 'mapbox'].includes(options.engine) ? options.engine : 'osrm';
+
+        this.options.supports = options.supports || []; // TODO: change to travel mode
+
         this.options.geocoder = options.geocoder || {};
-        this.options.mode = options.mode || 'driving';
+        this.options.active = options.active || 'driving'; // TODO: change to active mode
         this.options.interactive = options.interactive || false;
 
         this._updateOptions();
@@ -40,7 +43,7 @@ export default class WeDirections {
 
         this._geocodeApi = this.options.geocoder.engine;
 
-        this._optionProfile = this.options.mode;
+        this._optionProfile = this.options.active;
     }
 
     /**
@@ -133,7 +136,7 @@ export default class WeDirections {
             self._addDirectionIcon();
             self._rightClickHandler();
             self._directionsFeatureControl();
-            self._activeDefaultDriveMode();
+            self._activeDefaultDrive();
             self._onReverseInput();
             self._inputChange();
             self._clickResultSearchHandler();
@@ -295,15 +298,15 @@ export default class WeDirections {
     }
 
     /**
-     * Set Default active drive mode when page loaded
+     * Set Default active drive active when page loaded
      * @private
      */
-    _activeDefaultDriveMode() {
-        let mode = this.options.mode;
+    _activeDefaultDrive() {
+        let active = this.options.active;
         const urlParams = wemapgl.urlController.getParams();
         if (urlParams.vehicle) {
             this.options.profile = urlParams.vehicle;
-            mode = urlParams.vehicle;
+            active = urlParams.vehicle;
         }
 
         const traffic = document.getElementById('mapbox-directions-profile-driving-traffic');
@@ -311,14 +314,14 @@ export default class WeDirections {
         const walking = document.getElementById('mapbox-directions-profile-walking');
         const cycling = document.getElementById('mapbox-directions-profile-cycling');
 
-        // Active traffic mode
-        if (mode === 'traffic') {
+        // Active traffic active
+        if (active === 'traffic') {
             traffic.checked = true;
-        } else if (mode === 'driving' || mode === 'default') {
+        } else if (active === 'driving' || active === 'default') {
             driving.checked = true;
-        } else if (mode === 'walking') {
+        } else if (active === 'walking') {
             walking.checked = true;
-        } else if (mode === 'cycling') {
+        } else if (active === 'cycling') {
             cycling.checked = true;
         }
     }
@@ -346,7 +349,7 @@ export default class WeDirections {
      */
     _activeProfile() {
         let checked = '';
-        let inputs = document.querySelectorAll('.mapbox-directions-inputs .mapbox-directions-profile input');
+        let inputs = document.querySelectorAll('#directions-profile input');
         inputs.forEach(element => {
             if (element.checked === true) {
                 checked = element.value;

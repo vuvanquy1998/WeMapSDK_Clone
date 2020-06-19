@@ -45,9 +45,17 @@
     map.addControl(wemapControl);
 
     let wd =  new wemapgl.WeDirections({
-        mode: 'cycling',
+        active: 'cycling',
         key: "vpstPRxkBBTLaZkOaCfAHlqXtCR",
         engine: 'osrm',
+        supports: [
+            'mapbox/driving-traffic', 'mapbox/driving',
+            'mapbox/walking', 'mapbox/cycling', 'mapbox/public-transport',
+            'osrm/driving-traffic', 'osrm/driving',
+            'osrm/walking', 'osrm/cycling', 'osrm/public-transport',
+            // 'graphhopper/driving-traffic', 'graphhopper/driving',
+            // 'graphhopper/walking', 'graphhopper/cycling', 'graphhopper/public-transport',
+        ],
         // interactive: true, // Enable action Directions, default: false
         alternatives: true,
         geocoder: {
