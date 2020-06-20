@@ -4,6 +4,9 @@ import MapboxDirections from '../mapbox-gl-directions/dist/mapbox-gl-directions'
 /**
  * WeDirections show direction
  * Class WeDirections
+ * Direction engine:
+ *                  - engine01: osrm
+ *                  - engine02: graphhopper
  */
 export default class WeDirections {
 
@@ -16,12 +19,14 @@ export default class WeDirections {
         this.options.unit = options.unit || 'metric';
         this.options.placeholderOrigin = options.placeholderOrigin || 'Chọn điểm bắt đầu';
         this.options.placeholderDestination = options.placeholderDestination || 'Chọn điểm kết thúc';
-        this.options.engine = ['default', 'osrm', 'graphhopper', 'mapbox'].includes(options.engine) ? options.engine : 'osrm';
+        // this.options.engine = ['default', 'osrm', 'graphhopper', 'mapbox'].includes(options.engine) ? options.engine : 'osrm';
 
-        this.options.supports = options.supports || []; // TODO: change to travel mode
+        this.options.supports = options.supports || ['engine01/driving-traffic', 'engine01/driving', 'engine01/walking',
+            'engine01/cycling', 'engine01/public-transport']; // TODO: change to travel mode
 
         this.options.geocoder = options.geocoder || {};
-        this.options.active = options.active || 'driving'; // TODO: change to active mode
+        // this.options.active = options.active || 'driving'; // TODO: change to active mode
+        this.options.active = options.active; // TODO: change to active mode
         this.options.interactive = options.interactive || false;
 
         this._updateOptions();
@@ -315,6 +320,7 @@ export default class WeDirections {
      * @param profile
      */
     set _optionProfile(profile) {
+        let supports = this.options.supports;
         // const engine = this.options.engine;
         const urlParams = wemapgl.urlController.getParams();
         // if (urlParams.vehicle) {
@@ -329,7 +335,15 @@ export default class WeDirections {
         if (urlParams.vehicle) {
             this.options.profile = urlParams.vehicle;
         } else {
-            this.options.profile = profile;
+            // TODO: Check length input supports
+            let checkDrivingSupport = supports.findIndex(el => el.includes("/driving"));
+            if (checkDrivingSupport !== -1 && !profile) {
+                this.options.profile = supports[checkDrivingSupport];
+            } else if (profile) {
+                this.options.profile = profile;
+            } else {
+                this.options.profile = supports[0];
+            }
         }
     }
 
@@ -536,7 +550,6 @@ export default class WeDirections {
 
         container.classList.remove("wedirection-activated");
         container.classList.add("wedirection-deactivated");
-
 
         peliasSelector.classList.remove("hide");
         directionSelector.classList.add("hide");

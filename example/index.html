@@ -45,19 +45,19 @@
     map.addControl(wemapControl);
 
     let wd =  new wemapgl.WeDirections({
-        active: 'cycling',
+        // active: 'graphhopper/walking',
         key: "vpstPRxkBBTLaZkOaCfAHlqXtCR",
-        engine: 'osrm',
+        // engine: 'osrm',
         supports: [
             // 'mapbox/driving-traffic', 'mapbox/driving',
             // 'mapbox/walking', 'mapbox/cycling', 'mapbox/public-transport',
-            // 'osrm/driving-traffic', 'osrm/driving',
-            'osrm/walking', 'osrm/cycling', 'osrm/public-transport',
-            // 'graphhopper/driving-traffic',
-            'graphhopper/driving',
-            'graphhopper/walking',
-            'graphhopper/cycling',
-            'graphhopper/public-transport',
+            // 'engine01/driving-traffic', 'engine01/driving',
+            'engine01/walking', 'engine01/cycling', 'engine01/public-transport',
+            // 'engine02/driving-traffic',
+            'engine02/driving',
+            'engine02/walking',
+            'engine02/cycling',
+            'engine02/public-transport',
         ],
         // interactive: true, // Enable action Directions, default: false
         alternatives: true,

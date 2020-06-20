@@ -80,7 +80,7 @@ function fetchDirections() {
 
     let URLDirection = '';
     let profileGraphhopper= '';
-    let engine = profile.split("/")[0];
+    let engine = profile.split("/")[0]; // engine01: osrm, engine02: graphhopper
 
     if (engine === 'mapbox') {
         // let mapboxKey = "pk.eyJ1IjoicGh1b25naHgiLCJhIjoiY2s2N3IxMnNiMWdlbTNlcW8ybG5jaXU4MCJ9.CkMLijVJ1Lp2ZbaR0zDgrg";
@@ -88,34 +88,34 @@ function fetchDirections() {
         if (accessToken) options.push('access_token=' + accessToken);
         // if (accessToken) options.push('access_token=' + mapboxKey);
         URLDirection = `${api.mapbox}${profile}/${query}.json?${options.join('&')}`
-    } else if (engine === 'osrm') {
+    } else if (engine === 'engine01') {
         if (accessToken) options.push('key=' + accessToken);
         let profileOSRM = '';
-        if (profile === 'osrm/driving-traffic') {
+        if (profile === 'engine01/driving-traffic') {
             profileOSRM = 'driving';
-        } else if (profile === 'osrm/driving') {
+        } else if (profile === 'engine01/driving') {
             profileOSRM = 'driving';
-        } else if (profile === 'osrm/walking') {
+        } else if (profile === 'engine01/walking') {
             profileOSRM = 'walking';
-        } else if (profile === 'osrm/cycling') {
+        } else if (profile === 'engine01/cycling') {
             profileOSRM = 'cycling';
         } else {
             profileOSRM = 'driving';
         }
         // URLDirection = `${api}${profile}/${query}?${options.join('&')}`;
         URLDirection = `${api.osrm}${profileOSRM}/${query}?${options.join('&')}`;
-    } else if (engine === 'graphhopper') {
+    } else if (engine === 'engine02') {
         if (accessToken) options.push('key=' + accessToken);
         const startEnd = query.split('%3B');
         const latLonStart = startEnd[0].split('%2C');
         const latLonEnd = startEnd[1].split('%2C');
-        if (profile === 'graphhopper/driving-traffic') {
+        if (profile === 'engine02/driving-traffic') {
             profileGraphhopper = 'car';
-        } else if (profile === 'graphhopper/driving') {
+        } else if (profile === 'engine02/driving') {
             profileGraphhopper = 'car';
-        } else if (profile === 'graphhopper/walking') {
+        } else if (profile === 'engine02/walking') {
             profileGraphhopper = 'foot';
-        } else if (profile === 'graphhopper/cycling') {
+        } else if (profile === 'engine02/cycling') {
             profileGraphhopper = 'bike';
         } else {
             profileGraphhopper = 'car';
@@ -137,7 +137,7 @@ function fetchDirections() {
         }
 
         dispatch(setError(null));
-          if (engine === 'graphhopper') {
+          if (engine === 'engine02') {
               let graphRoutes = convertGraph2OSRM(data.paths, profileGraphhopper);
               if (!graphRoutes[routeIndex]) dispatch(setRouteIndex(0));
               dispatch(setDirections(graphRoutes));
