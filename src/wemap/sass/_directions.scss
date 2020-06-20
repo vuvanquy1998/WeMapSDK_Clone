@@ -127,4 +127,69 @@
             top: 10px;
         }
     }
+
+    #directions-profile {
+        overflow: hidden;
+        background: #fff;
+        margin: 7px 0 0;
+        padding: 2px;
+        border-radius: 15px;
+        vertical-align: middle;
+        box-shadow: 0 0 0 2px rgba(0,0,0,.1);
+
+        .tns-liveregion.tns-visually-hidden {
+            display: none;
+        }
+        input[type=radio] {
+            display: none;
+        }
+        input[type=radio]:checked+label, input[type=radio]:checked+label:hover {
+            background: #eee;
+            color: rgba(0,0,0,.75);
+        }
+
+        .engine01\/driving {
+            transform: translateY(-3px);
+        }
+
+        .engine01\/driving-traffic{
+            transform: translateY(-3px);
+        }
+
+        .engine01\/walking {
+            transform: translateY(2px);
+        }
+
+        .engine01\/cycling {
+            transform: translateY(2px);
+        }
+
+        .engine02\/driving {
+            transform: translateY(-3px);
+        }
+
+        .engine02\/driving-traffic{
+            transform: translateY(-3px);
+        }
+
+        .engine02\/walking {
+            transform: translateY(2px);
+        }
+
+        .engine02\/cycling {
+            transform: translateY(2px);
+        }
+
+        label {
+            cursor: pointer;
+            vertical-align: top;
+            display: block;
+            border-radius: 16px;
+            padding: 3px 5px;
+            font-size: 12px;
+            color: rgba(0,0,0,.5);
+            line-height: 20px;
+            text-align: center;
+        }
+    }
 }

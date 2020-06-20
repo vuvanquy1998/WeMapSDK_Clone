@@ -139,7 +139,7 @@ export default class WeDirections {
                 "gutter": 15,
                 "controls": false,
                 "mouseDrag": true,
-                "nav": false,
+                // "nav": false,
                 "navPosition": "bottom",
                 "loop": false,
                 "slideBy": "page",

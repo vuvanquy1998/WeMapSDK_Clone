@@ -95,15 +95,19 @@
         // *** End Graphhopper
     %>
 
-    <div id="directions-profile" class='mapbox-directions-profile mapbox-directions-component-keyline mapbox-directions-clearfix'>
-        <div id="directions-items">
+    <div id='directions-profile' class='mapbox-directions-clearfix'>
+        <div id="directions-items" class=''>
             <%
                 // const uniqueItems = [...new Set(supports)]
                 const uniqueItems = supports.filter (function (value, index, array) {
                     return array.indexOf (value) == index;
                 });
                 uniqueItems.forEach(ele => { %>
-                <div class="directions-item">
+                <%
+                    // let classItem =  ele.replace('/', '-');
+                    let classItem =  ele;
+                %>
+                <div class='directions-item <%= classItem %>' style='display: inline-block'>
                     <%= objInput[ele] %>
                 </div>
             <% }); %>
