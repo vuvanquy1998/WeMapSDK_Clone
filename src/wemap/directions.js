@@ -1,5 +1,6 @@
 import {default as config} from '../config.json';
 import MapboxDirections from '../mapbox-gl-directions/dist/mapbox-gl-directions';
+import { tns } from "tiny-slider/src/tiny-slider"
 
 /**
  * WeDirections show direction
@@ -19,7 +20,7 @@ export default class WeDirections {
         this.options.placeholderOrigin = options.placeholderOrigin || 'Chọn điểm bắt đầu';
         this.options.placeholderDestination = options.placeholderDestination || 'Chọn điểm kết thúc';
 
-        this.options.supports = options.supports || ['engine01/driving-traffic', 'engine01/driving', 'engine01/walking',
+        this.options.supports = options.supports || ['engine01/driving', 'engine01/driving-traffic', 'engine01/walking',
             'engine01/cycling', 'engine01/public-transport']; // TODO: change to travel mode
 
         this.options.geocoder = options.geocoder || {};
@@ -128,6 +129,23 @@ export default class WeDirections {
             self._clickResultSearchHandler();
             self._urlPreChecking();
             self._urlCheckChange();
+
+            let slide = tns({
+                "container": '#directions-items',
+                "items": 4,
+                // "nested": "inner",
+                "edgePadding": 10,
+                "controlsContainer": "#directions-items-container",
+                "gutter": 15,
+                "controls": false,
+                "mouseDrag": true,
+                "nav": false,
+                "navPosition": "bottom",
+                "loop": false,
+                "slideBy": "page",
+                "swipeAngle": false,
+                "speed": 400
+            });
         });
     }
 
@@ -294,22 +312,21 @@ export default class WeDirections {
             this.options.profile = urlParams.vehicle;
             active = urlParams.vehicle;
         }
-
-        const traffic = document.getElementById('mapbox-directions-profile-driving-traffic');
-        const driving = document.getElementById('mapbox-directions-profile-driving');
-        const walking = document.getElementById('mapbox-directions-profile-walking');
-        const cycling = document.getElementById('mapbox-directions-profile-cycling');
-
-        // Active traffic active
-        if (active === 'traffic') {
-            traffic.checked = true;
-        } else if (active === 'driving' || active === 'default') {
-            driving.checked = true;
-        } else if (active === 'walking') {
-            walking.checked = true;
-        } else if (active === 'cycling') {
-            cycling.checked = true;
-        }
+        //
+        // const traffic = document.getElementById('mapbox-directions-profile-driving-traffic');
+        // const driving = document.getElementById('mapbox-directions-profile-driving');
+        // const walking = document.getElementById('mapbox-directions-profile-walking');
+        // const cycling = document.getElementById('mapbox-directions-profile-cycling');
+        //
+        // if (active === 'traffic') {
+        //     traffic.checked = true;
+        // } else if (active === 'driving' || active === 'default') {
+        //     driving.checked = true;
+        // } else if (active === 'walking') {
+        //     walking.checked = true;
+        // } else if (active === 'cycling') {
+        //     cycling.checked = true;
+        // }
     }
 
     /**
@@ -571,5 +588,9 @@ export default class WeDirections {
             direction.actions.setDestinationFromCoordinates(originCoordinate);
             direction.actions.reverse();
         });
+    }
+
+    _onlyUniqueInArr(value, index, self) {
+        return self.indexOf(value) === index;
     }
 }

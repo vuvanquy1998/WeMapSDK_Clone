@@ -75,20 +75,11 @@ function fetchDirections() {
     // if (accessToken) options.push('access_token=' + accessToken);
     request.abort();
 
-    // let formArea = document.getElementById('mapbox-directions-form-area');
-    // formArea.dataset.query = query;
-
     let URLDirection = '';
     let profileGraphhopper= '';
     let engine = profile.split("/")[0]; // engine01: osrm, engine02: graphhopper
 
-    if (engine === 'mapbox') {
-        // let mapboxKey = "pk.eyJ1IjoicGh1b25naHgiLCJhIjoiY2s2N3IxMnNiMWdlbTNlcW8ybG5jaXU4MCJ9.CkMLijVJ1Lp2ZbaR0zDgrg";
-        if (language) options.push('language=' + language);
-        if (accessToken) options.push('access_token=' + accessToken);
-        // if (accessToken) options.push('access_token=' + mapboxKey);
-        URLDirection = `${api.mapbox}${profile}/${query}.json?${options.join('&')}`
-    } else if (engine === 'engine01') {
+    if (engine === 'engine01') {
         if (accessToken) options.push('key=' + accessToken);
         let profileOSRM = '';
         if (profile === 'engine01/driving-traffic') {
@@ -102,8 +93,8 @@ function fetchDirections() {
         } else {
             profileOSRM = 'driving';
         }
-        // URLDirection = `${api}${profile}/${query}?${options.join('&')}`;
-        URLDirection = `${api.osrm}${profileOSRM}/${query}?${options.join('&')}`;
+        // URLDirection = `${api.osrm}${profileOSRM}/${query}?${options.join('&')}`;
+        URLDirection = api.osrm + profileOSRM + "/" + query + "?" + options.join('&');
     } else if (engine === 'engine02') {
         if (accessToken) options.push('key=' + accessToken);
         const startEnd = query.split('%3B');
