@@ -130,7 +130,7 @@ export default class WeDirections {
             self._urlPreChecking();
             self._urlCheckChange();
 
-            let slide = tns({
+            tns({
                 "container": '#directions-items',
                 "items": 4,
                 // "nested": "inner",
