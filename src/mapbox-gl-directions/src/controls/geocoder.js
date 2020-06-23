@@ -116,7 +116,7 @@ export default class Geocoder {
             + '&boundary.country=VNM'
             + '&focus.point.lat=' + this._map.getCenter().lat + '&focus.point.lon=' + this._map.getCenter().lng;
     }
-    // URLAutoComplete = encode.encodeURL(URLAutoComplete, accessToken)
+    // URLAutoComplete = encode.encodeURL(URLAutoComplete, accessToken);
     this.request.open('GET', URLAutoComplete , true);
 
     this.request.onload = function() {

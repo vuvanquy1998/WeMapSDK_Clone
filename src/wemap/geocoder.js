@@ -698,6 +698,7 @@ export default class WeGeocoder {
         let geocoder = wegeocoder.geocoder
         wegeocoder.updateInfoFromUrl();
         geocoder._sendXmlHttpRequest = function(url, callback) {
+            // let key = wegeocoder.options.key;
             // url = encodeURL(url, key)
             var req = new XMLHttpRequest();
             req.addEventListener("load", function() {
@@ -717,7 +718,7 @@ export default class WeGeocoder {
             req.open("GET", url);
             req.send();
         };
-       
+
         wegeocoder.initPolygon()
         geocoder._buildAndGetResult = function(feature, index) {
             let self = this;
@@ -860,12 +861,12 @@ export default class WeGeocoder {
                     .join("")
                     .toUpperCase();
             }
-            
+
             if (viewDetail) {
                 this._removeMarkers();
                 let name = info.name;
                 let type = feature.geometry.type;
-                
+
                 let address = [
                     info.street,
                     info.locality,
